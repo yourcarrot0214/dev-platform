@@ -82,6 +82,4 @@ userSchema.statics.findByToken = function (token, cb) {
   });
 };
 
-const User = mongoose.model("User", userSchema);
-
-export default User;
+export default userSchema;

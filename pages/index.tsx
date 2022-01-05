@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import clientPromise from "../utils/mongodb/mongodb";
 
 export default function Home({ isConnected }) {
   console.log("isConnected : ", isConnected);
@@ -233,7 +232,6 @@ export async function getServerSideProps(context) {
     // const db = client.db("myDatabase");
     // Then you can execute queries against your database like so:
     // db.find({}) or any of the MongoDB Node Driver commands
-    await clientPromise;
 
     return {
       props: { isConnected: true },

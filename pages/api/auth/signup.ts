@@ -1,21 +1,29 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import User from "../../../utils/mongodb/models/User";
+import { connect } from "../../../utils/mongodb/mongodb";
+import { ResponseFuncs } from "../../../types/config";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === "POST") {
-    const { name, email, password, profileImage } = req.body;
-    if (!email || !password || !name || !profileImage) {
-      res.statusCode = 400;
-      return res.send("필수 데이터가 없습니다.");
-    }
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs;
 
-    // console.log("User : ", User);
-    // ! User model을 import하여 호출하면 error가 발생
-    // ! OverwriteModelError: Cannot overwrite `User` model once compiled.
-    // ! 컴파일된 'User' 모델을 덮어쓸 수 없습니다.
+  const catcher = (error: Error) => res.status(400).json({ error });
 
-    return res.send("request success");
+  const handleCase: ResponseFuncs = {
+    // ? RESPONSE FOR GET REQUEST
+    GET: async (req: NextApiRequest, res: NextApiResponse) => {
+      const { User } = await connect();
+      res.json(await User.find({}).catch(catcher));
+      res.end();
+    },
+    // ? RESPONSE FOR POST REQUEST
+    POST: async (req: NextApiRequest, res: NextApiResponse) => {
+      const { User } = await connect();
+      res.json(await User.create(req.body).catch(catcher));
+    },
+  };
 
-    // console.log(userExist);
-  }
+  const response = handleCase[method];
+  if (response) response(req, res);
+  else res.status(400).json({ error: "No Response for This Request" });
 };
+
+export default handler;
