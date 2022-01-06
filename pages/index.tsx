@@ -1,9 +1,10 @@
 import React from "react";
 import { NextPage } from "next";
+import Home from "../components/home/Home";
 
-export default function Home({ isConnected }) {
+export default function home({ isConnected }) {
   console.log("isConnected : ", isConnected);
-  return <>HOME</>;
+  return <Home />;
 }
 
 export async function getServerSideProps(context) {
