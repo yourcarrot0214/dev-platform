@@ -82,7 +82,11 @@ const HeaderUserProfile: React.FC = () => {
           onClick={() => setIsUsermenuOpened(true)}
         >
           <HamburgerIcon />
-          <img src={userProfileImage} alt="user-profile-image" />
+          <img
+            src={userProfileImage}
+            className="header-user-profile-image"
+            alt="user-profile-image"
+          />
         </button>
         {isUsermenuOpened && (
           <ul className="header-usermenu">

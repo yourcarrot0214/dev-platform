@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import palette from "../../styles/palette";
+import useModal from "../../hooks/useModal";
+import { authActions } from "../../store/auth";
+import { useDispatch } from "react-redux";
+import AuthModal from "./AuthModal";
 
 const Container = styled.div`
   .header-auth-buttons {
@@ -34,24 +38,35 @@ const Container = styled.div`
 `;
 
 const HeaderAuth: React.FC = () => {
+  const dispatch = useDispatch();
+  const { openModal, closeModal, ModalPortal } = useModal();
   return (
     <Container>
       <div className="header-auth-buttons">
         <button
           className="header-sign-up-button"
           type="button"
-          onClick={() => {}}
+          onClick={() => {
+            dispatch(authActions.setAuthMode("signup"));
+            openModal();
+          }}
         >
           회원가입
         </button>
         <button
           className="header-login-button"
           type="button"
-          onClick={() => {}}
+          onClick={() => {
+            dispatch(authActions.setAuthMode("login"));
+            openModal();
+          }}
         >
           로그인
         </button>
       </div>
+      <ModalPortal>
+        <AuthModal closeModal={closeModal} />
+      </ModalPortal>
     </Container>
   );
 };

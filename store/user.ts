@@ -28,6 +28,6 @@ const user = createSlice({
   },
 });
 
-export const userAction = { ...user.actions };
+export const userActions = { ...user.actions };
 
 export default user;
