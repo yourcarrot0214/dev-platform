@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserState } from "../types/reduxState";
+import { UserType } from "../types/user.d";
 import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
 
 export const initialState: UserState = {
-  id: "",
+  _id: "",
   name: "",
   email: "",
   profileImage: "",
@@ -12,7 +13,7 @@ export const initialState: UserState = {
 
 export type UserReducerState = typeof initialState;
 
-const userSlice = createSlice({
+const user = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -27,6 +28,6 @@ const userSlice = createSlice({
   },
 });
 
-export const userAction = { ...userSlice.actions };
+export const userAction = { ...user.actions };
 
-export default userSlice;
+export default user;

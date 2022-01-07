@@ -6,6 +6,8 @@ const initialState: AuthState = {
   authMode: "signup",
 };
 
+export type AuthReducerState = typeof initialState;
+
 const auth = createSlice({
   name: "auth",
   initialState,

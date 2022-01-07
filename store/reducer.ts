@@ -1,10 +1,14 @@
 import { AnyAction, CombinedState, combineReducers } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 
-import userSlice, { UserReducerState } from "./user";
+import user, { UserReducerState } from "./user";
+import auth, { AuthReducerState } from "./auth";
+import common, { CommonReducerState } from "./common";
 
 export interface IState {
   user: UserReducerState;
+  auth: AuthReducerState;
+  common: CommonReducerState;
 }
 
 const rootReducer = (
@@ -16,7 +20,9 @@ const rootReducer = (
       return action.payload;
     default: {
       const combinedReducer = combineReducers({
-        user: userSlice.reducer,
+        user: user.reducer,
+        auth: auth.reducer,
+        common: common.reducer,
       });
       return combinedReducer(state, action);
     }
