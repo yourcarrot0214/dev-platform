@@ -28,7 +28,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // * 3. 비밀번호 암호화 및 유저 정보 생성
     const hashedPassword = bcrypt.hashSync(password, 8);
-    const userId = uuidv4();
 
     const newUser = {
       email,

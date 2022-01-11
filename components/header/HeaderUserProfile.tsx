@@ -63,7 +63,7 @@ const Container = styled.div`
 const HeaderUserProfile: React.FC = () => {
   const [isUsermenuOpened, setIsUsermenuOpened] = useState(false);
   const userProfileImage = useSelector((state) => state.user.profileImage);
-  const userId = useSelector((state) => state.user.id);
+  const userId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
   const router = useRouter();
 

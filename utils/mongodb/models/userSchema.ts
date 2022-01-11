@@ -60,26 +60,26 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
   });
 };
 
-userSchema.methods.generateToken = function (cb) {
-  var user = this;
-  const token = jwt.sign(user._id.toHexString(), "secretToken");
-  user.token = token;
-  user.save((err, user) => {
-    if (err) return cb(err);
-    cb(null, user);
-  });
-};
+// userSchema.methods.generateToken = function (cb) {
+//   var user = this;
+//   const token = jwt.sign(user._id.toHexString(), process.env.JWT_SECRET!);
+//   user.token = token;
+//   user.save((err, user) => {
+//     if (err) return cb(err);
+//     cb(null, user);
+//   });
+// };
 
-userSchema.statics.findByToken = function (token, cb) {
-  var user = this;
+// userSchema.statics.findByToken = function (token, cb) {
+//   var user = this;
 
-  jwt.verify(token, "secretToken", function (err, decoded) {
-    if (err) return console.log(err);
-    user.findOne({ _id: decoded, token: token }, function (err, user) {
-      if (err) return cb(err);
-      cb(null, user);
-    });
-  });
-};
+//   jwt.verify(token, "secretToken", function (err, decoded) {
+//     if (err) return console.log(err);
+//     user.findOne({ _id: decoded, token: token }, function (err, user) {
+//       if (err) return cb(err);
+//       cb(null, user);
+//     });
+//   });
+// };
 
 export default userSchema;
