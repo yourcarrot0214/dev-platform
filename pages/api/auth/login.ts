@@ -52,6 +52,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         StoredUserType,
         "password"
       >> = user;
+      // ! delete 명령이 적용되지 않아 비밀번호 정보 임시 초기화
+      userWithoutPassword.password = "";
       delete userWithoutPassword.password;
       console.log("userWithoutPassword : ", userWithoutPassword);
 

@@ -54,6 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       StoredUserType,
       "password"
     >> = userData;
+    userDataWithoutPassword.password = "";
     delete userDataWithoutPassword.password;
     console.log("userDataWithoutPassword : ", userDataWithoutPassword);
     console.log("userData : ", userData);
