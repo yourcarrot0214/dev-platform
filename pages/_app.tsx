@@ -2,8 +2,13 @@ import App, { AppContext, AppProps } from "next/app";
 import GlobalStyle from "../styles/GlobalStyle";
 import wrapper from "../store";
 import Header from "../components/header/Header";
+import axios from "../lib/api";
+import { cookieStringToObject } from "../utils";
+import { Store } from "redux";
+import { authAPI } from "../lib/api/auth";
+import { userActions } from "../store/user";
 
-function app({ Component, pageProps }: AppProps) {
+const app = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <GlobalStyle />
@@ -12,6 +17,28 @@ function app({ Component, pageProps }: AppProps) {
       <div id="root-modal" />
     </>
   );
-}
+};
+
+app.getInitialProps = wrapper.getInitialPageProps(
+  (store) => async (context: AppContext) => {
+    console.log("store : ", store);
+    const appInitialProps = await App.getInitialProps(context);
+    const { isLogged } = store.getState().user;
+    const cookieObject = cookieStringToObject(context.ctx.req.headers.cookie);
+
+    try {
+      if (!isLogged && cookieObject.access_token) {
+        axios.defaults.headers.cookie = cookieObject.access_token;
+        const { data } = await authAPI();
+        console.log(">> auth api response data : ", data);
+        store.dispatch(userActions.setLoggedUser(data));
+      }
+    } catch (error) {
+      console.log(">> app.getInitialProps error :: ", error.message);
+    }
+
+    return { ...appInitialProps };
+  }
+);
 
 export default wrapper.withRedux(app);
