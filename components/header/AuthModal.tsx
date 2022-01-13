@@ -1,5 +1,6 @@
 import React from "react";
 import SignUpModal from "../auth/SignUpModal";
+import LoginModal from "../auth/LoginModal";
 import { useSelector } from "../../store";
 
 interface IProps {
@@ -11,7 +12,7 @@ const AuthModal: React.FC<IProps> = ({ closeModal }) => {
   return (
     <>
       {authMode === "signup" && <SignUpModal closeModal={closeModal} />}
-      {authMode === "login" && <div> Login Modal</div>}
+      {authMode === "login" && <LoginModal closeModal={closeModal} />}
     </>
   );
 };
