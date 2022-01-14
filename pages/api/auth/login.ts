@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/mongodb/mongodb";
-import { ResponseFuncs } from "../../../types/config";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { StoredUserType } from "../../../types/user";
-import { NextResponse } from "next/server";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // * 1. API Method Check

@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import OutsideClickHandler from "react-outside-click-handler";
 import HamburgerIcon from "../../public/static/svg/header/hamburger.svg";
+import { userActions } from "../../store/user";
+import { logoutAPI } from "../../lib/api/auth";
 
 const Container = styled.div`
   .header-user-profile {
@@ -67,6 +69,16 @@ const HeaderUserProfile: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const logout = async () => {
+    try {
+      await logoutAPI();
+      dispatch(userActions.initUser());
+      router.push("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Container>
       <OutsideClickHandler
@@ -101,7 +113,7 @@ const HeaderUserProfile: React.FC = () => {
               </a>
             </Link>
             <div className="header-usermenu-divider" />
-            <li role="presentation" onClick={() => {}}>
+            <li role="presentation" onClick={logout}>
               로그아웃
             </li>
           </ul>
