@@ -43,7 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.setHeader(
         "Set-Cookie",
         `access_token=${token}; path=/; expires=${new Date(
-          Date.now() + 60 * 60 * 1000 * 24
+          Date.now() + 60 * 60 * 1000
         ).toUTCString()}; httponly`
       );
 
