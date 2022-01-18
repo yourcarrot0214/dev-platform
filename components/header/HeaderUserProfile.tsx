@@ -104,14 +104,16 @@ const HeaderUserProfile: React.FC = () => {
         </button>
         {isUsermenuOpened && (
           <ul className="header-usermenu">
-            <Link href="/">
+            <Link href={`/user?id=${userId}`}>
               <a>
-                <li>Profile Menu 1</li>
+                <li onClick={() => setIsUsermenuOpened(false)}>Profile</li>
               </a>
             </Link>
             <Link href="/">
               <a>
-                <li>Profile Menu 2</li>
+                <li onClick={() => setIsUsermenuOpened(false)}>
+                  Profile Menu 2
+                </li>
               </a>
             </Link>
             <div className="header-usermenu-divider" />
