@@ -165,8 +165,9 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           password,
         };
         const { data } = await signupAPI(signUpBody);
-        console.log(data);
-        dispatch(userActions.setLoggedUser(data));
+        const userdataWithoutPassword = data;
+        delete userdataWithoutPassword.password;
+        dispatch(userActions.setLoggedUser(userdataWithoutPassword));
         closeModal();
       } catch (error) {
         console.log(error);

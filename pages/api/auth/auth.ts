@@ -5,7 +5,7 @@ import axios from "../../../lib/api";
 import { connect } from "../../../utils/mongodb/mongodb";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(":: meAPI ::");
+  console.log(":: auth API ::");
   if (req.method === "GET") {
     try {
       const accessToken = req.headers.cookie;

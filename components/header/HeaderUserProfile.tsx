@@ -65,6 +65,7 @@ const Container = styled.div`
 const HeaderUserProfile: React.FC = () => {
   const [isUsermenuOpened, setIsUsermenuOpened] = useState(false);
   const userProfileImage = useSelector((state) => state.user.profileImage);
+  const username = useSelector((state) => state.user.name);
   const userId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -99,6 +100,7 @@ const HeaderUserProfile: React.FC = () => {
             className="header-user-profile-image"
             alt="user-profile-image"
           />
+          <p style={{ margin: "0 10px" }}>{username}</p>
         </button>
         {isUsermenuOpened && (
           <ul className="header-usermenu">

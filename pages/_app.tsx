@@ -29,7 +29,9 @@ app.getInitialProps = wrapper.getInitialPageProps(
       if (!isLogged && cookieObject.access_token) {
         axios.defaults.headers.cookie = cookieObject.access_token;
         const { data } = await authAPI();
-        store.dispatch(userActions.setLoggedUser(data));
+        const userdataWithoutPassword = data;
+        delete data.password;
+        store.dispatch(userActions.setLoggedUser(userdataWithoutPassword));
       }
     } catch (error) {
       console.log(">> app.getInitialProps error :: ", error.message);
