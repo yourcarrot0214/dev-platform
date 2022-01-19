@@ -52,10 +52,12 @@ const Container = styled.form`
     font-size: 16px;
     font-weight: 600;
     margin-top: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
+    color: ${palette.black};
   }
   .sign-up-notice-info {
     margin-bottom: 8px;
+    color: ${palette.gray_48};
   }
 
   .sign-up-modal-submit-button-wrapper {
@@ -247,13 +249,15 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           </>
         )}
       </div>
-      <p className="sign-up-notice-label">회원가입 공지사항</p>
+      <p className="sign-up-notice-label">📣 회원가입 공지사항</p>
       <p className="sign-up-notice-info">
-        회원가입 정보는 MongoDB에 저장되며, 로그인 기능 외 다른 용도로 활용되지
-        않습니다.
+        📌 회원가입 정보는 MongoDB에 저장됩니다.
       </p>
       <p className="sign-up-notice-info">
-        언제든 탈퇴가 가능하며 탈퇴시 회원정보는 영구 삭제됩니다.
+        📌 로그인 기능 이외에 다른 기능으로 활용되지 않습니다.
+      </p>
+      <p className="sign-up-notice-info">
+        📌 언제든 탈퇴가 가능하며 탈퇴시 회원정보는 영구 삭제됩니다.
       </p>
       <div className="sign-up-modal-submit-button-wrapper">
         <Button color="bittersweet" type="submit">
