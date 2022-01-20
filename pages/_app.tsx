@@ -2,18 +2,28 @@ import App, { AppContext, AppProps } from "next/app";
 import GlobalStyle from "../styles/GlobalStyle";
 import wrapper from "../store";
 import Header from "../components/header/Header";
+import WidgetBar from "../components/widgets";
 import axios from "../lib/api";
 import { cookieStringToObject } from "../utils";
 import { Store } from "redux";
 import { authAPI } from "../lib/api/auth";
 import { userActions } from "../store/user";
+import styled from "styled-components";
+
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 const app = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <GlobalStyle />
       <Header />
-      <Component {...pageProps} />
+      <MainContainer>
+        <WidgetBar />
+        <Component {...pageProps} />
+      </MainContainer>
       <div id="root-modal" />
     </>
   );
