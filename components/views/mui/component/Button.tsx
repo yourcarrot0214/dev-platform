@@ -2,10 +2,21 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import AccordionUI from "../AccordionUI";
-import { ExtendButtonBase, ButtonTypeMap, Stack } from "@mui/material";
+import {
+  ExtendButtonBase,
+  ButtonTypeMap,
+  Stack,
+  ButtonGroup,
+  Typography,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LoadingButton from "@mui/lab/LoadingButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -22,12 +33,12 @@ type Color =
   | "success"
   | "error"
   | "info"
-  | "warning"
-  | string;
+  | "warning";
 
-type Size = "small" | "medium" | "large" | string;
-type Variant = "contained" | "outlined" | "text" | string;
+type Size = "small" | "medium" | "large";
+type Variant = "contained" | "outlined" | "text";
 type Sx = Array<Function | object | boolean> | Function | object;
+type LoadingPosition = "start" | "end";
 
 interface IProps {
   color: Color;
@@ -47,7 +58,14 @@ const Container = styled.div`
 `;
 
 const BasicButtons = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [size, setSize] = useState<Size>("small");
+  const [variant, setVariant] = useState<Variant>("text");
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const [color, setColor] = useState<Color>("primary");
+  const [loadingPosition, setLoadingPosition] = useState<LoadingPosition>(
+    "start"
+  );
   return (
     <Container>
       <AccordionUI
@@ -60,104 +78,81 @@ const BasicButtons = () => {
           <Button variant="outlined">Outlined</Button>
         </Stack>
       </AccordionUI>
-      <AccordionUI
-        title="Text Button"
-        subtitle="variant 속성의 값을 별도로 주지 않을 경우 디폴트 값인 text가 적용된 버튼이 됩니다."
-      >
-        <Stack spacing={2} direction="row">
-          <Button>Primary</Button>
-          <Button disabled>Disabled</Button>
-          <Button href="#">Link</Button>
-        </Stack>
-      </AccordionUI>
-      <AccordionUI
-        title="Contained Button"
-        subtitle="variant 속성 값이 contained인 버튼입니다."
-      >
-        <Stack spacing={2} direction="row">
-          <Button variant="contained">Contained</Button>
-          <Button variant="contained" disabled>
-            Disabled
-          </Button>
-          <Button variant="contained" href="#">
-            Link
-          </Button>
-        </Stack>
-      </AccordionUI>
-      <AccordionUI
-        title="Outlined Button"
-        subtitle="variant 속성의 값이 outlined인 버튼입니다."
-      >
-        <Stack spacing={2} direction="row">
-          <Button variant="outlined">Contained</Button>
-          <Button variant="outlined" disabled>
-            Disabled
-          </Button>
-          <Button variant="outlined" href="#">
-            Link
-          </Button>
-        </Stack>
-      </AccordionUI>
-      <AccordionUI
-        title="Color Button"
-        subtitle="기본제공하는 6가지의 색상을 버튼에 적용할 수 있습니다."
-      >
-        <Stack spacing={2} direction="row">
-          <Button color="primary" variant="contained">
-            primary
-          </Button>
-          <Button color="secondary" variant="outlined">
-            secondary
-          </Button>
-          <Button color="success" variant="contained">
-            success
-          </Button>
-          <Button color="error" variant="outlined">
-            error
-          </Button>
-          <Button color="info" variant="text">
-            info
-          </Button>
-          <Button color="warning" variant="contained">
-            warning
-          </Button>
-        </Stack>
-      </AccordionUI>
-      <AccordionUI
-        title="Button with icon"
-        subtitle="버튼에 아이콘을 배치하여 출력합니다."
-      >
-        <Stack spacing={2} direction="row">
-          <Button
-            color="primary"
-            variant="contained"
-            startIcon={<DeleteIcon />}
-          >
-            Delete
-          </Button>
-          <Button color="secondary" variant="outlined" endIcon={<Send />}>
-            Send
-          </Button>
-        </Stack>
-      </AccordionUI>
-      <AccordionUI
-        title="Icon Button"
-        subtitle="Icon으로만 이루어진 버튼으로 IconButton 컴포넌트에 children으로 Icon을 배치합니다."
-      >
-        <Stack spacing={2} direction="row">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-          <IconButton color="primary">
-            <Send />
-          </IconButton>
-          <IconButton color="secondary">
-            <AlarmIcon />
-          </IconButton>
-          <IconButton color="success">
-            <AddShoppingCartIcon />
-          </IconButton>
-        </Stack>
+      <AccordionUI title="Button UI" subtitle="버튼 테스트 필드">
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <Stack spacing={2} direction="column">
+              <FormControl>
+                <FormLabel>Size</FormLabel>
+                <RadioGroup defaultValue={size} row>
+                  <FormControlLabel
+                    value="small"
+                    control={<Radio />}
+                    label="small"
+                    onClick={() => setSize("small")}
+                  />
+                  <FormControlLabel
+                    value="medium"
+                    control={<Radio />}
+                    label="medium"
+                    onClick={() => setSize("medium")}
+                  />
+                  <FormControlLabel
+                    value="large"
+                    control={<Radio />}
+                    label="large"
+                    onClick={() => setSize("large")}
+                  />
+                </RadioGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Variant</FormLabel>
+                <RadioGroup defaultValue={size} row>
+                  <FormControlLabel
+                    value="text"
+                    control={<Radio />}
+                    label="text"
+                    onClick={() => setVariant("text")}
+                  />
+                  <FormControlLabel
+                    value="contained"
+                    control={<Radio />}
+                    label="contained"
+                    onClick={() => setVariant("contained")}
+                  />
+                  <FormControlLabel
+                    value="outlined"
+                    control={<Radio />}
+                    label="outlined"
+                    onClick={() => setVariant("outlined")}
+                  />
+                </RadioGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Color</FormLabel>
+                <RadioGroup defaultValue={size} row>
+                  <FormControlLabel
+                    value="primary"
+                    control={<Radio />}
+                    label="primary"
+                    onClick={() => setColor("primary")}
+                  />
+                  <FormControlLabel
+                    value="secondary"
+                    control={<Radio />}
+                    label="secondary"
+                    onClick={() => setColor("secondary")}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Stack>
+          </Grid>
+          <Grid item xs={4}>
+            <Button size={size} variant={variant} color={color}>
+              Button
+            </Button>
+          </Grid>
+        </Grid>
       </AccordionUI>
       <AccordionUI title="Loading Button" subtitle="로딩 상태를 출력합니다.">
         <Box sx={{ "& > button": { m: 1 } }}>
