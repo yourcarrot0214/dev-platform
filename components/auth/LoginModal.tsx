@@ -12,6 +12,7 @@ import { authActions } from "../../store/auth";
 import { loginAPI } from "../../lib/api/auth";
 import { userActions } from "../../store/user";
 import useValidateMode from "../../hooks/useValidateMode";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Container = styled.form`
   width: 568px;
@@ -67,6 +68,7 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordHided, setIsPasswordHided] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -83,8 +85,10 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
   const onSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setValidateMode(true);
+    setLoading(true);
     if (!email || !password) {
       alert("이메일과 비밀번호를 입력해 주세요.");
+      setLoading(false);
     } else {
       const loginBody = { email, password };
 
@@ -95,9 +99,11 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
         console.log("userdataWithoutPassword : ", userdataWithoutPassword);
         dispatch(userActions.setLoggedUser(userdataWithoutPassword));
         console.log("loginAPI", data);
+        setLoading(false);
         closeModal();
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     }
   };
@@ -143,9 +149,16 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
         />
       </div>
       <div className="login-modal-submit-button-wrapper">
-        <Button color="bittersweet" type="submit">
+        <LoadingButton
+          loading={loading}
+          variant="contained"
+          color="info"
+          size="large"
+          fullWidth
+          type="submit"
+        >
           로그인
-        </Button>
+        </LoadingButton>
       </div>
       <p>
         <span>DEV - PLATFORM 회원이 아니신가요?</span>
