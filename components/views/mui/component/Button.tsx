@@ -39,6 +39,7 @@ type Size = "small" | "medium" | "large";
 type Variant = "contained" | "outlined" | "text";
 type Sx = Array<Function | object | boolean> | Function | object;
 type LoadingPosition = "start" | "end";
+type Icon = JSX.Element | undefined;
 
 interface IProps {
   color: Color;
@@ -57,6 +58,14 @@ const Container = styled.div`
   }
 `;
 
+const iconList: Icon[] = [
+  <DeleteIcon />,
+  <Send />,
+  <AlarmIcon />,
+  <AddShoppingCartIcon />,
+  <SaveIcon />,
+];
+
 const BasicButtons = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [size, setSize] = useState<Size>("small");
@@ -66,18 +75,13 @@ const BasicButtons = () => {
   const [loadingPosition, setLoadingPosition] = useState<LoadingPosition>(
     "start"
   );
+  const [icon, setIcon] = useState<Icon>(undefined);
+  const [iconLocation, setIconLocation] = useState<
+    "startIcon" | "endIcon" | null
+  >(null);
+
   return (
     <Container>
-      <AccordionUI
-        title="Basic Button"
-        subtitle="버튼 컴포넌트의 디폴트 형태입니다. variant 속성의 값으로 text, contained, outlined를 줄 수 있습니다."
-      >
-        <Stack spacing={2} direction="row">
-          <Button variant="text">Text</Button>
-          <Button variant="contained">Contained</Button>
-          <Button variant="outlined">Outlined</Button>
-        </Stack>
-      </AccordionUI>
       <AccordionUI title="Button UI" subtitle="버튼 테스트 필드">
         <Grid container spacing={2}>
           <Grid item xs={8}>
@@ -107,7 +111,7 @@ const BasicButtons = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Variant</FormLabel>
-                <RadioGroup defaultValue={size} row>
+                <RadioGroup defaultValue={variant} row>
                   <FormControlLabel
                     value="text"
                     control={<Radio />}
@@ -130,7 +134,7 @@ const BasicButtons = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Color</FormLabel>
-                <RadioGroup defaultValue={size} row>
+                <RadioGroup defaultValue={color} row>
                   <FormControlLabel
                     value="primary"
                     control={<Radio />}
@@ -143,12 +147,76 @@ const BasicButtons = () => {
                     label="secondary"
                     onClick={() => setColor("secondary")}
                   />
+                  <FormControlLabel
+                    value="success"
+                    control={<Radio />}
+                    label="success"
+                    onClick={() => setColor("success")}
+                  />
+                  <FormControlLabel
+                    value="info"
+                    control={<Radio />}
+                    label="info"
+                    onClick={() => setColor("info")}
+                  />
+                  <FormControlLabel
+                    value="warning"
+                    control={<Radio />}
+                    label="warning"
+                    onClick={() => setColor("warning")}
+                  />
+                  <FormControlLabel
+                    value="error"
+                    control={<Radio />}
+                    label="error"
+                    onClick={() => setColor("error")}
+                  />
+                </RadioGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Icon</FormLabel>
+                <RadioGroup defaultValue={icon} row>
+                  <FormControlLabel
+                    value="undefined"
+                    control={<Radio />}
+                    label="undefined"
+                    onClick={() => setIcon(undefined)}
+                  />
+                  <FormControlLabel
+                    value="saveIcon"
+                    control={<Radio />}
+                    label={<SaveIcon />}
+                    onClick={() => setIcon(<SaveIcon />)}
+                  />
+                </RadioGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Icon Location</FormLabel>
+                <RadioGroup defaultValue={icon} row>
+                  <FormControlLabel
+                    value="startIcon"
+                    control={<Radio />}
+                    label="start"
+                    onClick={() => setIconLocation("startIcon")}
+                  />
+                  <FormControlLabel
+                    value="endIcon"
+                    control={<Radio />}
+                    label="end"
+                    onClick={() => setIconLocation("endIcon")}
+                  />
                 </RadioGroup>
               </FormControl>
             </Stack>
           </Grid>
           <Grid item xs={4}>
-            <Button size={size} variant={variant} color={color}>
+            <Button
+              size={size}
+              variant={variant}
+              color={color}
+              startIcon={iconLocation === "startIcon" ? icon : null}
+              endIcon={iconLocation === "endIcon" ? icon : null}
+            >
               Button
             </Button>
           </Grid>
