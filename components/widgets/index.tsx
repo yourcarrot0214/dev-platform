@@ -21,10 +21,6 @@ const WidgetBar: React.FC = () => {
   return (
     <Container>
       <Mui />
-      <Mui />
-      <Mui />
-      <Mui />
-      <Mui />
     </Container>
   );
 };

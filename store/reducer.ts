@@ -4,11 +4,13 @@ import { HYDRATE } from "next-redux-wrapper";
 import user, { UserReducerState } from "./user";
 import auth, { AuthReducerState } from "./auth";
 import common, { CommonReducerState } from "./common";
+import board, { BoardReducerState } from "./board";
 
 export interface IState {
   user: UserReducerState;
   auth: AuthReducerState;
   common: CommonReducerState;
+  board: BoardReducerState;
 }
 
 const rootReducer = (
@@ -23,6 +25,7 @@ const rootReducer = (
         user: user.reducer,
         auth: auth.reducer,
         common: common.reducer,
+        board: board.reducer,
       });
       return combinedReducer(state, action);
     }

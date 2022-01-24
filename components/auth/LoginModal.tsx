@@ -6,7 +6,6 @@ import MailIcon from "../../public/static/svg/auth/mail.svg";
 import OpenedEyeIcon from "../../public/static/svg/auth/opened_eye.svg";
 import ClosedEyeIcon from "../../public/static/svg/auth/closed_eye.svg";
 import palette from "../../styles/palette";
-import Button from "../common/Button";
 import Input from "../common/Input";
 import { authActions } from "../../store/auth";
 import { loginAPI } from "../../lib/api/auth";

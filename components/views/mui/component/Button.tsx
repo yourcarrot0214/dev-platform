@@ -210,15 +210,23 @@ const BasicButtons = () => {
             </Stack>
           </Grid>
           <Grid item xs={4}>
-            <Button
-              size={size}
-              variant={variant}
-              color={color}
-              startIcon={iconLocation === "startIcon" ? icon : null}
-              endIcon={iconLocation === "endIcon" ? icon : null}
+            <Stack
+              spacing={2}
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              height="100%"
             >
-              Button
-            </Button>
+              <Button
+                size={size}
+                variant={variant}
+                color={color}
+                startIcon={iconLocation === "startIcon" ? icon : null}
+                endIcon={iconLocation === "endIcon" ? icon : null}
+              >
+                Button
+              </Button>
+            </Stack>
           </Grid>
         </Grid>
       </AccordionUI>
