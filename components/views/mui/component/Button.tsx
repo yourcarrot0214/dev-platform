@@ -7,15 +7,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import AccordionUI from "../AccordionUI";
 import {
-  ExtendButtonBase,
-  ButtonTypeMap,
   Stack,
-  ButtonGroup,
   Typography,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  Radio,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -80,136 +75,164 @@ const BasicButtons = () => {
     "startIcon" | "endIcon" | null
   >(null);
 
+  const handleSize = (event: React.MouseEvent<HTMLElement>, newSize: Size) => {
+    setSize(newSize);
+  };
+
+  const handleVariant = (
+    event: React.MouseEvent<HTMLElement>,
+    newVariant: Variant
+  ) => {
+    setVariant(newVariant);
+  };
+
+  const handleColor = (
+    event: React.MouseEvent<HTMLElement>,
+    newColor: Color
+  ) => {
+    setColor(newColor);
+  };
+
+  const handleIcon = (event: React.MouseEvent<HTMLElement>, newIcon: Icon) => {
+    setIcon(newIcon);
+  };
+
+  const handleIconLocation = (
+    event: React.MouseEvent<HTMLElement>,
+    newIconLocation: "startIcon" | "endIcon" | null
+  ) => {
+    setIconLocation(newIconLocation);
+  };
+
   return (
     <Container>
       <AccordionUI title="Button UI" subtitle="버튼 테스트 필드">
         <Grid container spacing={2}>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <Stack spacing={2} direction="column">
-              <FormControl>
-                <FormLabel>Size</FormLabel>
-                <RadioGroup defaultValue={size} row>
-                  <FormControlLabel
-                    value="small"
-                    control={<Radio />}
-                    label="small"
-                    onClick={() => setSize("small")}
-                  />
-                  <FormControlLabel
-                    value="medium"
-                    control={<Radio />}
-                    label="medium"
-                    onClick={() => setSize("medium")}
-                  />
-                  <FormControlLabel
-                    value="large"
-                    control={<Radio />}
-                    label="large"
-                    onClick={() => setSize("large")}
-                  />
-                </RadioGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Variant</FormLabel>
-                <RadioGroup defaultValue={variant} row>
-                  <FormControlLabel
-                    value="text"
-                    control={<Radio />}
-                    label="text"
-                    onClick={() => setVariant("text")}
-                  />
-                  <FormControlLabel
-                    value="contained"
-                    control={<Radio />}
-                    label="contained"
-                    onClick={() => setVariant("contained")}
-                  />
-                  <FormControlLabel
-                    value="outlined"
-                    control={<Radio />}
-                    label="outlined"
-                    onClick={() => setVariant("outlined")}
-                  />
-                </RadioGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Color</FormLabel>
-                <RadioGroup defaultValue={color} row>
-                  <FormControlLabel
-                    value="primary"
-                    control={<Radio />}
-                    label="primary"
-                    onClick={() => setColor("primary")}
-                  />
-                  <FormControlLabel
-                    value="secondary"
-                    control={<Radio />}
-                    label="secondary"
-                    onClick={() => setColor("secondary")}
-                  />
-                  <FormControlLabel
-                    value="success"
-                    control={<Radio />}
-                    label="success"
-                    onClick={() => setColor("success")}
-                  />
-                  <FormControlLabel
-                    value="info"
-                    control={<Radio />}
-                    label="info"
-                    onClick={() => setColor("info")}
-                  />
-                  <FormControlLabel
-                    value="warning"
-                    control={<Radio />}
-                    label="warning"
-                    onClick={() => setColor("warning")}
-                  />
-                  <FormControlLabel
-                    value="error"
-                    control={<Radio />}
-                    label="error"
-                    onClick={() => setColor("error")}
-                  />
-                </RadioGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Icon</FormLabel>
-                <RadioGroup defaultValue={icon} row>
-                  <FormControlLabel
-                    value="undefined"
-                    control={<Radio />}
-                    label="undefined"
-                    onClick={() => setIcon(undefined)}
-                  />
-                  <FormControlLabel
-                    value="saveIcon"
-                    control={<Radio />}
-                    label={<SaveIcon />}
-                    onClick={() => setIcon(<SaveIcon />)}
-                  />
-                </RadioGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Icon Location</FormLabel>
-                <RadioGroup defaultValue={icon} row>
-                  <FormControlLabel
-                    value="startIcon"
-                    control={<Radio />}
-                    label="start"
-                    onClick={() => setIconLocation("startIcon")}
-                  />
-                  <FormControlLabel
-                    value="endIcon"
-                    control={<Radio />}
-                    label="end"
-                    onClick={() => setIconLocation("endIcon")}
-                  />
-                </RadioGroup>
-              </FormControl>
+              <Typography variant="h6" fontSize="1rem">
+                Size
+              </Typography>
+              <ToggleButtonGroup
+                value={size}
+                exclusive
+                onChange={handleSize}
+                aria-label="button size"
+                size="small"
+                color="info"
+              >
+                <ToggleButton value="small" aria-label="small size">
+                  small
+                </ToggleButton>
+                <ToggleButton value="medium" aria-label="medium size">
+                  medium
+                </ToggleButton>
+                <ToggleButton value="large" aria-label="large size">
+                  large
+                </ToggleButton>
+              </ToggleButtonGroup>
+              <Typography variant="h6" fontSize="1rem">
+                Variant
+              </Typography>
+              <ToggleButtonGroup
+                value={variant}
+                onChange={handleVariant}
+                exclusive
+                aria-label="button variant"
+                size="small"
+                color="info"
+              >
+                <ToggleButton value="text" aria-label="text variant">
+                  text
+                </ToggleButton>
+                <ToggleButton value="contained" aria-label="contained variant">
+                  contained
+                </ToggleButton>
+                <ToggleButton value="outlined" aria-label="outlined variant">
+                  outlined
+                </ToggleButton>
+              </ToggleButtonGroup>
+              <Typography variant="h6" fontSize="1rem">
+                Color
+              </Typography>
+              <ToggleButtonGroup
+                value={color}
+                exclusive
+                onChange={handleColor}
+                size="small"
+                color="info"
+                aria-label="button color"
+              >
+                <ToggleButton value="primary" aria-label="primary color">
+                  primary
+                </ToggleButton>
+                <ToggleButton value="secondary" aria-label="secondary color">
+                  secondary
+                </ToggleButton>
+                <ToggleButton value="success" aria-label="success color">
+                  success
+                </ToggleButton>
+                <ToggleButton value="info" aria-label="info color">
+                  info
+                </ToggleButton>
+                <ToggleButton value="warning" aria-label="warning color">
+                  warning
+                </ToggleButton>
+                <ToggleButton value="error" aria-label="error color">
+                  error
+                </ToggleButton>
+              </ToggleButtonGroup>
+              <Typography variant="h6" fontSize="1rem">
+                Icon Location
+              </Typography>
+              <ToggleButtonGroup
+                value={iconLocation}
+                onChange={handleIconLocation}
+                exclusive
+                size="small"
+                color="info"
+                aria-label="icon location"
+              >
+                <ToggleButton value="startIcon" aria-label="start icon">
+                  start
+                </ToggleButton>
+                <ToggleButton value="endIcon" aria-label="end icon">
+                  end
+                </ToggleButton>
+              </ToggleButtonGroup>
+              <Typography variant="h6" fontSize="1rem">
+                Icon
+              </Typography>
+              <ToggleButtonGroup
+                value={icon}
+                onChange={handleIcon}
+                exclusive
+                size="small"
+                color="info"
+                aria-label="icon"
+              >
+                <ToggleButton value={undefined} aria-label="undefined">
+                  undefined
+                </ToggleButton>
+                <ToggleButton value={<AlarmIcon />} aria-label="alarm icon">
+                  <AlarmIcon />
+                </ToggleButton>
+                <ToggleButton value={<DeleteIcon />} aria-label="delete icon">
+                  <DeleteIcon />
+                </ToggleButton>
+                <ToggleButton value={<Send />} aria-label="send icon">
+                  <Send />
+                </ToggleButton>
+                <ToggleButton
+                  value={<AddShoppingCartIcon />}
+                  aria-label="add shopping cart icon"
+                >
+                  <AddShoppingCartIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
             </Stack>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Stack
               spacing={2}
               direction="column"

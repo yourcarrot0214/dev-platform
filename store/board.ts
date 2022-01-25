@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
-import { BoardType } from "../types/board.d";
+import { PostType } from "../types/post";
 import { BoardState } from "../types/reduxState";
 
 // * initialState
@@ -15,10 +15,10 @@ const board = createSlice({
   name: "board",
   initialState,
   reducers: {
-    setPostlist(state: BoardState, action: PayloadAction<BoardType[]>) {
+    setPostlist(state: BoardState, action: PayloadAction<PostType[]>) {
       state.postlist = action.payload;
     },
-    setDetail(state: BoardState, action: PayloadAction<BoardType>) {
+    setDetail(state: BoardState, action: PayloadAction<PostType>) {
       state.detail = action.payload;
     },
   },

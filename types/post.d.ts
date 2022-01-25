@@ -1,5 +1,5 @@
-export type BoardType = {
-  id: string;
+export type PostType = {
+  _id: string;
   author: string;
   title: string;
   content: string;

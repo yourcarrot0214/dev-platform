@@ -1,5 +1,5 @@
 import { UserType } from "./user.d";
-import { BoardType } from "./board.d";
+import { PostType } from "./post.d";
 
 // * user redux state
 export type UserState = UserType & {
@@ -18,6 +18,6 @@ export type CommonState = {
 
 // * board redux state
 export type BoardState = {
-  postlist: BoardType[];
-  detail: BoardType | null;
+  postlist: PostType[];
+  detail: PostType | null;
 };
