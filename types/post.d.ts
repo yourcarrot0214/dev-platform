@@ -8,3 +8,12 @@ export type PostType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type CommentType = {
+  _id: string;
+  postId: string;
+  author: string;
+  content: string;
+  craetedAt: string;
+  updatedAt: string;
+};
