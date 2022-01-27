@@ -58,7 +58,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
           />
           {/* React devtools */}
-          <script src="http://localhost:8097"></script>
+          {/* <script src="http://localhost:8097"></script> */}
         </Head>
         <body>
           <Main />
