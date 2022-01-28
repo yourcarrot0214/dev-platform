@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const boardSchema = new mongoose.Schema({
+  author: {
+    type: String,
+  },
   title: {
     type: String,
   },
@@ -15,6 +18,12 @@ const boardSchema = new mongoose.Schema({
   photos: {
     type: Array,
     default: [],
+  },
+  createdAt: {
+    type: Date,
+  },
+  updatedAt: {
+    type: Date,
   },
 });
 
