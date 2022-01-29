@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { title, content, userId, username, photos, hashtags } = req.body;
       if (!title || !content || !userId || !username) {
         res.statusCode = 400;
-        res.send("필수 값이 없습니다.");
+        return res.send("필수 값이 없습니다.");
       }
 
       // TODO 2. DB에 connect 하고 board document 정보를 불러옵니다.
@@ -43,10 +43,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
       const { Board } = await connect();
-      const boardList = Board.find({});
 
+      const catcher = (error: Error) => res.statusCode(400).json({ error });
       res.statusCode = 200;
-      return res.send(boardList);
+      return res.json(await Board.find({}).catch(catcher));
     } catch (error) {
       console.log(">> error :: ", error);
     }

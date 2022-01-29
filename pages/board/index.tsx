@@ -13,12 +13,11 @@ const index: NextPage = () => {
 
 index.getInitialProps = wrapper.getInitialAppProps(
   (store: Store) => async ({ query }: NextPageContext) => {
-    console.log(">> board index initial props :: ", store, query);
-
-    // board data 불러와서 redux store에 업데이트
-    // const boardList = await getBoardListAPI();
-    // console.log(boardList);
-    // store.dispatch(boardActions.setPostlist());
+    console.log(">> query : ", query);
+    // TODO : board data 불러와서 redux store에 업데이트
+    const boardList = await getBoardListAPI();
+    console.log(">> boardList :: ", boardList.data);
+    store.dispatch(boardActions.setPostlist(boardList.data));
     return {};
   }
 );
