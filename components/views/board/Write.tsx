@@ -2,14 +2,19 @@ import React, { useState, useCallback } from "react";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
-import { useDispatch } from "react-redux";
 import { useSelector } from "../../../store";
-import { TextField, Paper, Chip, Stack, Button } from "@mui/material";
+import {
+  TextField,
+  Paper,
+  Chip,
+  Stack,
+  Button,
+  Typography,
+} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { postingAPI } from "../../../lib/api/board";
-import { boardActions } from "../../../store/board";
 
 interface ChipData {
   key: number;
@@ -18,11 +23,12 @@ interface ChipData {
 
 const Container = styled.div`
   width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
   padding: 2rem;
 `;
 
 const Write: React.FC = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
   const username = useSelector((state) => state.user.name);
@@ -69,8 +75,6 @@ const Write: React.FC = () => {
     setHashtags((tags) => tags.filter((tag) => tag.key !== chipToDelete.key));
   };
 
-  // TODO 1. back dash function.
-  // TODO 2. submit function
   const onSubmitPost = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -111,7 +115,9 @@ const Write: React.FC = () => {
   return (
     <Container>
       <Stack spacing={2} direction="column">
-        <h1>Write Page</h1>
+        <Typography variant="h4" component="div" gutterBottom>
+          Write Page
+        </Typography>
 
         <TextField
           id="post-title"
@@ -203,13 +209,5 @@ export default Write;
 
 /*
   TODO : Board - Write Component
-  
-  ? required data
-    - author : useSelector((state) => state.user._id);
-    - title : const [title, setTitle] = useState<string | null>("");
-    - content : const [content, setContent] = useState<string | null>("");
-    - hashtags : const [hashtag, setHashtag] = useState<string[] | null>("");
-    - photos: 
-    - createdAt : submit시 new Date()
-    - updatedAt : submit시 new Date()
+  ? aws s3에 이미지를 등록하고 이미지 주소를 string으로 저장하기.
 */
