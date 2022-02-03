@@ -14,3 +14,6 @@ export const postingAPI = (requestBody: PostingRequestBody) =>
   axios.post<PostType>("/api/posting", requestBody);
 
 export const getBoardListAPI = () => axios.get<PostType[]>("/api/posting");
+
+export const getPostAPI = (postId: string) =>
+  axios.get<PostType>(`/api/posting/${postId}`);

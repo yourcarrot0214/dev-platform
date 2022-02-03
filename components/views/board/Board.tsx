@@ -22,6 +22,10 @@ const Container = styled.div`
   max-width: 1024px;
   margin: 0 auto;
   padding: 2rem;
+
+  .post-title {
+    cursor: pointer;
+  }
 `;
 
 function createData(
@@ -60,7 +64,13 @@ const Board: React.FC = () => {
                   <TableCell component="th" scope="row">
                     {post.index}
                   </TableCell>
-                  <TableCell align="left">{post.title}</TableCell>
+                  <TableCell
+                    align="left"
+                    className="post-title"
+                    onClick={() => router.push(`/board/id=${post.id}`)}
+                  >
+                    {post.title}
+                  </TableCell>
                   <TableCell align="left">{post.author}</TableCell>
                   <TableCell align="left">{post.createdAt}</TableCell>
                 </TableRow>
