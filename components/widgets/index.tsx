@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import palette from "../../styles/palette";
 import Mui from "./Mui";
+import Board from "./Board";
 
 const Container = styled.div`
   width: 100px;
@@ -21,6 +22,7 @@ const WidgetBar: React.FC = () => {
   return (
     <Container>
       <Mui />
+      <Board />
     </Container>
   );
 };

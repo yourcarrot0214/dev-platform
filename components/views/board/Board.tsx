@@ -36,6 +36,7 @@ function createData(
 
 const Board: React.FC = () => {
   const router = useRouter();
+  const isLogged = useSelector((state) => state.user.isLogged);
   const postlist = useSelector((state) => state.board.postlist);
   const rows = postlist.map((post, index) =>
     createData(index + 1, post._id, post.title, post.author, post.createdAt)
@@ -68,17 +69,19 @@ const Board: React.FC = () => {
           </Table>
         </TableContainer>
       </Stack>
-      <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="large"
-          endIcon={<CreateIcon />}
-          onClick={() => router.push("/board/write")}
-        >
-          write
-        </Button>
-      </Stack>
+      {isLogged && (
+        <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            endIcon={<CreateIcon />}
+            onClick={() => router.push("/board/write")}
+          >
+            write
+          </Button>
+        </Stack>
+      )}
     </Container>
   );
 };
