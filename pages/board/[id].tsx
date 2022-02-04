@@ -10,10 +10,10 @@ import { boardActions } from "../../store/board";
 import wrapper from "../../store";
 import { Store } from "redux";
 import { NextPageContext } from "next/types";
-// import Post from "../../components/views/board/Post";
+import Post from "../../components/views/board/Post";
 
 const postDetail: NextPage = () => {
-  return <div>Post Page</div>;
+  return <Post />;
 };
 
 postDetail.getInitialProps = wrapper.getInitialAppProps(

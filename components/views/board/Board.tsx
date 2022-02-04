@@ -12,6 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import { Stack, Button } from "@mui/material";
 
 // * MUI Icon
@@ -58,24 +59,32 @@ const Board: React.FC = () => {
                 <TableCell align="left">Created At</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {rows.map((post) => (
-                <TableRow key={post.id} hover>
-                  <TableCell component="th" scope="row">
-                    {post.index}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    className="post-title"
-                    onClick={() => router.push(`/board/id=${post.id}`)}
-                  >
-                    {post.title}
-                  </TableCell>
-                  <TableCell align="left">{post.author}</TableCell>
-                  <TableCell align="left">{post.createdAt}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            {postlist.length === 0 ? (
+              <TableRow>
+                <TableCell align="center" colSpan={5}>
+                  <h1>게시글이 없습니다.</h1>
+                </TableCell>
+              </TableRow>
+            ) : (
+              <TableBody>
+                {rows.map((post) => (
+                  <TableRow key={post.id} hover>
+                    <TableCell component="th" scope="row">
+                      {post.index}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      className="post-title"
+                      onClick={() => router.push(`/board/id=${post.id}`)}
+                    >
+                      {post.title}
+                    </TableCell>
+                    <TableCell align="left">{post.author}</TableCell>
+                    <TableCell align="left">{post.createdAt}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
       </Stack>

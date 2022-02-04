@@ -5,6 +5,9 @@ const boardSchema = new mongoose.Schema({
   author: {
     type: String,
   },
+  authorId: {
+    type: String,
+  },
   title: {
     type: String,
   },

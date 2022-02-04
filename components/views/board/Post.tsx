@@ -14,7 +14,9 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { postingAPI } from "../../../lib/api/board";
+import { PostType } from "../../../types/post";
 
 interface ChipData {
   key: number;
@@ -28,16 +30,28 @@ const Container = styled.div`
   padding: 2rem;
 `;
 
-const Write: React.FC = () => {
+// TODO :: hashtags는 string[] type인 상태이므로 ChipData type으로 변환
+const onChangeHashtagsType = (hashtags: string[]) => {
+  return hashtags.map((hashtag, index) => ({
+    key: index,
+    label: hashtag,
+  }));
+};
+
+const Post: React.FC = () => {
+  const post = useSelector<PostType | null>((state) => state.board.detail);
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
   const username = useSelector((state) => state.user.name);
-  const [title, setTitle] = useState<string | null>("");
-  const [content, setContent] = useState<string>("");
+  const [title, setTitle] = useState<string | null>(post.title);
+  const [content, setContent] = useState<string>(post.content);
   const [tag, setTag] = useState<string>("");
-  const [hashtags, setHashtags] = useState<ChipData[]>([]);
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [hashtags, setHashtags] = useState<ChipData[]>(
+    onChangeHashtagsType(post.hashtags)
+  );
+  const [photos, setPhotos] = useState<string[]>(post.photos);
   const [loading, setLoading] = useState<boolean>(false);
+  const [updateMode, setUpdateMode] = useState<boolean>(false);
 
   const onChangeTitle = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,29 +130,32 @@ const Write: React.FC = () => {
     <Container>
       <Stack spacing={2} direction="column">
         <Typography variant="h4" component="div" gutterBottom>
-          Write Page
+          Post Page
         </Typography>
 
         <TextField
           id="post-title"
           label="title"
-          variant="outlined"
+          variant={updateMode ? "outlined" : "standard"}
           value={title}
           onChange={onChangeTitle}
           required
           error={title === "" ? true : false}
           margin="normal"
-          autoFocus
+          inputProps={{ readOnly: updateMode ? false : true }}
         />
-        <form onSubmit={onSubmitTag}>
-          <TextField
-            id="post-hashtag"
-            label="tag"
-            variant="outlined"
-            value={tag}
-            onChange={onChangeTag}
-          />
-        </form>
+        {/* update mode시 출력 */}
+        {updateMode && (
+          <form onSubmit={onSubmitTag}>
+            <TextField
+              id="post-hashtag"
+              label="tag"
+              variant="outlined"
+              value={tag}
+              onChange={onChangeTag}
+            />
+          </form>
+        )}
         {hashtags.length !== 0 && (
           <Paper
             sx={{
@@ -153,23 +170,35 @@ const Write: React.FC = () => {
             component="ul"
           >
             {hashtags.map((hashtag) => {
-              return (
-                <li key={hashtag.key}>
-                  <Chip
-                    label={hashtag.label}
-                    onDelete={deleteHashtag(hashtag)}
-                    color="primary"
-                    sx={{ m: 0.5 }}
-                  />
-                </li>
-              );
+              if (updateMode) {
+                return (
+                  <li key={hashtag.key}>
+                    <Chip
+                      label={hashtag.label}
+                      onDelete={deleteHashtag(hashtag)}
+                      color="primary"
+                      sx={{ m: 0.5 }}
+                    />
+                  </li>
+                );
+              } else {
+                return (
+                  <li key={hashtag.key}>
+                    <Chip
+                      label={hashtag.label}
+                      color="success"
+                      sx={{ m: 0.5 }}
+                    />
+                  </li>
+                );
+              }
             })}
           </Paper>
         )}
         <TextField
           id="outlined-multiline-static"
           label="content"
-          variant="outlined"
+          variant={updateMode ? "outlined" : "standard"}
           value={content}
           onChange={onChangeContent}
           required
@@ -178,37 +207,51 @@ const Write: React.FC = () => {
           rows={10}
           fullWidth
           margin="normal"
+          inputProps={{ readOnly: updateMode ? false : true }}
         />
       </Stack>
       <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="large"
-          startIcon={<ArrowBackIosNewIcon />}
-          onClick={() => router.push("/board")}
-        >
-          back
-        </Button>
-        <LoadingButton
-          onClick={(event) => onSubmitPost(event)}
-          loading={loading}
-          endIcon={<SendIcon />}
-          loadingPosition="end"
-          variant="contained"
-          color="success"
-          size="large"
-        >
-          Send
-        </LoadingButton>
+        {/* 작성자가 아닌 경우 */}
+        {userId !== post?.authorId && (
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            startIcon={<ArrowBackIosNewIcon />}
+            onClick={() => router.push("/board")}
+          >
+            back
+          </Button>
+        )}
+        {/* 게시글 작성자인 경우 */}
+        {userId === post?.authorId && (
+          <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => router.push("/board")}
+            >
+              back
+            </Button>
+            <Button
+              variant={updateMode ? "contained" : "outlined"}
+              color={updateMode ? "success" : "warning"}
+              size="large"
+              endIcon={updateMode ? <SendIcon /> : <BorderColorIcon />}
+              onClick={() => {
+                if (updateMode) setUpdateMode(false);
+                else setUpdateMode(true);
+              }}
+            >
+              {updateMode ? "submit" : "update"}
+            </Button>
+          </Stack>
+        )}
       </Stack>
     </Container>
   );
 };
 
-export default Write;
-
-/*
-  TODO : Board - Write Component
-  ? aws s3에 이미지를 등록하고 이미지 주소를 string으로 저장하기.
-*/
+export default Post;

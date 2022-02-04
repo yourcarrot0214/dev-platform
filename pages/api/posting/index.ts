@@ -19,6 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // TODO 3. DB에 저장하기 위한 정보들을 생성합니다.
       const newPosting = {
         author: username,
+        authorId: userId,
         title,
         content,
         photos,
@@ -26,6 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
+      console.log(">> newPosting :: ", newPosting);
 
       // TODO 4. board에 포스팅 정보를 저장합니다.
       const catcher = (error: Error) => res.statusCode(400).json({ error });

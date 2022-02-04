@@ -1,6 +1,7 @@
 export type PostType = {
   _id: string;
   author: string;
+  authorId: string;
   title: string;
   content: string;
   hashtags: string[];
