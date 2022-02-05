@@ -2,7 +2,9 @@ import React, { useState, useCallback } from "react";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
+import { useDispatch } from "react-redux";
 import { useSelector } from "../../../store";
+import { boardActions } from "../../../store/board";
 import {
   TextField,
   Paper,
@@ -11,11 +13,10 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import { postingAPI } from "../../../lib/api/board";
+import { updatePostingAPI } from "../../../lib/api/board";
 import { PostType } from "../../../types/post";
 
 interface ChipData {
@@ -39,6 +40,7 @@ const onChangeHashtagsType = (hashtags: string[]) => {
 };
 
 const Post: React.FC = () => {
+  const dispatch = useDispatch();
   const post = useSelector<PostType | null>((state) => state.board.detail);
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
@@ -89,7 +91,9 @@ const Post: React.FC = () => {
     setHashtags((tags) => tags.filter((tag) => tag.key !== chipToDelete.key));
   };
 
-  const onSubmitPost = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onUpdatePosting = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
     setLoading(true);
 
@@ -106,6 +110,7 @@ const Post: React.FC = () => {
 
       // ? 3. post type에 맞게 request body를 생성합니다.
       const requestBody = {
+        _id: post._id,
         title: title,
         hashtags: conversionHashtags,
         content: content,
@@ -115,11 +120,12 @@ const Post: React.FC = () => {
       };
       console.log(requestBody);
 
-      // ? 4. request api를 호출합니다.
-      await postingAPI(requestBody);
+      // ? 4. request api를 호출하고, response data를 스토어에 업데이트 합니다.
+      const { data } = await updatePostingAPI(post?._id as string, requestBody);
+      dispatch(boardActions.setDetail(data));
 
-      // ? 5. board route로 page를 전환합니다.
-      router.push("/board");
+      // ? 5. update mode를 종료합니다.
+      setUpdateMode(false);
     } catch (error) {
       setLoading(false);
       console.log("write error :: ", error);
@@ -240,9 +246,11 @@ const Post: React.FC = () => {
               color={updateMode ? "success" : "warning"}
               size="large"
               endIcon={updateMode ? <SendIcon /> : <BorderColorIcon />}
-              onClick={() => {
-                if (updateMode) setUpdateMode(false);
-                else setUpdateMode(true);
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                if (updateMode) {
+                  onUpdatePosting(event);
+                  setUpdateMode(false);
+                } else setUpdateMode(true);
               }}
             >
               {updateMode ? "submit" : "update"}
@@ -255,3 +263,8 @@ const Post: React.FC = () => {
 };
 
 export default Post;
+
+/*
+  TODO 1. update submit function.
+  ? Write component onSubmitPost function
+*/
