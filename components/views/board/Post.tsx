@@ -52,85 +52,7 @@ const Post: React.FC = () => {
     onChangeHashtagsType(post.hashtags)
   );
   const [photos, setPhotos] = useState<string[]>(post.photos);
-  const [loading, setLoading] = useState<boolean>(false);
   const [updateMode, setUpdateMode] = useState<boolean>(false);
-
-  const onChangeTitle = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setTitle(value);
-    },
-    [title]
-  );
-
-  const onChangeTag = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setTag(value);
-    },
-    [tag]
-  );
-
-  const onChangeContent = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setContent(value);
-    },
-    [content]
-  );
-
-  const onSubmitTag = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    let key = hashtags.length === 0 ? 0 : hashtags[hashtags.length - 1].key + 1;
-    let hashtag = { key: key, label: tag };
-    setHashtags([...hashtags, hashtag]);
-    setTag("");
-  };
-
-  const deleteHashtag = (chipToDelete: ChipData) => () => {
-    setHashtags((tags) => tags.filter((tag) => tag.key !== chipToDelete.key));
-  };
-
-  const onUpdatePosting = async (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-    setLoading(true);
-
-    // ? 1. 필수 데이터를 검증합니다.
-    if (!title || !content) {
-      setLoading(false);
-      return alert("제목과 내용을 입력해주세요.");
-    }
-
-    try {
-      // ? 2. hashtags 배열의 값을 ChipData에서 string으로 변환합니다.
-      const conversionHashtags = hashtags.map((tag) => tag.label);
-      console.log(conversionHashtags);
-
-      // ? 3. post type에 맞게 request body를 생성합니다.
-      const requestBody = {
-        _id: post._id,
-        title: title,
-        hashtags: conversionHashtags,
-        content: content,
-        userId: userId,
-        username: username,
-        photos: photos,
-      };
-      console.log(requestBody);
-
-      // ? 4. request api를 호출하고, response data를 스토어에 업데이트 합니다.
-      const { data } = await updatePostingAPI(post?._id as string, requestBody);
-      dispatch(boardActions.setDetail(data));
-
-      // ? 5. update mode를 종료합니다.
-      setUpdateMode(false);
-    } catch (error) {
-      setLoading(false);
-      console.log("write error :: ", error);
-    }
-  };
 
   return (
     <Container>
@@ -142,26 +64,11 @@ const Post: React.FC = () => {
         <TextField
           id="post-title"
           label="title"
-          variant={updateMode ? "outlined" : "standard"}
+          variant="standard"
           value={title}
-          onChange={onChangeTitle}
-          required
-          error={title === "" ? true : false}
           margin="normal"
-          inputProps={{ readOnly: updateMode ? false : true }}
+          inputProps={{ readOnly: true }}
         />
-        {/* update mode시 출력 */}
-        {updateMode && (
-          <form onSubmit={onSubmitTag}>
-            <TextField
-              id="post-hashtag"
-              label="tag"
-              variant="outlined"
-              value={tag}
-              onChange={onChangeTag}
-            />
-          </form>
-        )}
         {hashtags.length !== 0 && (
           <Paper
             sx={{
@@ -175,85 +82,47 @@ const Post: React.FC = () => {
             }}
             component="ul"
           >
-            {hashtags.map((hashtag) => {
-              if (updateMode) {
-                return (
-                  <li key={hashtag.key}>
-                    <Chip
-                      label={hashtag.label}
-                      onDelete={deleteHashtag(hashtag)}
-                      color="primary"
-                      sx={{ m: 0.5 }}
-                    />
-                  </li>
-                );
-              } else {
-                return (
-                  <li key={hashtag.key}>
-                    <Chip
-                      label={hashtag.label}
-                      color="success"
-                      sx={{ m: 0.5 }}
-                    />
-                  </li>
-                );
-              }
-            })}
+            {hashtags.map((hashtag) => (
+              <li key={hashtag.key}>
+                <Chip label={hashtag.label} color="success" sx={{ m: 0.5 }} />
+              </li>
+            ))}
           </Paper>
         )}
         <TextField
           id="outlined-multiline-static"
           label="content"
-          variant={updateMode ? "outlined" : "standard"}
+          variant="standard"
           value={content}
-          onChange={onChangeContent}
-          required
-          error={content === "" ? true : false}
           multiline
           rows={10}
           fullWidth
           margin="normal"
-          inputProps={{ readOnly: updateMode ? false : true }}
+          inputProps={{ readOnly: true }}
         />
       </Stack>
       <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
-        {/* 작성자가 아닌 경우 */}
-        {userId !== post?.authorId && (
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            startIcon={<ArrowBackIosNewIcon />}
-            onClick={() => router.push("/board")}
-          >
-            back
-          </Button>
-        )}
+        <Button
+          variant="outlined"
+          color="primary"
+          size="large"
+          startIcon={<ArrowBackIosNewIcon />}
+          onClick={() => router.push("/board")}
+        >
+          back
+        </Button>
         {/* 게시글 작성자인 경우 */}
         {userId === post?.authorId && (
           <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
+            {/* delete 기능 구현시 ButtonGroup로 감싸기 */}
             <Button
               variant="outlined"
-              color="primary"
+              color="warning"
               size="large"
-              startIcon={<ArrowBackIosNewIcon />}
-              onClick={() => router.push("/board")}
+              endIcon={<BorderColorIcon />}
+              onClick={() => router.push(`/board/write/${post._id}`)}
             >
-              back
-            </Button>
-            <Button
-              variant={updateMode ? "contained" : "outlined"}
-              color={updateMode ? "success" : "warning"}
-              size="large"
-              endIcon={updateMode ? <SendIcon /> : <BorderColorIcon />}
-              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                if (updateMode) {
-                  onUpdatePosting(event);
-                  setUpdateMode(false);
-                } else setUpdateMode(true);
-              }}
-            >
-              {updateMode ? "submit" : "update"}
+              update
             </Button>
           </Stack>
         )}

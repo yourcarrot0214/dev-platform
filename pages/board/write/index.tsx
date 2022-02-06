@@ -1,7 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
-import { useSelector } from "../../store";
-import Write from "../../components/views/board/Write";
+import { useSelector } from "../../../store";
+import Write from "../../../components/views/board/Write";
 
 const write: NextPage = () => {
   const userId = useSelector((state) => state.user._id);
