@@ -19,34 +19,31 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === "PATCH") {
     const { id } = req.query;
-    const convertId = id.split("=")[1];
-    console.log(">> req.body", req.body);
     try {
       const { Board } = await connect();
-      console.log(">> ID :: ", req.body._id);
+
       const newPost = {
         ...req.body,
         updatedAt: new Date(),
       };
       return res.status(200).send(
-        await Board.findOneAndUpdate({ _id: req.body._id }, newPost, {
+        await Board.findOneAndUpdate({ _id: id }, newPost, {
           new: true,
         })
       );
     } catch (error) {
-      console.log(">> patch error :: ", error);
+      console.log(">> post patch error :: ", error);
     }
   }
 
   if (req.method === "DELETE") {
     const { id } = req.query;
-    console.log(">> delete post id :: ", id);
 
     try {
       const { Board } = await connect();
       return res.status(200).send(await Board.findOneAndDelete({ _id: id }));
     } catch (error) {
-      console.log(">> delete error :: ", error);
+      console.log(">> post delete error :: ", error);
     }
   }
 
