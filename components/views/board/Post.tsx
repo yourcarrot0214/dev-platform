@@ -4,7 +4,6 @@ import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../store";
-import { boardActions } from "../../../store/board";
 import {
   TextField,
   Paper,
@@ -12,12 +11,13 @@ import {
   Stack,
   Button,
   Typography,
+  ButtonGroup,
 } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import { updatePostingAPI } from "../../../lib/api/board";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { PostType } from "../../../types/post";
+import { deletePostingAPI } from "../../../lib/api/board";
 
 interface ChipData {
   key: number;
@@ -40,11 +40,9 @@ const onChangeHashtagsType = (hashtags: string[]) => {
 };
 
 const Post: React.FC = () => {
-  const dispatch = useDispatch();
   const post = useSelector<PostType | null>((state) => state.board.detail);
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
-  const username = useSelector((state) => state.user.name);
   const [title, setTitle] = useState<string | null>(post.title);
   const [content, setContent] = useState<string>(post.content);
   const [tag, setTag] = useState<string>("");
@@ -53,6 +51,14 @@ const Post: React.FC = () => {
   );
   const [photos, setPhotos] = useState<string[]>(post.photos);
   const [updateMode, setUpdateMode] = useState<boolean>(false);
+
+  const onDeletePosting = async (postId: string) => {
+    const confirm = window.confirm("정말로 삭제합니까?");
+    if (confirm) {
+      await deletePostingAPI(postId);
+      router.push("/board");
+    }
+  };
 
   return (
     <Container>
@@ -109,21 +115,32 @@ const Post: React.FC = () => {
           startIcon={<ArrowBackIosNewIcon />}
           onClick={() => router.push("/board")}
         >
-          back
+          돌아가기
         </Button>
         {/* 게시글 작성자인 경우 */}
         {userId === post?.authorId && (
           <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
             {/* delete 기능 구현시 ButtonGroup로 감싸기 */}
-            <Button
-              variant="outlined"
-              color="warning"
-              size="large"
-              endIcon={<BorderColorIcon />}
-              onClick={() => router.push(`/board/write/${post._id}`)}
-            >
-              update
-            </Button>
+            <ButtonGroup>
+              <Button
+                variant="outlined"
+                color="warning"
+                size="large"
+                endIcon={<BorderColorIcon />}
+                onClick={() => router.push(`/board/write/${post._id}`)}
+              >
+                수정
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                size="large"
+                endIcon={<DeleteForeverIcon />}
+                onClick={() => onDeletePosting(post._id)}
+              >
+                삭제
+              </Button>
+            </ButtonGroup>
           </Stack>
         )}
       </Stack>
@@ -134,6 +151,7 @@ const Post: React.FC = () => {
 export default Post;
 
 /*
-  TODO 1. update submit function.
-  ? Write component onSubmitPost function
+  TODO 1. delete onClick function.
+  ? 해당 게시글의 id값을 파라미터로 하는 delete API를 호출합니다.
+  ? API를 호출하기 전 다시 한 번 확인하는 절차를 거칩니다.
 */

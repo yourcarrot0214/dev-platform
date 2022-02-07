@@ -116,7 +116,7 @@ const Write: React.FC = () => {
     <Container>
       <Stack spacing={2} direction="column">
         <Typography variant="h4" component="div" gutterBottom>
-          Write Page
+          새글 작성하기
         </Typography>
 
         <TextField
@@ -188,7 +188,7 @@ const Write: React.FC = () => {
           startIcon={<ArrowBackIosNewIcon />}
           onClick={() => router.push("/board")}
         >
-          back
+          돌아가기
         </Button>
         <LoadingButton
           onClick={(event) => onSubmitPost(event)}
@@ -199,7 +199,7 @@ const Write: React.FC = () => {
           color="success"
           size="large"
         >
-          Send
+          등록하기
         </LoadingButton>
       </Stack>
     </Container>

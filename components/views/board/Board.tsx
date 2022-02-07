@@ -97,7 +97,7 @@ const Board: React.FC = () => {
             endIcon={<CreateIcon />}
             onClick={() => router.push("/board/write")}
           >
-            write
+            작성하기
           </Button>
         </Stack>
       )}

@@ -28,15 +28,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ...req.body,
         updatedAt: new Date(),
       };
-      return res
-        .status(200)
-        .send(
-          await Board.findOneAndUpdate({ _id: req.body._id }, newPost, {
-            new: true,
-          })
-        );
+      return res.status(200).send(
+        await Board.findOneAndUpdate({ _id: req.body._id }, newPost, {
+          new: true,
+        })
+      );
     } catch (error) {
       console.log(">> patch error :: ", error);
+    }
+  }
+
+  if (req.method === "DELETE") {
+    const { id } = req.query;
+    console.log(">> delete post id :: ", id);
+
+    try {
+      const { Board } = await connect();
+      return res.status(200).send(await Board.findOneAndDelete({ _id: id }));
+    } catch (error) {
+      console.log(">> delete error :: ", error);
     }
   }
 

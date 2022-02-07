@@ -204,7 +204,7 @@ const Update: React.FC = () => {
           startIcon={<ArrowBackIosNewIcon />}
           onClick={() => router.push(`/board/id=${post._id}`)}
         >
-          back
+          돌아가기
         </Button>
         <Button
           variant="outlined"
@@ -213,7 +213,7 @@ const Update: React.FC = () => {
           endIcon={<SendIcon />}
           onClick={onUpdatePosting}
         >
-          submit
+          업데이트
         </Button>
       </Stack>
     </Container>

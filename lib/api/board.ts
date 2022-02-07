@@ -22,3 +22,6 @@ export const updatePostingAPI = (
   postId: string,
   requestBody: PostingRequestBody
 ) => axios.patch<PostType>(`/api/posting/${postId}`, requestBody);
+
+export const deletePostingAPI = (postId: string) =>
+  axios.delete(`/api/posting/${postId}`);
