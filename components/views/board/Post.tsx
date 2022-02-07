@@ -118,7 +118,7 @@ const Post: React.FC = () => {
           돌아가기
         </Button>
         {/* 게시글 작성자인 경우 */}
-        {userId === post?.authorId && (
+        {userId === String(post.author) && (
           <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
             {/* delete 기능 구현시 ButtonGroup로 감싸기 */}
             <ButtonGroup>

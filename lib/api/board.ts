@@ -6,7 +6,6 @@ interface PostingRequestBody {
   hashtags: string[];
   content: string;
   userId: string;
-  username: string;
   photos: string[];
 }
 

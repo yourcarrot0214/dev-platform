@@ -3,10 +3,8 @@ const { Schema } = mongoose;
 
 const boardSchema = new mongoose.Schema({
   author: {
-    type: String,
-  },
-  authorId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   title: {
     type: String,

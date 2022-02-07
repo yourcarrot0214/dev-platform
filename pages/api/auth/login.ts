@@ -10,7 +10,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       // * 2. Request Body data Check
       const { email, password } = req.body;
-      console.log({ email, password });
       if (!email || !password) {
         res.statusCode = 400;
         return res.send("필수 정보가 없습니다.");
@@ -19,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // * 3. user data check in database
       const { User } = await connect();
       const user: StoredUserType = await User.findOne({ email: email }).exec();
-      console.log("> user : ", user);
+
       if (!user) {
         res.statusCode = 404;
         return res.send("해당 이메일에 해당하는 유저가 없습니다.");
@@ -53,7 +52,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // ! delete 명령이 적용되지 않아 비밀번호 정보 임시 초기화
       userWithoutPassword.password = "";
       delete userWithoutPassword.password;
-      console.log("userWithoutPassword : ", userWithoutPassword);
 
       res.statusCode = 200;
       return res.send(userWithoutPassword);

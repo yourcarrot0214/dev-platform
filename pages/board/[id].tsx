@@ -23,7 +23,6 @@ postDetail.getInitialProps = wrapper.getInitialAppProps(
     try {
       if (id) {
         const { data } = await getPostAPI(id as string);
-        console.log(">> data :: ", data);
         store.dispatch(boardActions.setDetail(data));
       }
     } catch (error) {

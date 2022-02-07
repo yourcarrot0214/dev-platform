@@ -109,15 +109,12 @@ const Update: React.FC = () => {
 
       // ? 3. post type에 맞게 request body를 생성합니다.
       const requestBody = {
-        _id: post._id,
         title: title,
         hashtags: conversionHashtags,
         content: content,
         userId: userId,
-        username: username,
         photos: photos,
       };
-      console.log(requestBody);
 
       // ? 4. request api를 호출하고, response data를 스토어에 업데이트 합니다.
       const { data } = await updatePostingAPI(post?._id as string, requestBody);

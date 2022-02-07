@@ -10,10 +10,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     // * 1. request data 검증
     const { email, password, name } = req.body;
-    console.log(req.body);
+
     if (!email || !password || !name) {
       res.statusCode = 400;
-      console.log("회원가입에 필요한 필수 데이터가 없습니다.");
       return res.send("회원가입에 필요한 필수 데이터가 없습니다.");
     }
 
@@ -56,8 +55,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     >> = userData;
     userDataWithoutPassword.password = "";
     delete userDataWithoutPassword.password;
-    console.log("userDataWithoutPassword : ", userDataWithoutPassword);
-    console.log("userData : ", userData);
 
     // ! password 정보가 삭제되지 않음.
 

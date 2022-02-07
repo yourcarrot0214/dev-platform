@@ -44,7 +44,13 @@ const Board: React.FC = () => {
   const isLogged = useSelector((state) => state.user.isLogged);
   const postlist = useSelector((state) => state.board.postlist);
   const rows = postlist.map((post, index) =>
-    createData(index + 1, post._id, post.title, post.author, post.createdAt)
+    createData(
+      index + 1,
+      post._id,
+      post.title,
+      post.author.name,
+      post.createdAt
+    )
   );
   return (
     <Container>

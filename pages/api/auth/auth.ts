@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import { StoredUserType } from "../../../types/user";
-import axios from "../../../lib/api";
 import { connect } from "../../../utils/mongodb/mongodb";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

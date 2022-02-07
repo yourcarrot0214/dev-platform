@@ -88,7 +88,6 @@ const Write: React.FC = () => {
     try {
       // ? 2. hashtags 배열의 값을 ChipData에서 string으로 변환합니다.
       const conversionHashtags = hashtags.map((tag) => tag.label);
-      console.log(conversionHashtags);
 
       // ? 3. post type에 맞게 request body를 생성합니다.
       const requestBody = {
@@ -96,7 +95,6 @@ const Write: React.FC = () => {
         hashtags: conversionHashtags,
         content: content,
         userId: userId,
-        username: username,
         photos: photos,
       };
       console.log(requestBody);
