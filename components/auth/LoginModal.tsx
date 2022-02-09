@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import CloseXIcon from "../../public/static/svg/modal/modal_colose_x_icon.svg";
@@ -61,6 +61,21 @@ interface IProps {
   closeModal: () => void;
 }
 
+function loadingButton(loading: boolean) {
+  return (
+    <LoadingButton
+      loading={loading}
+      variant="contained"
+      color="info"
+      size="large"
+      fullWidth
+      type="submit"
+    >
+      로그인
+    </LoadingButton>
+  );
+}
+
 const LoginModal: React.FC<IProps> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const { setValidateMode } = useValidateMode();
@@ -107,6 +122,46 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
     }
   };
 
+  const emailInput = (email: string) => {
+    return (
+      <Input
+        placeholder="이메일 주소"
+        name="email"
+        type="email"
+        value={email}
+        onChange={onChangeEmail}
+        icon={<MailIcon />}
+        isValid={email !== ""}
+        errorMessage="이메일이 필요합니다."
+      />
+    );
+  };
+
+  const passwordInput = (password: string) => {
+    return (
+      <Input
+        placeholder="비밀번호"
+        type={isPasswordHided ? "password" : "text"}
+        name="password"
+        value={password}
+        onChange={onChangePassword}
+        icon={
+          isPasswordHided ? (
+            <ClosedEyeIcon onClick={togglePasswordHiding} />
+          ) : (
+            <OpenedEyeIcon onClick={togglePasswordHiding} />
+          )
+        }
+        isValid={password !== ""}
+        errorMessage="비밀번호를 입력해 주세요."
+      />
+    );
+  };
+
+  const button = useMemo(() => loadingButton(loading), [loading]);
+  const InputForEmail = useMemo(() => emailInput(email), [email]);
+  const PasswordInput = useMemo(() => passwordInput(password), [password]);
+
   useEffect(() => {
     return () => {
       setValidateMode(false);
@@ -117,48 +172,11 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
     <Container onSubmit={onSubmitLogin}>
       <CloseXIcon className="modal-close-x-icon" onClick={closeModal} />
       <h2 className="login-modal-title">DEV - PLATFORM</h2>
-      <div className="login-input-wrapper">
-        <Input
-          placeholder="이메일 주소"
-          name="email"
-          type="email"
-          value={email}
-          onChange={onChangeEmail}
-          icon={<MailIcon />}
-          isValid={email !== ""}
-          errorMessage="이메일이 필요합니다."
-        />
-      </div>
+      <div className="login-input-wrapper">{InputForEmail}</div>
       <div className="login-input-wrapper login-password-input-wrapper">
-        <Input
-          placeholder="비밀번호"
-          type={isPasswordHided ? "password" : "text"}
-          name="password"
-          value={password}
-          onChange={onChangePassword}
-          icon={
-            isPasswordHided ? (
-              <ClosedEyeIcon onClick={togglePasswordHiding} />
-            ) : (
-              <OpenedEyeIcon onClick={togglePasswordHiding} />
-            )
-          }
-          isValid={password !== ""}
-          errorMessage="비밀번호를 입력해 주세요."
-        />
+        {PasswordInput}
       </div>
-      <div className="login-modal-submit-button-wrapper">
-        <LoadingButton
-          loading={loading}
-          variant="contained"
-          color="info"
-          size="large"
-          fullWidth
-          type="submit"
-        >
-          로그인
-        </LoadingButton>
-      </div>
+      <div className="login-modal-submit-button-wrapper">{button}</div>
       <p>
         <span>DEV - PLATFORM 회원이 아니신가요?</span>
         <span

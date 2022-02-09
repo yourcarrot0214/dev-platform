@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import CloseXIcon from "../../public/static/svg/modal/modal_colose_x_icon.svg";
@@ -135,20 +135,28 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const { setValidateMode } = useValidateMode();
 
-  const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+  const onChangeEmail = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(event.target.value);
+    },
+    [email]
+  );
 
-  const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
+  const onChangeName = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value),
+    [name]
+  );
 
-  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-  const toggleHidePassword = () => {
+  const onChangePassword = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(event.target.value);
+    },
+    [password]
+  );
+
+  const toggleHidePassword = useCallback(() => {
     setHidePassword(!hidePassword);
-  };
+  }, [hidePassword]);
 
   const ChangeToLoginModal = () => {
     dispatch(authActions.setAuthMode("login"));
@@ -177,6 +185,63 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     }
   };
 
+  const emailInput = (email: string) => {
+    return (
+      <Input
+        placeholder="이메일 주소"
+        type="email"
+        name="email"
+        icon={<MailIcon />}
+        onChange={onChangeEmail}
+        useValidation
+        isValid={!!email}
+        errorMessage="이메일 주소가 필요합니다."
+      />
+    );
+  };
+
+  const usernameInput = (name: string) => {
+    return (
+      <Input
+        placeholder="이름"
+        icon={<PersonIcon />}
+        onChange={onChangeName}
+        useValidation
+        isValid={!!name}
+        errorMessage="이름을 입력하세요."
+      />
+    );
+  };
+
+  const passwordInput = () => {
+    return (
+      <Input
+        placeholder="비밀번호 설정하기"
+        type={hidePassword ? "password" : "text"}
+        icon={
+          hidePassword ? (
+            <ClosedEyeIcon onClick={toggleHidePassword} />
+          ) : (
+            <OpenedEyeIcon onClick={toggleHidePassword} />
+          )
+        }
+        onChange={onChangePassword}
+        useValidation
+        isValid={
+          !isPasswordHasNameOrEmail &&
+          isPasswordOverMinLength &&
+          !isPasswordHasNumberOrSymbol
+        }
+        errorMessage="비밀번호를 입력하세요."
+        onFocus={onFocusPassword}
+      />
+    );
+  };
+
+  const EmailInput = useMemo(() => emailInput(email), [email]);
+  const UsernameInput = useMemo(() => usernameInput(name), [name]);
+  const PasswordInput = useMemo(() => passwordInput(), [password]);
+
   useEffect(() => {
     return () => {
       setValidateMode(false);
@@ -189,49 +254,10 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
 
       <h2 className="sign-up-modal-title">DEV - PLATFORM</h2>
 
-      <div className="input-wrapper">
-        <Input
-          placeholder="이메일 주소"
-          type="email"
-          name="email"
-          icon={<MailIcon />}
-          onChange={onChangeEmail}
-          useValidation
-          isValid={!!email}
-          errorMessage="이메일 주소가 필요합니다."
-        />
-      </div>
-      <div className="input-wrapper">
-        <Input
-          placeholder="이름"
-          icon={<PersonIcon />}
-          onChange={onChangeName}
-          useValidation
-          isValid={!!name}
-          errorMessage="이름을 입력하세요."
-        />
-      </div>
+      <div className="input-wrapper">{EmailInput}</div>
+      <div className="input-wrapper">{UsernameInput}</div>
       <div className="input-wrapper sign-up-password-input-wrapper">
-        <Input
-          placeholder="비밀번호 설정하기"
-          type={hidePassword ? "password" : "text"}
-          icon={
-            hidePassword ? (
-              <ClosedEyeIcon onClick={toggleHidePassword} />
-            ) : (
-              <OpenedEyeIcon onClick={toggleHidePassword} />
-            )
-          }
-          onChange={onChangePassword}
-          useValidation
-          isValid={
-            !isPasswordHasNameOrEmail &&
-            isPasswordOverMinLength &&
-            !isPasswordHasNumberOrSymbol
-          }
-          errorMessage="비밀번호를 입력하세요."
-          onFocus={onFocusPassword}
-        />
+        {PasswordInput}
         {passwordFocused && (
           <>
             <PasswordWarning
