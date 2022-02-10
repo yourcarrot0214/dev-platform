@@ -149,9 +149,3 @@ const Post: React.FC = () => {
 };
 
 export default Post;
-
-/*
-  TODO 1. delete onClick function.
-  ? 해당 게시글의 id값을 파라미터로 하는 delete API를 호출합니다.
-  ? API를 호출하기 전 다시 한 번 확인하는 절차를 거칩니다.
-*/

@@ -1,31 +1,28 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const boardSchema = new mongoose.Schema({
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+const boardSchema = new mongoose.Schema(
+  {
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    title: {
+      type: String,
+    },
+    content: {
+      type: String,
+    },
+    hashtags: {
+      type: Array,
+      default: [],
+    },
+    photos: {
+      type: Array,
+      default: [],
+    },
   },
-  title: {
-    type: String,
-  },
-  content: {
-    type: String,
-  },
-  hashtags: {
-    type: Array,
-    default: [],
-  },
-  photos: {
-    type: Array,
-    default: [],
-  },
-  createdAt: {
-    type: Date,
-  },
-  updatedAt: {
-    type: Date,
-  },
-});
+  { timestamps: true }
+);
 
 export default boardSchema;

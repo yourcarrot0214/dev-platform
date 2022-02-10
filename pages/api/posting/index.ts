@@ -23,8 +23,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         content,
         photos,
         hashtags,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       // TODO 4. board에 포스팅 정보를 저장합니다.

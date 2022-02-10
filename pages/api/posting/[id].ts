@@ -41,7 +41,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       const { Board } = await connect();
-      return res.status(200).send(await Board.findOneAndDelete({ _id: id }));
+      const post = await Board.findById(id);
+      await post.remove();
+      return res.status(200).end();
     } catch (error) {
       console.log(">> post delete error :: ", error);
     }
