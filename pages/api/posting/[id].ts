@@ -5,11 +5,10 @@ import { PostType } from "../../../types/post";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const { id } = req.query;
-    const convertId = id.split("=")[1];
 
     try {
       const { Board } = await connect();
-      const post: PostType = await Board.findById(convertId).exec();
+      const post: PostType = await Board.findById(id).exec();
 
       return res.status(200).send(post);
     } catch (error) {

@@ -81,7 +81,7 @@ const Board: React.FC = () => {
                     <TableCell
                       align="left"
                       className="post-title"
-                      onClick={() => router.push(`/board/id=${post.id}`)}
+                      onClick={() => router.push(`/board/${post.id}`)}
                     >
                       {post.title}
                     </TableCell>

@@ -97,7 +97,6 @@ const Write: React.FC = () => {
         userId: userId,
         photos: photos,
       };
-      console.log(requestBody);
 
       // ? 4. request api를 호출합니다.
       await postingAPI(requestBody);

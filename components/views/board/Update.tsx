@@ -105,7 +105,6 @@ const Update: React.FC = () => {
     try {
       // ? 2. hashtags 배열의 값을 ChipData에서 string으로 변환합니다.
       const conversionHashtags = hashtags.map((tag) => tag.label);
-      console.log(conversionHashtags);
 
       // ? 3. post type에 맞게 request body를 생성합니다.
       const requestBody = {
@@ -121,7 +120,7 @@ const Update: React.FC = () => {
       dispatch(boardActions.setDetail(data));
 
       // ? 5. 해당 게시글로 route를 연결합니다.
-      router.push(`/board/id=${post._id}`);
+      router.push(`/board/${post._id}`);
     } catch (error) {
       setLoading(false);
       console.log("write error :: ", error);
@@ -199,7 +198,7 @@ const Update: React.FC = () => {
           color="primary"
           size="large"
           startIcon={<ArrowBackIosNewIcon />}
-          onClick={() => router.push(`/board/id=${post._id}`)}
+          onClick={() => router.push(`/board/${post._id}`)}
         >
           돌아가기
         </Button>
