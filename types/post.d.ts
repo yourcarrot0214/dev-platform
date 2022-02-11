@@ -7,7 +7,8 @@ export type PostType = {
   photos: string[];
   createdAt: string;
   updatedAt: string;
-  comment: Array;
+  comment: string[];
+  replies: string[];
 };
 
 export type CommentType = {

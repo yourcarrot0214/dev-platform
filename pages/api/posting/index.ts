@@ -45,6 +45,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.json(
         await Board.find({})
           .populate("author", "_id name profileImage")
+          .populate({
+            path: "comment",
+            populate: { path: "author", select: "_id name profileImage" },
+          })
+          .populate({
+            path: "replies",
+            populate: { path: "author", select: "_id name profileImage" },
+          })
           .catch(catcher)
       );
     } catch (error) {

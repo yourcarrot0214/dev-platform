@@ -21,9 +21,3 @@ export type BoardState = {
   postlist: PostType[];
   detail: PostType | null;
 };
-
-// * comment redux state
-export type CommentState = {
-  commentlist: CommentType[];
-  replies: RepliesType[];
-};
