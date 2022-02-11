@@ -1,13 +1,19 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/mongodb/mongodb";
-import { CommentType, PostType, RepliesType } from "../../../types/post";
+import { PostType, RepliesType } from "../../../types/post";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     // TODO : get all replies documents data
     const { Replies } = await connect();
     const catcher = (error: Error) => res.statusCode(400).json({ error });
-    return res.status(200).send(await Replies.find({}).catch(catcher));
+    return res
+      .status(200)
+      .send(
+        await Replies.find({})
+          .populate("author", "_id name profileImage")
+          .catch(catcher)
+      );
   }
 
   if (req.method === "POST") {
@@ -19,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send("필수 데이터가 없습니다.");
     }
 
-    const { Comment, Board, Replies } = await connect();
+    const { Board, Replies } = await connect();
     const catcher = (error: Error) => res.statusCode(400).json({ error });
 
     const post: PostType = await Board.findById({

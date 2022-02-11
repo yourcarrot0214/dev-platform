@@ -8,7 +8,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       const { Board } = await connect();
-      const post: PostType = await Board.findById(id).exec();
+      const catcher = (error: Error) => res.status(400).json({ error });
+      const post: PostType = await Board.findById(id)
+        .populate({
+          path: "comment",
+          populate: { path: "author", select: "_id name profileImage" },
+        })
+        .populate({
+          path: "replies",
+          populate: { path: "author", select: "_id name profileImage" },
+        })
+        .catch(catcher);
 
       return res.status(200).send(post);
     } catch (error) {
