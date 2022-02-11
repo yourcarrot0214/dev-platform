@@ -9,7 +9,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const catcher = (error: Error) => res.statusCode(400).json({ error });
     return res
       .status(200)
-      .send(await Comment.find({}).populate("replies").catch(catcher));
+      .send(
+        await Comment.find({})
+          .populate("author", "_id name profileImage")
+          .catch(catcher)
+      );
   }
 
   if (req.method === "POST") {

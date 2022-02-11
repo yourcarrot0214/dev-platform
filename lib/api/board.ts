@@ -31,8 +31,7 @@ interface CommentRequestBody {
   responseTo: string;
 }
 
-export const getCommentListAPI = (postId: string) =>
-  axios.get<CommentType[]>(`/api/comment/${postId}`);
+export const getCommentListAPI = () => axios.get<CommentType[]>(`/api/comment`);
 
 export const commentAPI = (requestBody: CommentRequestBody) =>
   axios.post<CommentType>("/api/comment", requestBody);
