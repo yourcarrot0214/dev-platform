@@ -1,5 +1,5 @@
 import axios from ".";
-import { PostType } from "../../types/post";
+import { PostType, CommentType, RepliesType } from "../../types/post";
 
 interface PostingRequestBody {
   title: string;
@@ -24,3 +24,21 @@ export const updatePostingAPI = (
 
 export const deletePostingAPI = (postId: string) =>
   axios.delete(`/api/posting/${postId}`);
+
+interface CommentRequestBody {
+  userId: string;
+  content: string;
+  responseTo: string;
+}
+
+export const getCommentListAPI = (postId: string) =>
+  axios.get<CommentType[]>(`/api/comment/${postId}`);
+
+export const commentAPI = (requestBody: CommentRequestBody) =>
+  axios.post<CommentType>("/api/comment", requestBody);
+
+export const updateCommentAPI = (requestBody: CommentRequestBody) =>
+  axios.patch(`/api/comment/${requestBody.responseTo}`);
+
+export const deleteCommentAPI = (commentId: string) =>
+  axios.delete(`/api/comment/${commentId}`);

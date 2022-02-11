@@ -1,34 +1,28 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const boardSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema(
   {
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    title: {
-      type: String,
-    },
     content: {
       type: String,
     },
-    hashtags: {
-      type: Array,
-      default: [],
+    responseTo: {
+      type: Schema.Types.ObjectId,
+      ref: "Board",
     },
-    photos: {
-      type: Array,
-      default: [],
-    },
-    comment: [
+    replies: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: "Replies",
       },
+      { default: [] },
     ],
   },
   { timestamps: true }
 );
 
-export default boardSchema;
+export default commentSchema;

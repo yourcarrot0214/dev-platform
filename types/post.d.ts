@@ -7,13 +7,24 @@ export type PostType = {
   photos: string[];
   createdAt: string;
   updatedAt: string;
+  comment: string[];
 };
 
 export type CommentType = {
   _id: string;
-  postId: string;
-  author: string;
+  responseTo: string;
+  author: object;
   content: string;
   craetedAt: string;
+  updatedAt: string;
+  replies: string[];
+};
+
+export type RepliesType = {
+  _id: string;
+  responseTo: string;
+  author: object;
+  content: string;
+  createdAt: string;
   updatedAt: string;
 };
