@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/mongodb/mongodb";
 import { CommentType, PostType } from "../../../types/post";
+import Board from "../../../components/views/board/Board";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -19,16 +20,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send("필수 데이터가 없습니다.");
     }
 
-    const { Comment } = await connect();
+    const { Comment, Board } = await connect();
     const catcher = (error: Error) => res.statusCode(400).json({ error });
 
-    const newComment = {
+    const post: PostType = await Board.findById({ _id: responseTo }).catch(
+      catcher
+    );
+
+    const commentData = {
       author: userId,
       content,
       responseTo,
     };
 
-    await Comment.create(newComment).catch(catcher);
+    const newComment: CommentType = await Comment.create(commentData).catch(
+      catcher
+    );
+
+    await Board.findOneAndUpdate(
+      { _id: post._id },
+      { comment: post.comment.concat(newComment._id) },
+      { new: true }
+    ).catch(catcher);
 
     res.statusCode = 201;
     return res.end();

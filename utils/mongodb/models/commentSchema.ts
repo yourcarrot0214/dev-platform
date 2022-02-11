@@ -14,13 +14,7 @@ const commentSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "Board",
     },
-    replies: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Replies",
-      },
-      { default: [] },
-    ],
+    replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }],
   },
   { timestamps: true }
 );

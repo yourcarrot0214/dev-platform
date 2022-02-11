@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import commentSchema from "./commentSchema";
 const { Schema } = mongoose;
 
 const boardSchema = new mongoose.Schema(
@@ -21,12 +22,7 @@ const boardSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    comment: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
+    comment: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );
