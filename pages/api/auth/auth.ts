@@ -4,7 +4,6 @@ import { StoredUserType } from "../../../types/user";
 import { connect } from "../../../utils/mongodb/mongodb";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(":: auth API ::");
   if (req.method === "GET") {
     try {
       const accessToken = req.headers.cookie;
@@ -28,7 +27,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       delete userWithoutPassword.password;
 
       res.statusCode = 200;
-      console.log("meAPI :: ", userWithoutPassword);
       return res.send(userWithoutPassword);
     } catch (error) {
       console.log("meAPI error : ", error);
