@@ -8,7 +8,8 @@ import styled from "styled-components";
 import palette from "../../../../styles/palette";
 
 // * MUI
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Stack } from "@mui/material";
+import CommentUpdateOptionButtons from "./comment/CommentUpdateOptionButtons";
 
 const Container = styled.div`
   width: 100%;
@@ -22,21 +23,32 @@ interface IProps {
   editMode: boolean;
   text: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCancle: () => void;
+  onSubmit: () => void;
 }
 
-const Content: React.FC<IProps> = ({ editMode, text, onChange }) => {
+const Content: React.FC<IProps> = ({
+  editMode,
+  text,
+  onChange,
+  onCancle,
+  onSubmit,
+}) => {
   return (
     <Container className="content-container">
       {editMode ? (
-        <TextField
-          variant="outlined"
-          multiline
-          minRows={3}
-          fullWidth
-          margin="normal"
-          value={text}
-          onChange={onChange}
-        />
+        <Stack spacing={2} direction="column" alignItems="flex-end">
+          <TextField
+            variant="outlined"
+            multiline
+            minRows={3}
+            fullWidth
+            margin="normal"
+            value={text}
+            onChange={onChange}
+          />
+          <CommentUpdateOptionButtons onCancle={onCancle} onSubmit={onSubmit} />
+        </Stack>
       ) : (
         // CommentUpdateOptionButtons 적용
         <TextField

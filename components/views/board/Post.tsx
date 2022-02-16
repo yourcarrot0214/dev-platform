@@ -20,8 +20,8 @@ import { PostType } from "../../../types/post";
 import { deletePostingAPI } from "../../../lib/api/board";
 
 import Counter from "./common/Counter";
-import CommentInput from "./common/CommentInput";
-import CommentBoard from "./common/CommentBoard";
+import CommentInput from "./common/comment/CommentInput";
+import CommentBoard from "./common/comment/CommentBoard";
 
 interface ChipData {
   key: number;

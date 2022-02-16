@@ -4,17 +4,15 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import palette from "../../../../styles/palette";
-import { useSelector } from "../../../../store";
+import palette from "../../../../../styles/palette";
+import { useSelector } from "../../../../../store";
 
 // * children component
-import Counter from "./Counter";
+import Counter from "../Counter";
 import CommentInput from "./CommentInput";
-import UserTab from "./UserTab";
 
 // * MUI component
 import { Stack } from "@mui/material";
-import Content from "./Content";
 import Comment from "./Comment";
 
 const Container = styled.div`
@@ -57,7 +55,7 @@ const CommentBoard: React.FC = () => {
       </Stack>
       <Stack spacing={0} direction="column">
         {comment?.map((comment) => (
-          <Comment comment={comment} />
+          <Comment key={comment._id} comment={comment} />
         ))}
       </Stack>
     </Container>

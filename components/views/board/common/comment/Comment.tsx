@@ -5,15 +5,16 @@
 
 import React, { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
-import palette from "../../../../styles/palette";
-import { useSelector } from "../../../../store";
-import { CommentType } from "../../../../types/post";
+import palette from "../../../../../styles/palette";
+import { useSelector } from "../../../../../store";
+import { CommentType } from "../../../../../types/post";
 
 // * children component
-import UserTab from "./UserTab";
-import Content from "./Content";
-import MenuButtons from "./MenuButtons";
-import RepliesButton from "./RepliesButton";
+import UserTab from "../UserTab";
+import Content from "../Content";
+import MenuButtons from "../MenuButtons";
+import RepliesButton from "../RepliesButton";
+import RepliesInput from "../replies/RepliesInput";
 
 // * MUI
 import { Stack } from "@mui/material";
@@ -33,6 +34,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const [commentText, setCommentText] = useState<string>(comment.content);
   const [updatedText, setUpdatedText] = useState<string>(comment.content);
   const [repliesOpen, setRepliesOpen] = useState<boolean>(false);
+  const [repliesText, setRepliesText] = useState<string>("");
 
   const onUpdate = useCallback(() => setEditMode(!editMode), [editMode]);
   const onDelete = useCallback(() => setEditMode(!editMode), [editMode]);
@@ -47,6 +49,9 @@ const Comment: React.FC<IProps> = ({ comment }) => {
     [replies]
   );
 
+  // ! API 구현
+  const onUpdateComment = useCallback(() => setEditMode(!editMode), [editMode]);
+
   return (
     <Container>
       <Stack spacing={2} direction="column">
@@ -57,7 +62,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           alignItems="center"
         >
           <UserTab author={comment.author} createdAt={comment.createdAt} />
-          {userId === comment.author._id && (
+          {userId === comment.author._id && !editMode && (
             <MenuButtons onUpdate={onUpdate} onDelete={onDelete} />
           )}
         </Stack>
@@ -65,15 +70,24 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           editMode={editMode}
           text={editMode ? updatedText : commentText}
           onChange={onChangeCommentText}
+          onCancle={onUpdate}
+          onSubmit={onUpdateComment}
         />
         <RepliesButton
           onClick={onRepliesToggle}
           open={repliesOpen}
           count={repliesCount as number}
         />
+        {/* {repliesOpen && <RepliesInput />} */}
       </Stack>
     </Container>
   );
 };
 
 export default React.memo(Comment);
+
+/*
+  TODO 1. Replies Input Component
+  TODO 2. Replies Component
+  TODO 3. Replies Board Component
+*/
