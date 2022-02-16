@@ -50,7 +50,6 @@ const Content: React.FC<IProps> = ({
           <CommentUpdateOptionButtons onCancle={onCancle} onSubmit={onSubmit} />
         </Stack>
       ) : (
-        // CommentUpdateOptionButtons 적용
         <TextField
           variant="standard"
           multiline

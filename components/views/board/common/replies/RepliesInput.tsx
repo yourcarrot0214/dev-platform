@@ -10,7 +10,7 @@ import { TextField, Stack, Button } from "@mui/material";
 
 const Container = styled.div`
   width: 100%;
-  margin-left: 50px;
+  padding-left: 50px;
 `;
 
 interface IProps {
@@ -20,24 +20,31 @@ interface IProps {
 }
 
 const RepliesInput: React.FC<IProps> = ({ value, onChange, onSubmit }) => {
-  <Container>
-    <Stack spacing={2} direction="column" alignItems="flex-end">
-      <TextField
-        id="replies"
-        label="replies"
-        variant="outlined"
-        value={value}
-        onChange={onChange}
-        margin="normal"
-        fullWidth
-        multiline
-        rows={3}
-      />
-      <Button variant="contained" color="success" size="large">
-        댓글 작성
-      </Button>
-    </Stack>
-  </Container>;
+  return (
+    <Container>
+      <Stack spacing={2} direction="column" alignItems="flex-end">
+        <TextField
+          id="replies"
+          label="replies"
+          variant="outlined"
+          value={value}
+          onChange={onChange}
+          margin="normal"
+          fullWidth
+          multiline
+          rows={3}
+        />
+        <Button
+          variant="contained"
+          color="success"
+          size="large"
+          onClick={onSubmit}
+        >
+          댓글 작성
+        </Button>
+      </Stack>
+    </Container>
+  );
 };
 
 export default React.memo(RepliesInput);

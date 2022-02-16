@@ -14,7 +14,7 @@ import UserTab from "../UserTab";
 import Content from "../Content";
 import MenuButtons from "../MenuButtons";
 import RepliesButton from "../RepliesButton";
-import RepliesInput from "../replies/RepliesInput";
+import RepliesBoard from "../replies/RepliesBoard";
 
 // * MUI
 import { Stack } from "@mui/material";
@@ -28,6 +28,7 @@ interface IProps {
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
+  console.log("Comment component rendering.");
   const userId = useSelector((state) => state.user._id);
   const replies = useSelector((state) => state.board.detail?.replies);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -44,8 +45,8 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const onRepliesToggle = useCallback(() => setRepliesOpen(!repliesOpen), [
     !repliesOpen,
   ]);
-  const repliesCount = useMemo(
-    () => replies?.filter((reply) => reply.responseTo === comment._id).length,
+  const repliesList = useMemo(
+    () => replies?.filter((reply) => reply.responseTo === comment._id),
     [replies]
   );
 
@@ -76,9 +77,9 @@ const Comment: React.FC<IProps> = ({ comment }) => {
         <RepliesButton
           onClick={onRepliesToggle}
           open={repliesOpen}
-          count={repliesCount as number}
+          count={repliesList.length}
         />
-        {/* {repliesOpen && <RepliesInput />} */}
+        {repliesOpen && <RepliesBoard repliesList={repliesList} />}
       </Stack>
     </Container>
   );
