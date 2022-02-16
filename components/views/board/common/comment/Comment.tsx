@@ -28,7 +28,6 @@ interface IProps {
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
-  console.log("Comment component rendering.");
   const userId = useSelector((state) => state.user._id);
   const replies = useSelector((state) => state.board.detail?.replies);
   const [editMode, setEditMode] = useState<boolean>(false);

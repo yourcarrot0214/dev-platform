@@ -15,7 +15,6 @@ const CommentUpdateOptionButtons: React.FC<IProps> = ({
   onCancle,
   onSubmit,
 }) => {
-  console.log("MenuButtons Component rendering");
   return (
     <Stack spacing={2} direction="row">
       <Stack spacing={0} direction="row">

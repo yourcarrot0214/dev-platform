@@ -12,7 +12,6 @@ interface IProps {
 }
 
 const MenuButtons: React.FC<IProps> = ({ onUpdate, onDelete }) => {
-  console.log("MenuButtons Component rendering");
   return (
     <Stack spacing={2} direction="row">
       <Stack spacing={0} direction="row">

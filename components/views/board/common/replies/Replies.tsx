@@ -19,7 +19,6 @@ interface IProps {
 }
 
 const Replies: React.FC<IProps> = ({ replies }) => {
-  console.log(`${replies._id} RepliesComponent rendering.`);
   const userId = useSelector((state) => state.user._id);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [repliesText, setRepliesText] = useState<string>(replies.content);

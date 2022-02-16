@@ -26,6 +26,7 @@ interface IProps {
 
 const RepliesBoard: React.FC<IProps> = ({ repliesList }) => {
   const userId = useSelector((state) => state.user._id);
+  const isLogged = useSelector((state) => state.user.isLogged);
 
   const [editMode, setEditMode] = useState<boolean>(false);
   const [repliesText, setRepliesText] = useState<string>("");
@@ -47,11 +48,13 @@ const RepliesBoard: React.FC<IProps> = ({ repliesList }) => {
             <Replies key={reply._id} replies={reply} />
           ))}
         </div>
-        <RepliesInput
-          value={repliesText}
-          onChange={onChangeRepliesText}
-          onSubmit={onSubmitReplies}
-        />
+        {isLogged && (
+          <RepliesInput
+            value={repliesText}
+            onChange={onChangeRepliesText}
+            onSubmit={onSubmitReplies}
+          />
+        )}
       </Stack>
     </Container>
   );

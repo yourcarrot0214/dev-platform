@@ -16,8 +16,6 @@ interface IProps {
 }
 
 const RepliesButton: React.FC<IProps> = ({ onClick, count, open }) => {
-  console.log("RepliesButton Component rendering.");
-  const replies = useSelector((state) => state.board.detail?.replies);
   return (
     <Stack spacing={2} direction="row">
       <Stack spacing={0} direction="row">

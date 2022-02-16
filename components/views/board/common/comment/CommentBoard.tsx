@@ -22,6 +22,7 @@ const Container = styled.div`
 const CommentBoard: React.FC = () => {
   const comment = useSelector((state) => state.board.detail?.comment);
   const replies = useSelector((state) => state.board.detail?.replies);
+  const isLogged = useSelector((state) => state.user.isLogged);
   const [commentText, setCommentText] = useState<string>("");
   const [repliesText, setRepliesText] = useState<string>("");
 
@@ -47,11 +48,13 @@ const CommentBoard: React.FC = () => {
     <Container>
       <Stack spacing={2} direction="column">
         <Counter counter={comment.length + replies.length} />
-        <CommentInput
-          value={commentText}
-          onChange={onChangeCommentText}
-          onSubmitComment={onSubmitComment}
-        />
+        {isLogged && (
+          <CommentInput
+            value={commentText}
+            onChange={onChangeCommentText}
+            onSubmitComment={onSubmitComment}
+          />
+        )}
       </Stack>
       <Stack spacing={0} direction="column">
         {comment?.map((comment) => (

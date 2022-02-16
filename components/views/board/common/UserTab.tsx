@@ -39,7 +39,6 @@ interface IProps {
 }
 
 const UserTab: React.FC<IProps> = ({ author, createdAt }) => {
-  console.log("UserTab Component rendering");
   return (
     <Container>
       <Stack
