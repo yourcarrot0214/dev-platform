@@ -34,7 +34,6 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const [commentText, setCommentText] = useState<string>(comment.content);
   const [updatedText, setUpdatedText] = useState<string>(comment.content);
   const [repliesOpen, setRepliesOpen] = useState<boolean>(false);
-  const [repliesText, setRepliesText] = useState<string>("");
 
   const onUpdate = useCallback(() => setEditMode(!editMode), [editMode]);
   const onDelete = useCallback(() => setEditMode(!editMode), [editMode]);

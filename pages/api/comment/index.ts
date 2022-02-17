@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/mongodb/mongodb";
-import { CommentType, PostType } from "../../../types/post";
+import {
+  CommentType,
+  PostType,
+  DBPostType,
+  DBCommentType,
+} from "../../../types/post";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -28,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { Comment, Board } = await connect();
     const catcher = (error: Error) => res.statusCode(400).json({ error });
 
-    const post: PostType = await Board.findById({ _id: responseTo }).catch(
+    const post: DBPostType = await Board.findById({ _id: responseTo }).catch(
       catcher
     );
 
@@ -38,7 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       responseTo,
     };
 
-    const newComment: CommentType = await Comment.create(commentData).catch(
+    const newComment: DBCommentType = await Comment.create(commentData).catch(
       catcher
     );
 
@@ -48,8 +53,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       { new: true }
     ).catch(catcher);
 
-    res.statusCode = 201;
-    return res.end();
+    res.statusCode = 200;
+    return res.send(
+      await Board.findById({ _id: responseTo })
+        .populate("author", "_id name profileImage")
+        .populate({
+          path: "comment",
+          populate: { path: "author", select: "_id name profileImage" },
+        })
+        .populate({
+          path: "replies",
+          populate: { path: "author", select: "_id name profileImage" },
+        })
+        .catch(catcher)
+    );
   }
 
   res.status(405);
