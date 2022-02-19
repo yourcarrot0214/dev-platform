@@ -53,7 +53,7 @@ const Content: React.FC<IProps> = ({
         <TextField
           variant="standard"
           multiline
-          minRows={3}
+          minRows={1}
           fullWidth
           margin="normal"
           inputProps={{ readOnly: true }}

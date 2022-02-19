@@ -7,11 +7,17 @@
 import React, { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import palette from "../../../../../styles/palette";
+import { useDispatch } from "react-redux";
 import { useSelector } from "../../../../../store";
 import { RepliesType } from "../../../../../types/post";
+import { repliesAPI } from "../../../../../lib/api/board";
 import { Stack } from "@mui/material";
 import RepliesInput from "./RepliesInput";
 import Replies from "./Replies";
+
+// * constant
+import { REGEX } from "../../../../../components/auth/constant";
+import { boardActions } from "../../../../../store/board";
 
 const Container = styled.div`
   width: 100%;
@@ -22,10 +28,13 @@ const Container = styled.div`
 
 interface IProps {
   repliesList: RepliesType[] | undefined;
+  commentId: string;
 }
 
-const RepliesBoard: React.FC<IProps> = ({ repliesList }) => {
+const RepliesBoard: React.FC<IProps> = ({ repliesList, commentId }) => {
+  const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
+  const postId = useSelector((state) => state.board.detail._id);
   const isLogged = useSelector((state) => state.user.isLogged);
 
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -34,8 +43,27 @@ const RepliesBoard: React.FC<IProps> = ({ repliesList }) => {
   const onChangeRepliesText = (event: React.ChangeEvent<HTMLInputElement>) =>
     setRepliesText(event.target.value);
 
-  const onSubmitReplies = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const isRepliesTextHasString = useMemo(() => repliesText.match(REGEX), [
+    repliesText,
+  ]);
+
+  const onSubmitReplies = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
+
+    if (isRepliesTextHasString === null) {
+      return;
+    }
+
+    const requestBody = {
+      userId,
+      content: repliesText,
+      responseTo: commentId,
+      postId,
+    };
+    const { data } = await repliesAPI(requestBody);
+    dispatch(boardActions.setDetail(data));
 
     setRepliesText("");
   };

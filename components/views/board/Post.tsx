@@ -56,17 +56,6 @@ const Post: React.FC = () => {
   const [photos, setPhotos] = useState<string[]>(post.photos);
   const [updateMode, setUpdateMode] = useState<boolean>(false);
 
-  const [commentText, setCommentText] = useState<string>("");
-
-  const onChangeCommentText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentText(event.target.value);
-  };
-
-  const onSubmitComment = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setCommentText("");
-  };
-
   const onDeletePosting = async (postId: string) => {
     const confirm = window.confirm("정말로 삭제합니까?");
     if (confirm) {

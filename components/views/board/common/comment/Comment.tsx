@@ -6,8 +6,11 @@
 import React, { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import palette from "../../../../../styles/palette";
+import { useDispatch } from "react-redux";
 import { useSelector } from "../../../../../store";
 import { CommentType } from "../../../../../types/post";
+import { deleteCommentAPI } from "../../../../../lib/api/board";
+import { boardActions } from "../../../../../store/board";
 
 // * children component
 import UserTab from "../UserTab";
@@ -28,6 +31,7 @@ interface IProps {
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
+  const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
   const replies = useSelector((state) => state.board.detail?.replies);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -36,7 +40,18 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const [repliesOpen, setRepliesOpen] = useState<boolean>(false);
 
   const onUpdate = useCallback(() => setEditMode(!editMode), [editMode]);
-  const onDelete = useCallback(() => setEditMode(!editMode), [editMode]);
+  // const onDelete = useCallback(() => setEditMode(!editMode), [editMode]);
+  const onDelete = async () => {
+    const confirm = window.confirm("댓글을 삭제하시겠습니까?");
+    if (confirm) {
+      try {
+        const { data } = await deleteCommentAPI(comment._id);
+        dispatch(boardActions.setDetail(data));
+      } catch (error) {
+        console.log(">> comment delete error : ", error);
+      }
+    }
+  };
   const onChangeCommentText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUpdatedText(event.target.value);
   };
@@ -77,7 +92,9 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           open={repliesOpen}
           count={repliesList.length}
         />
-        {repliesOpen && <RepliesBoard repliesList={repliesList} />}
+        {repliesOpen && (
+          <RepliesBoard repliesList={repliesList} commentId={comment._id} />
+        )}
       </Stack>
     </Container>
   );
@@ -86,7 +103,8 @@ const Comment: React.FC<IProps> = ({ comment }) => {
 export default React.memo(Comment);
 
 /*
-  TODO 1. Replies Input Component
-  TODO 2. Replies Component
-  TODO 3. Replies Board Component
+  TODO 1. onDelete : MenuButtons component props function.
+    ? 등록한 코멘트를 삭제합니다.
+  TODO 2. onUpdateComment : Content component props function.
+    ? 등록된 코멘트의 content 정보를 수정합니다.
 */

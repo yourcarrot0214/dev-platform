@@ -43,7 +43,7 @@ export const deleteCommentAPI = (commentId: string) =>
   axios.delete(`/api/comment/${commentId}`);
 
 interface RepliesRequestBody {
-  userI: string;
+  userId: string;
   content: string;
   responseTo: string;
   postId: string;
