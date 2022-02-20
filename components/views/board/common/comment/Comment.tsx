@@ -33,6 +33,7 @@ interface IProps {
 const Comment: React.FC<IProps> = ({ comment }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
+  const isLogged = useSelector((state) => state.user.isLogged);
   const replies = useSelector((state) => state.board.detail?.replies);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>(comment.content);
@@ -87,11 +88,13 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           onCancle={onUpdate}
           onSubmit={onUpdateComment}
         />
-        <RepliesButton
-          onClick={onRepliesToggle}
-          open={repliesOpen}
-          count={repliesList.length}
-        />
+        {repliesList.length === 0 && !isLogged ? null : (
+          <RepliesButton
+            onClick={onRepliesToggle}
+            open={repliesOpen}
+            count={repliesList.length}
+          />
+        )}
         {repliesOpen && (
           <RepliesBoard repliesList={repliesList} commentId={comment._id} />
         )}
