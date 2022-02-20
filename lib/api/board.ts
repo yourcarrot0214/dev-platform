@@ -39,8 +39,14 @@ export const commentAPI = (requestBody: CommentRequestBody) =>
 export const updateCommentAPI = (requestBody: CommentRequestBody) =>
   axios.patch(`/api/comment/${requestBody.responseTo}`);
 
-export const deleteCommentAPI = (commentId: string) =>
-  axios.delete(`/api/comment/${commentId}`);
+interface DeleteRequestBody {
+  repliesIdList: string[] | undefined;
+}
+
+export const deleteCommentAPI = (
+  commentId: string,
+  requestBody: DeleteRequestBody
+) => axios.patch(`/api/comment/${commentId}`, requestBody);
 
 interface RepliesRequestBody {
   userId: string;

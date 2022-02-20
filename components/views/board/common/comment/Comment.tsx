@@ -41,12 +41,14 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const [repliesOpen, setRepliesOpen] = useState<boolean>(false);
 
   const onUpdate = useCallback(() => setEditMode(!editMode), [editMode]);
-  // const onDelete = useCallback(() => setEditMode(!editMode), [editMode]);
+
+  // ! requestBody에 comment에 달려 있는 replies id 목록을 같이 전송.
   const onDelete = async () => {
     const confirm = window.confirm("댓글을 삭제하시겠습니까?");
     if (confirm) {
       try {
-        const { data } = await deleteCommentAPI(comment._id);
+        const repliesIdList = repliesList?.map((reply) => reply._id);
+        const { data } = await deleteCommentAPI(comment._id, { repliesIdList });
         dispatch(boardActions.setDetail(data));
       } catch (error) {
         console.log(">> comment delete error : ", error);
