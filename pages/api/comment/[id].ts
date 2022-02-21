@@ -15,17 +15,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const post: DBPostType = await Board.findById(comment.responseTo).catch(
         catcher
       );
-      post.comment = post.comment.filter((commentId) => commentId !== id);
+
+      post.comment = post.comment.filter(
+        (commentId) => String(commentId) !== id
+      );
 
       if (repliesIdList.length !== 0) {
         repliesIdList.forEach((repliesId) => {
           Replies.findOneAndDelete({ _id: repliesId }).catch(catcher);
-          post.replies.filter((id) => id !== repliesId);
+          post.replies = post.replies.filter((id) => String(id) !== repliesId);
         });
       }
 
-      post.save();
-      comment.remove();
+      await post.save();
+      await comment.remove();
 
       return res.status(200).send(
         await Board.findById(post._id)

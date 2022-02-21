@@ -42,7 +42,6 @@ const Comment: React.FC<IProps> = ({ comment }) => {
 
   const onUpdate = useCallback(() => setEditMode(!editMode), [editMode]);
 
-  // ! requestBody에 comment에 달려 있는 replies id 목록을 같이 전송.
   const onDelete = async () => {
     const confirm = window.confirm("댓글을 삭제하시겠습니까?");
     if (confirm) {
@@ -106,10 +105,3 @@ const Comment: React.FC<IProps> = ({ comment }) => {
 };
 
 export default React.memo(Comment);
-
-/*
-  TODO 1. onDelete : MenuButtons component props function.
-    ? 등록한 코멘트를 삭제합니다.
-  TODO 2. onUpdateComment : Content component props function.
-    ? 등록된 코멘트의 content 정보를 수정합니다.
-*/
