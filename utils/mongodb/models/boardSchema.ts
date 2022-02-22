@@ -21,8 +21,6 @@ const boardSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    comment: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-    replies: [{ type: Schema.Types.ObjectId, ref: "Replies" }],
   },
   { timestamps: true }
 );

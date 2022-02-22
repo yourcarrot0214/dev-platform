@@ -14,6 +14,10 @@ const repliesSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "Comment",
     },
+    postId: {
+      type: Schema.Types.ObjectId,
+      ref: "Board",
+    },
   },
   { timestamps: true }
 );
