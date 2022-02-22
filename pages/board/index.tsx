@@ -5,7 +5,11 @@ import wrapper from "../../store";
 import { NextPageContext } from "next/types";
 import { Store } from "redux";
 import { boardActions } from "../../store/board";
-import { getBoardListAPI } from "../../lib/api/board";
+import {
+  getBoardListAPI,
+  getCommentListAPI,
+  getRepliesListAPI,
+} from "../../lib/api/board";
 
 const index: NextPage = () => {
   return <Board />;
@@ -14,7 +18,12 @@ const index: NextPage = () => {
 index.getInitialProps = wrapper.getInitialAppProps(
   (store: Store) => async ({ query }: NextPageContext) => {
     const boardList = await getBoardListAPI();
+    const commentList = await getCommentListAPI();
+    const repliesList = await getRepliesListAPI();
+
     store.dispatch(boardActions.setPostlist(boardList.data));
+    store.dispatch(boardActions.setCommentlist(commentList.data));
+    store.dispatch(boardActions.setReplieslist(repliesList.data));
     return {};
   }
 );

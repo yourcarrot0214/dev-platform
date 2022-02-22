@@ -34,7 +34,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
   const isLogged = useSelector((state) => state.user.isLogged);
-  const replies = useSelector((state) => state.board.detail?.replies);
+  const repliesState = useSelector((state) => state.board.replieslist);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>(comment.content);
   const [updatedText, setUpdatedText] = useState<string>(comment.content);
@@ -46,7 +46,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
     const confirm = window.confirm("댓글을 삭제하시겠습니까?");
     if (confirm) {
       try {
-        const repliesIdList = repliesList?.map((reply) => reply._id);
+        const repliesIdList = repliesList?.map((replies) => replies._id);
         const { data } = await deleteCommentAPI(comment._id, { repliesIdList });
         dispatch(boardActions.setDetail(data));
       } catch (error) {
@@ -61,8 +61,8 @@ const Comment: React.FC<IProps> = ({ comment }) => {
     !repliesOpen,
   ]);
   const repliesList = useMemo(
-    () => replies?.filter((reply) => reply.responseTo === comment._id),
-    [replies]
+    () => repliesState?.filter((replies) => replies.responseTo === comment._id),
+    [repliesState]
   );
 
   // ! API 구현

@@ -24,47 +24,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     // TODO : create & save new comment data
 
-    const { userId, content, responseTo } = req.body;
-    if (!userId || !content || !responseTo) {
+    const { userId, content, postId } = req.body;
+    if (!userId || !content || !postId) {
       res.statusCode = 400;
       return res.send("필수 데이터가 없습니다.");
     }
 
-    const { Comment, Board } = await connect();
+    const { Comment } = await connect();
     const catcher = (error: Error) => res.statusCode(400).json({ error });
-
-    const post: DBPostType = await Board.findById({ _id: responseTo }).catch(
-      catcher
-    );
 
     const commentData = {
       author: userId,
       content,
-      responseTo,
+      postId,
     };
 
-    const newComment: DBCommentType = await Comment.create(commentData).catch(
-      catcher
-    );
-
-    await Board.findOneAndUpdate(
-      { _id: post._id },
-      { comment: post.comment.concat(newComment._id) },
-      { new: true }
-    ).catch(catcher);
+    await Comment.create(commentData).catch(catcher);
 
     res.statusCode = 200;
     return res.send(
-      await Board.findById({ _id: responseTo })
+      await Comment.find({ postId })
         .populate("author", "_id name profileImage")
-        .populate({
-          path: "comment",
-          populate: { path: "author", select: "_id name profileImage" },
-        })
-        .populate({
-          path: "replies",
-          populate: { path: "author", select: "_id name profileImage" },
-        })
         .catch(catcher)
     );
   }

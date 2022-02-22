@@ -10,14 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { Board } = await connect();
       const catcher = (error: Error) => res.status(400).json({ error });
       const post: PostType = await Board.findById(id)
-        .populate({
-          path: "comment",
-          populate: { path: "author", select: "_id name profileImage" },
-        })
-        .populate({
-          path: "replies",
-          populate: { path: "author", select: "_id name profileImage" },
-        })
+        .populate("author", "_id name profileImage")
         .catch(catcher);
 
       return res.status(200).send(post);
@@ -30,6 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
     try {
       const { Board } = await connect();
+      const catcher = (error: Error) => res.status(400).json({ error });
 
       const newPost = {
         ...req.body,
@@ -39,6 +33,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         await Board.findOneAndUpdate({ _id: id }, newPost, {
           new: true,
         })
+          .populate("author", "_id name profileImage")
+          .catch(catcher)
       );
     } catch (error) {
       console.log(">> post patch error :: ", error);
@@ -49,9 +45,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
 
     try {
-      const { Board } = await connect();
-      const post = await Board.findById(id);
+      const { Board, Comment, Replies } = await connect();
+      const catcher = (error: Error) => res.status(400).json({ error });
+      const post = await Board.findById(id).catch(catcher);
       await post.remove();
+
+      await Comment.findOneAndDelete({ postId: id }).catch(catcher);
+      await Replies.findOneAndDelete({ postId: id }).catch(catcher);
+
       return res.status(200).end();
     } catch (error) {
       console.log(">> post delete error :: ", error);

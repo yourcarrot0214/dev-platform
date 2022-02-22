@@ -44,7 +44,6 @@ const Update: React.FC = () => {
   const post = useSelector<PostType | null>((state) => state.board.detail);
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
-  const username = useSelector((state) => state.user.name);
   const [title, setTitle] = useState<string | null>(post.title);
   const [content, setContent] = useState<string>(post.content);
   const [tag, setTag] = useState<string>("");

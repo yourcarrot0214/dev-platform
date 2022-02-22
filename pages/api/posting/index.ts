@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // TODO 2. DB에 connect 하고 board document 정보를 불러옵니다.
-      const { Board, User } = await connect();
+      const { Board } = await connect();
 
       // TODO 3. DB에 저장하기 위한 정보들을 생성합니다.
       const newPosting = {
@@ -45,14 +45,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.json(
         await Board.find({})
           .populate("author", "_id name profileImage")
-          .populate({
-            path: "comment",
-            populate: { path: "author", select: "_id name profileImage" },
-          })
-          .populate({
-            path: "replies",
-            populate: { path: "author", select: "_id name profileImage" },
-          })
           .catch(catcher)
       );
     } catch (error) {

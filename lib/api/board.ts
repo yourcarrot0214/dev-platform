@@ -28,7 +28,7 @@ export const deletePostingAPI = (postId: string) =>
 interface CommentRequestBody {
   userId: string;
   content: string;
-  responseTo: string;
+  postId: string;
 }
 
 export const getCommentListAPI = () => axios.get<CommentType[]>(`/api/comment`);
@@ -37,7 +37,7 @@ export const commentAPI = (requestBody: CommentRequestBody) =>
   axios.post<CommentType>("/api/comment", requestBody);
 
 export const updateCommentAPI = (requestBody: CommentRequestBody) =>
-  axios.patch(`/api/comment/${requestBody.responseTo}`);
+  axios.patch(`/api/comment/${requestBody.postId}`);
 
 interface DeleteRequestBody {
   repliesIdList: string[] | undefined;
@@ -54,6 +54,8 @@ interface RepliesRequestBody {
   responseTo: string;
   postId: string;
 }
+
+export const getRepliesListAPI = () => axios.get<RepliesType[]>("/api/replies");
 
 export const repliesAPI = (requestBody: RepliesRequestBody) =>
   axios.post<RepliesType>("/api/replies", requestBody);
