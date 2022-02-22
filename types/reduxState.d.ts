@@ -19,5 +19,7 @@ export type CommonState = {
 // * board redux state
 export type BoardState = {
   postlist: PostType[];
+  commentlist: CommentType[];
+  replieslist: RepliesType[];
   detail: PostType | null;
 };

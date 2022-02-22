@@ -7,13 +7,11 @@ export type PostType = {
   photos: string[];
   createdAt: string;
   updatedAt: string;
-  comment: CommentType[];
-  replies: RepliesType[];
 };
 
 export type CommentType = {
   _id: string;
-  responseTo: string;
+  postId: string;
   author: object;
   content: string;
   createdAt: string;
@@ -22,6 +20,7 @@ export type CommentType = {
 
 export type RepliesType = {
   _id: string;
+  postId: string;
   responseTo: string;
   author: object;
   content: string;
@@ -38,15 +37,13 @@ export type DBPostType = {
   photos: string[];
   createdAt: string;
   updatedAt: string;
-  comment: string[];
-  replies: string[];
 };
 
 export type DBCommentType = {
   _id: string;
   author: string;
   content: string;
-  responseTo: string;
+  postId: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -55,6 +52,7 @@ export type DBRepliesType = {
   _id: string;
   author: string;
   content: string;
+  postId: string;
   responseTo: string;
   createdAt: string;
   updatedAt: string;

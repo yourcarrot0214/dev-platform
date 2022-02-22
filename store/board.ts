@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
-import { PostType } from "../types/post";
+import { PostType, CommentType, RepliesType } from "../types/post";
 import { BoardState } from "../types/reduxState";
 
 // * initialState
 const initialState: BoardState = {
   postlist: [],
+  commentlist: [],
+  replieslist: [],
   detail: null,
 };
 
@@ -17,6 +19,12 @@ const board = createSlice({
   reducers: {
     setPostlist(state: BoardState, action: PayloadAction<PostType[]>) {
       state.postlist = action.payload;
+    },
+    setCommentlist(state: BoardState, action: PayloadAction<CommentType[]>) {
+      state.commentlist = action.payload;
+    },
+    setReplieslist(state: BoardState, action: PayloadAction<RepliesType[]>) {
+      state.replieslist = action.payload;
     },
     setDetail(state: BoardState, action: PayloadAction<PostType>) {
       state.detail = action.payload;
