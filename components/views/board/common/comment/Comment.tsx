@@ -4,12 +4,16 @@
 */
 
 import React, { useState, useCallback, useMemo } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import palette from "../../../../../styles/palette";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../../../store";
 import { CommentType } from "../../../../../types/post";
-import { deleteCommentAPI } from "../../../../../lib/api/board";
+import {
+  deleteCommentAPI,
+  getCommentListAPI,
+} from "../../../../../lib/api/board";
 import { boardActions } from "../../../../../store/board";
 
 // * children component
@@ -31,6 +35,7 @@ interface IProps {
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
   const isLogged = useSelector((state) => state.user.isLogged);
@@ -46,9 +51,8 @@ const Comment: React.FC<IProps> = ({ comment }) => {
     const confirm = window.confirm("댓글을 삭제하시겠습니까?");
     if (confirm) {
       try {
-        const repliesIdList = repliesList?.map((replies) => replies._id);
-        const { data } = await deleteCommentAPI(comment._id, { repliesIdList });
-        dispatch(boardActions.setDetail(data));
+        await deleteCommentAPI(comment._id);
+        dispatch(boardActions.deleteDetailComment(comment._id));
       } catch (error) {
         console.log(">> comment delete error : ", error);
       }

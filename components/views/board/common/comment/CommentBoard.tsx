@@ -29,18 +29,11 @@ const Container = styled.div`
 
 const CommentBoard: React.FC = () => {
   const dispatch = useDispatch();
-  const commentState = useSelector((state) => state.board.commentlist);
-  const repliesState = useSelector((state) => state.board.replieslist);
+  const commentState = useSelector((state) => state.board.detail.comment);
+  const repliesState = useSelector((state) => state.board.detail.replies);
   const isLogged = useSelector((state) => state.user.isLogged);
   const userId = useSelector((state) => state.user._id);
-  const postId = useSelector((state) => state.board.detail?._id);
-
-  const commentlist = commentState.filter(
-    (comment) => comment.postId === postId
-  );
-  const replieslist = repliesState.filter(
-    (replies) => replies.postId === postId
-  );
+  const postId = useSelector((state) => state.board.detail?.post._id);
 
   const [commentText, setCommentText] = useState<string>("");
 
@@ -67,14 +60,14 @@ const CommentBoard: React.FC = () => {
       postId: postId as string,
     };
     const { data } = await commentAPI(requestBody);
-    dispatch(boardActions.setCommentlist(data));
+    dispatch(boardActions.setDetailComment(data));
     setCommentText("");
   };
 
   return (
     <Container>
       <Stack spacing={2} direction="column">
-        <Counter counter={commentlist.length + replieslist.length} />
+        <Counter counter={commentState.length + repliesState.length} />
         {isLogged && (
           <CommentInput
             value={commentText}
@@ -84,7 +77,7 @@ const CommentBoard: React.FC = () => {
         )}
       </Stack>
       <Stack spacing={0} direction="column">
-        {commentlist?.map((comment) => (
+        {commentState?.map((comment) => (
           <Comment key={comment._id} comment={comment} />
         ))}
       </Stack>

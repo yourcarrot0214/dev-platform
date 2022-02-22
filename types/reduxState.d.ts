@@ -1,5 +1,5 @@
 import { UserType } from "./user.d";
-import { PostType, CommentType, RepliesType } from "./post.d";
+import { PostType, CommentType, RepliesType, DetailPostType } from "./post.d";
 
 // * user redux state
 export type UserState = UserType & {
@@ -21,5 +21,5 @@ export type BoardState = {
   postlist: PostType[];
   commentlist: CommentType[];
   replieslist: RepliesType[];
-  detail: PostType | null;
+  detail: DetailPostType | null;
 };

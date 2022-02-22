@@ -9,6 +9,12 @@ export type PostType = {
   updatedAt: string;
 };
 
+export type DetailPostType = {
+  post: PostType;
+  comment: CommentType[];
+  replies: RepliesType[];
+};
+
 export type CommentType = {
   _id: string;
   postId: string;

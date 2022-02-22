@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
-import { PostType, CommentType, RepliesType } from "../types/post";
+import {
+  PostType,
+  CommentType,
+  RepliesType,
+  DetailPostType,
+} from "../types/post";
 import { BoardState } from "../types/reduxState";
 
 // * initialState
@@ -26,8 +31,16 @@ const board = createSlice({
     setReplieslist(state: BoardState, action: PayloadAction<RepliesType[]>) {
       state.replieslist = action.payload;
     },
-    setDetail(state: BoardState, action: PayloadAction<PostType>) {
+    setDetail(state: BoardState, action: PayloadAction<DetailPostType>) {
       state.detail = action.payload;
+    },
+    setDetailComment(state: BoardState, action: PayloadAction<CommentType[]>) {
+      state.detail.comment = action.payload;
+    },
+    deleteDetailComment(state: BoardState, action: PayloadAction) {
+      state.detail.comment = state.detail.comment.filter(
+        (comment) => comment._id !== action.payload
+      );
     },
   },
 });
