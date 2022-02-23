@@ -62,3 +62,6 @@ export const getRepliesListAPI = () => axios.get<RepliesType[]>("/api/replies");
 
 export const repliesAPI = (requestBody: RepliesRequestBody) =>
   axios.post<RepliesType>("/api/replies", requestBody);
+
+export const deleteRepliesAPI = (repliesId: string) =>
+  axios.delete(`/api/replies/${repliesId}`);

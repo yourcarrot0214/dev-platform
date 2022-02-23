@@ -41,7 +41,8 @@ const onChangeHashtagsType = (hashtags: string[]) => {
 
 const Update: React.FC = () => {
   const dispatch = useDispatch();
-  const post = useSelector<PostType | null>((state) => state.board.detail);
+  const post = useSelector<PostType | null>((state) => state.board.detail.post);
+  console.log("post : ", post);
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
   const [title, setTitle] = useState<string | null>(post.title);
@@ -116,7 +117,7 @@ const Update: React.FC = () => {
 
       // ? 4. request api를 호출하고, response data를 스토어에 업데이트 합니다.
       const { data } = await updatePostingAPI(post?._id as string, requestBody);
-      dispatch(boardActions.setDetail(data));
+      dispatch(boardActions.setDetailPost(data));
 
       // ? 5. 해당 게시글로 route를 연결합니다.
       router.push(`/board/${post._id}`);

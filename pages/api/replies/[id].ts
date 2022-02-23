@@ -6,16 +6,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
 
     try {
-      const { Comment, Replies } = await connect();
+      const { Replies } = await connect();
       const catcher = (error: Error) => res.status(400).json({ error });
 
-      const comment = await Comment.findById(id).catch(catcher);
-      await comment.remove();
-      await Replies.deleteMany({ responseTo: id }).catch(catcher);
+      await Replies.findByIdAndDelete(id).catch(catcher);
 
       return res.status(200).end();
     } catch (error) {
-      console.log(">> comment delete error :: ", error);
+      console.log(">> replies delete error :: ", error);
     }
   }
+
+  return res.status(405).end();
 };

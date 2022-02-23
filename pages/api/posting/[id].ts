@@ -35,7 +35,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       const newPost = {
         ...req.body,
-        updatedAt: new Date(),
       };
       return res.status(200).send(
         await Board.findOneAndUpdate({ _id: id }, newPost, {

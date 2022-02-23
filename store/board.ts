@@ -34,6 +34,9 @@ const board = createSlice({
     setDetail(state: BoardState, action: PayloadAction<DetailPostType>) {
       state.detail = action.payload;
     },
+    setDetailPost(state: BoardState, action: PayloadAction<DetailPostType>) {
+      state.detail.post = action.payload;
+    },
     setDetailComment(state: BoardState, action: PayloadAction<CommentType[]>) {
       state.detail.comment = action.payload;
     },
