@@ -31,9 +31,7 @@ export const deletePostingAPI = (postId: string) =>
   axios.delete(`/api/posting/${postId}`);
 
 interface CommentRequestBody {
-  userId: string;
   content: string;
-  postId: string;
 }
 
 export const getCommentListAPI = () => axios.get<CommentType[]>(`/api/comment`);
@@ -41,8 +39,10 @@ export const getCommentListAPI = () => axios.get<CommentType[]>(`/api/comment`);
 export const commentAPI = (requestBody: CommentRequestBody) =>
   axios.post<CommentType>("/api/comment", requestBody);
 
-export const updateCommentAPI = (requestBody: CommentRequestBody) =>
-  axios.patch(`/api/comment/${requestBody.postId}`);
+export const updateCommentAPI = (
+  commentId: string,
+  requestBody: CommentRequestBody
+) => axios.patch(`/api/comment/${commentId}`, requestBody);
 
 interface DeleteRequestBody {
   repliesIdList: string[] | undefined;

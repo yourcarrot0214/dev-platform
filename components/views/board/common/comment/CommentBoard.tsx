@@ -28,6 +28,7 @@ const Container = styled.div`
 `;
 
 const CommentBoard: React.FC = () => {
+  console.log("CommentBoard rendering.");
   const dispatch = useDispatch();
   const commentState = useSelector((state) => state.board.detail.comment);
   const repliesState = useSelector((state) => state.board.detail.replies);

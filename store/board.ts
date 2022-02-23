@@ -40,6 +40,11 @@ const board = createSlice({
     setDetailComment(state: BoardState, action: PayloadAction<CommentType[]>) {
       state.detail.comment = action.payload;
     },
+    updateDetailComment(state: BoardState, action: PayloadAction<CommentType>) {
+      state.detail.comment = state.detail?.comment.map((data) =>
+        data._id === action.payload._id ? action.payload : data
+      );
+    },
     deleteDetailComment(state: BoardState, action: PayloadAction<string>) {
       state.detail.comment = state.detail.comment.filter(
         (comment) => comment._id !== action.payload

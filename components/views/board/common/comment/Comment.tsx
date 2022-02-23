@@ -13,6 +13,7 @@ import { CommentType } from "../../../../../types/post";
 import {
   deleteCommentAPI,
   getCommentListAPI,
+  updateCommentAPI,
 } from "../../../../../lib/api/board";
 import { boardActions } from "../../../../../store/board";
 
@@ -35,6 +36,7 @@ interface IProps {
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
+  console.log(comment.content);
   const router = useRouter();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
@@ -70,7 +72,23 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   );
 
   // ! API 구현
-  const onUpdateComment = useCallback(() => setEditMode(!editMode), [editMode]);
+  const onUpdateComment = async () => {
+    if (!updatedText || commentText === updatedText) {
+      return alert("변경된 내용을 입력해 주세요.");
+    }
+
+    try {
+      const requestBody = {
+        content: updatedText,
+      };
+      const { data } = await updateCommentAPI(comment._id, requestBody);
+      dispatch(boardActions.updateDetailComment(data));
+      setCommentText(data.content);
+      setEditMode(false);
+    } catch (error) {
+      console.log(">> comment update error : ", error);
+    }
+  };
 
   return (
     <Container>

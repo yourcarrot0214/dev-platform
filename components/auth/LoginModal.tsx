@@ -110,9 +110,9 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
         const { data } = await loginAPI(loginBody);
         const userdataWithoutPassword = data;
         delete data.password;
-        console.log("userdataWithoutPassword : ", userdataWithoutPassword);
+
         dispatch(userActions.setLoggedUser(userdataWithoutPassword));
-        console.log("loginAPI", data);
+
         setLoading(false);
         closeModal();
       } catch (error) {
