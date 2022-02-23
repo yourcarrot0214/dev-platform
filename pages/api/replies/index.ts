@@ -25,40 +25,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send("필수 데이터가 없습니다.");
     }
 
-    const { Board, Replies } = await connect();
+    const { Replies } = await connect();
     const catcher = (error: Error) => res.statusCode(400).json({ error });
-
-    const post: DBPostType = await Board.findById({
-      _id: postId,
-    }).catch(catcher);
 
     const repliesData = {
       author: userId,
       content,
       responseTo,
+      postId,
     };
 
-    const newReplies: DBRepliesType = await Replies.create(repliesData).catch(
-      catcher
-    );
+    await Replies.create(repliesData).catch(catcher);
 
-    await Board.findOneAndUpdate(
-      { _id: post._id },
-      { replies: post.replies.concat(newReplies._id) },
-      { new: true }
-    ).catch(catcher);
-
-    res.statusCode = 201;
+    res.statusCode = 200;
     return res.send(
-      await Board.findById({ _id: postId })
-        .populate({
-          path: "comment",
-          populate: { path: "author", select: "_id name profileImage" },
-        })
-        .populate({
-          path: "replies",
-          populate: { path: "author", select: "_id name profileImage" },
-        })
+      await Replies.find({ postId })
+        .populate("author", "_id name profileImage")
         .catch(catcher)
     );
   }

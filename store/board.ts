@@ -37,9 +37,20 @@ const board = createSlice({
     setDetailComment(state: BoardState, action: PayloadAction<CommentType[]>) {
       state.detail.comment = action.payload;
     },
-    deleteDetailComment(state: BoardState, action: PayloadAction) {
+    deleteDetailComment(state: BoardState, action: PayloadAction<string>) {
       state.detail.comment = state.detail.comment.filter(
         (comment) => comment._id !== action.payload
+      );
+      state.detail.replies = state.detail?.replies.filter(
+        (replies) => replies.responseTo !== action.payload
+      );
+    },
+    setDetailReplies(state: BoardState, action: PayloadAction<RepliesType[]>) {
+      state.detail.replies = action.payload;
+    },
+    deleteDetailReplies(state: BoardState, action: PayloadAction<string>) {
+      state.detail.replies = state.detail?.replies.filter(
+        (replies) => replies._id !== action.payload
       );
     },
   },

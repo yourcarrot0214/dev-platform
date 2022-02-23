@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       const comment = await Comment.findById(id).catch(catcher);
       await comment.remove();
-      await Replies.findOneAndDelete({ responseTo: id }).catch(catcher);
+      await Replies.deleteMany({ responseTo: id }).catch(catcher);
 
       return res.status(200).end();
     } catch (error) {

@@ -39,7 +39,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
   const isLogged = useSelector((state) => state.user.isLogged);
-  const repliesState = useSelector((state) => state.board.replieslist);
+  const repliesState = useSelector((state) => state.board.detail?.replies);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>(comment.content);
   const [updatedText, setUpdatedText] = useState<string>(comment.content);

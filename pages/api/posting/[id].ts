@@ -58,8 +58,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const post = await Board.findById(id).catch(catcher);
       await post.remove();
 
-      await Comment.findOneAndDelete({ postId: id }).catch(catcher);
-      await Replies.findOneAndDelete({ postId: id }).catch(catcher);
+      await Comment.deleteMany({ postId: id }).catch(catcher);
+      await Replies.deleteMany({ postId: id }).catch(catcher);
 
       return res.status(200).end();
     } catch (error) {

@@ -34,7 +34,7 @@ interface IProps {
 const RepliesBoard: React.FC<IProps> = ({ repliesList, commentId }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
-  const postId = useSelector((state) => state.board.detail._id);
+  const postId = useSelector((state) => state.board.detail.post._id);
   const isLogged = useSelector((state) => state.user.isLogged);
 
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -63,7 +63,7 @@ const RepliesBoard: React.FC<IProps> = ({ repliesList, commentId }) => {
       postId,
     };
     const { data } = await repliesAPI(requestBody);
-    dispatch(boardActions.setDetail(data));
+    dispatch(boardActions.setDetailReplies(data));
 
     setRepliesText("");
   };
