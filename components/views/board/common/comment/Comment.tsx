@@ -36,8 +36,6 @@ interface IProps {
 }
 
 const Comment: React.FC<IProps> = ({ comment }) => {
-  console.log(comment.content);
-  const router = useRouter();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
   const isLogged = useSelector((state) => state.user.isLogged);
@@ -71,7 +69,6 @@ const Comment: React.FC<IProps> = ({ comment }) => {
     [repliesState]
   );
 
-  // ! API 구현
   const onUpdateComment = async () => {
     if (!updatedText || commentText === updatedText) {
       return alert("변경된 내용을 입력해 주세요.");

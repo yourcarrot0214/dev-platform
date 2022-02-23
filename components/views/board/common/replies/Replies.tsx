@@ -11,7 +11,10 @@ import MenuButtons from "../MenuButtons";
 
 import { Stack } from "@mui/material";
 import { RepliesType } from "../../../../../types/post";
-import { deleteRepliesAPI } from "../../../../../lib/api/board";
+import {
+  deleteRepliesAPI,
+  updateRepliesAPI,
+} from "../../../../../lib/api/board";
 
 const Container = styled.div`
   width: 100%;
@@ -40,7 +43,23 @@ const Replies: React.FC<IProps> = ({ replies }) => {
       }
     }
   };
-  const onUpdateReplies = useCallback(() => setEditMode(!editMode), [editMode]);
+  const onUpdateReplies = async () => {
+    if (!updatedText || repliesText === updatedText) {
+      return alert("변경된 내용을 입력해 주세요.");
+    }
+
+    try {
+      const requestBody = {
+        content: updatedText,
+      };
+      const { data } = await updateRepliesAPI(replies._id, requestBody);
+      dispatch(boardActions.updateDetailReplies(data));
+      setRepliesText(data.content);
+      setEditMode(false);
+    } catch (error) {
+      console.log(">> update replies error : ", error);
+    }
+  };
 
   const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) =>
     setUpdatedText(event.target.value);

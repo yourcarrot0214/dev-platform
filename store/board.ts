@@ -56,6 +56,11 @@ const board = createSlice({
     setDetailReplies(state: BoardState, action: PayloadAction<RepliesType[]>) {
       state.detail.replies = action.payload;
     },
+    updateDetailReplies(state: BoardState, action: PayloadAction<RepliesType>) {
+      state.detail.replies = state.detail.replies.map((data) =>
+        data._id === action.payload._id ? action.payload : data
+      );
+    },
     deleteDetailReplies(state: BoardState, action: PayloadAction<string>) {
       state.detail.replies = state.detail?.replies.filter(
         (replies) => replies._id !== action.payload
