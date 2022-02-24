@@ -73,7 +73,11 @@ const Replies: React.FC<IProps> = ({ replies }) => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <UserTab author={replies.author} createdAt={replies.createdAt} />
+          <UserTab
+            author={replies.author}
+            createdAt={replies.createdAt}
+            updatedAt={replies.updatedAt}
+          />
           {userId === replies.author._id && !editMode && (
             <MenuButtons onUpdate={onUpdateMode} onDelete={onDelete} />
           )}

@@ -36,9 +36,21 @@ type AuthorType = {
 interface IProps {
   author: AuthorType;
   createdAt: string;
+  updatedAt: string;
 }
 
-const UserTab: React.FC<IProps> = ({ author, createdAt }) => {
+const UserTab: React.FC<IProps> = ({ author, createdAt, updatedAt }) => {
+  const time = (createdAt: string, updatedAt: string) => {
+    const isUpdated = createdAt !== updatedAt;
+    const message = isUpdated ? "수정" : "";
+
+    return `${new Date(isUpdated ? updatedAt : createdAt).toLocaleString(
+      "ko-KR",
+      {
+        timeZone: "UTC",
+      }
+    )} ${message}`;
+  };
   return (
     <Container>
       <Stack
@@ -54,7 +66,7 @@ const UserTab: React.FC<IProps> = ({ author, createdAt }) => {
         />
         <Stack spacing={1} direction="column">
           <span className="author-name">{author.name}</span>
-          <span className="created-at">{createdAt}</span>
+          <span className="created-at">{time(createdAt, updatedAt)}</span>
         </Stack>
       </Stack>
     </Container>

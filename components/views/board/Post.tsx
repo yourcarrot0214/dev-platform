@@ -33,6 +33,16 @@ const Container = styled.div`
   max-width: 1024px;
   margin: 0 auto;
   padding: 2rem;
+
+  .time-zone {
+    margin-bottom: 1rem;
+    .created-at,
+    .updated-at {
+      font-size: 12px;
+      color: ${palette.gray_85};
+      line-height: 1.5;
+    }
+  }
 `;
 
 // TODO :: hashtags는 string[] type인 상태이므로 ChipData type으로 변환
@@ -79,6 +89,7 @@ const Post: React.FC = () => {
           margin="normal"
           inputProps={{ readOnly: true }}
         />
+
         {hashtags.length !== 0 && (
           <Paper
             sx={{
@@ -110,6 +121,22 @@ const Post: React.FC = () => {
           margin="normal"
           inputProps={{ readOnly: true }}
         />
+        <div className="time-zone">
+          <p className="created-at">
+            {new Date(post.createdAt).toLocaleString("ko-KR", {
+              timeZone: "UTC",
+            })}{" "}
+            에 작성되었습니다.
+          </p>
+          {post.createdAt !== post.updatedAt && (
+            <p className="updated-at">
+              {new Date(post?.updatedAt).toLocaleString("ko-KR", {
+                timeZone: "UTC",
+              })}{" "}
+              에 수정되었습니다.
+            </p>
+          )}
+        </div>
       </Stack>
       <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
         <Button

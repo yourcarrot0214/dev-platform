@@ -86,7 +86,15 @@ const Board: React.FC = () => {
                       {post.title}
                     </TableCell>
                     <TableCell align="left">{post.author}</TableCell>
-                    <TableCell align="left">{post.createdAt}</TableCell>
+                    <TableCell align="left">
+                      {new Date(post.createdAt).toLocaleString("ko-KR", {
+                        timeZone: "UTC",
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

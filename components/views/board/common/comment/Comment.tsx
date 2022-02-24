@@ -96,7 +96,11 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <UserTab author={comment.author} createdAt={comment.createdAt} />
+          <UserTab
+            author={comment.author}
+            createdAt={comment.createdAt}
+            updatedAt={comment.updatedAt}
+          />
           {userId === comment.author._id && !editMode && (
             <MenuButtons onUpdate={onUpdate} onDelete={onDelete} />
           )}
