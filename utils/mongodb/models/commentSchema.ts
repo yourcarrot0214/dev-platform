@@ -15,7 +15,11 @@ const commentSchema = new mongoose.Schema(
       ref: "Board",
     },
   },
-  { timestamps: true }
+  {
+    timestamps: {
+      currentTime: () => new Date(Date.now() + 60 * 60 * 1000 * 9),
+    },
+  }
 );
 
 export default commentSchema;

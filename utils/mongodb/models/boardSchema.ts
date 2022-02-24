@@ -22,7 +22,11 @@ const boardSchema = new mongoose.Schema(
       default: [],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: {
+      currentTime: () => new Date(Date.now() + 60 * 60 * 1000 * 9),
+    },
+  }
 );
 
 export default boardSchema;
