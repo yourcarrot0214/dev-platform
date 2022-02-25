@@ -12,7 +12,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import { Stack, Button } from "@mui/material";
 
 // * MUI Icon
@@ -43,6 +42,8 @@ const Board: React.FC = () => {
   const router = useRouter();
   const isLogged = useSelector((state) => state.user.isLogged);
   const postlist = useSelector((state) => state.board.postlist);
+  const commentlist = useSelector((state) => state.board.commentlist);
+  const replieslist = useSelector((state) => state.board.replieslist);
   const rows = postlist.map((post, index) =>
     createData(
       index + 1,
@@ -52,6 +53,17 @@ const Board: React.FC = () => {
       post.createdAt
     )
   );
+
+  const getCommentAndRepliesCount = (postId: string) => {
+    const commentCount = commentlist.filter(
+      (comment) => comment.postId === postId
+    ).length;
+    const repliesCount = replieslist.filter(
+      (replies) => replies.postId === postId
+    ).length;
+    return commentCount + repliesCount;
+  };
+
   return (
     <Container>
       <Stack spacing={2} direction="column" sx={{ mt: 1, mb: 1 }}>
@@ -83,7 +95,7 @@ const Board: React.FC = () => {
                       className="post-title"
                       onClick={() => router.push(`/board/${post.id}`)}
                     >
-                      {post.title}
+                      {post.title} {`[${getCommentAndRepliesCount(post.id)}]`}
                     </TableCell>
                     <TableCell align="left">{post.author}</TableCell>
                     <TableCell align="left">
