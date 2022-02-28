@@ -72,7 +72,7 @@ const HeaderUserProfile: React.FC = () => {
 
   const logout = async () => {
     try {
-      await logoutAPI();
+      await logoutAPI(userId);
       dispatch(userActions.initUser());
       router.push("/");
     } catch (error) {

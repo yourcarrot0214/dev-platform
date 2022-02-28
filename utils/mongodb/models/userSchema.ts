@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema({
   profileImage: {
     type: String,
   },
+  token: {
+    type: String,
+  },
 });
 
 userSchema.pre("save", function (next) {

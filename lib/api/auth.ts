@@ -20,4 +20,5 @@ export const loginAPI = (body: LoginAPIBody) =>
 
 export const authAPI = () => axios.get<UserType>("/api/auth/auth");
 
-export const logoutAPI = () => axios.delete("/api/auth/logout");
+export const logoutAPI = (userId: string) =>
+  axios.delete(`/api/auth/logout/${userId}`);

@@ -35,6 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // * 5. create token
       const token = jwt.sign(String(user._id), process.env.JWT_SECRET!);
+      await User.findByIdAndUpdate(user._id, { token: token }).exec();
 
       // * 6. token data setup in response header
       res.setHeader(

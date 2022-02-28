@@ -11,4 +11,5 @@ export type StoredUserType = {
   email: string;
   password: string;
   profileImage: string;
+  token: string;
 };
