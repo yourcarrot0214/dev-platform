@@ -1,8 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
-import { useDispatch } from "react-redux";
 import { useSelector } from "../../../store";
 import {
   TextField,
@@ -54,12 +53,11 @@ const onChangeHashtagsType = (hashtags: string[]) => {
 };
 
 const Post: React.FC = () => {
-  const post = useSelector<PostType | null>((state) => state.board.detail.post);
+  const post = useSelector<PostType>((state) => state.board.detail.post);
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
   const [title, setTitle] = useState<string | null>(post.title);
   const [content, setContent] = useState<string>(post.content);
-  const [tag, setTag] = useState<string>("");
   const [hashtags, setHashtags] = useState<ChipData[]>(
     onChangeHashtagsType(post.hashtags)
   );
@@ -73,6 +71,12 @@ const Post: React.FC = () => {
       router.push("/board");
     }
   };
+
+  useEffect(() => {
+    document.title = `DEV-PLATFORM : ${title}`;
+
+    return () => (document.title = "DEV-PLATFORM");
+  }, []);
 
   return (
     <Container>
@@ -148,10 +152,8 @@ const Post: React.FC = () => {
         >
           돌아가기
         </Button>
-        {/* 게시글 작성자인 경우 */}
         {userId === String(post.author._id) && (
           <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
-            {/* delete 기능 구현시 ButtonGroup로 감싸기 */}
             <ButtonGroup>
               <Button
                 variant="outlined"
@@ -175,7 +177,6 @@ const Post: React.FC = () => {
           </Stack>
         )}
       </Stack>
-      {/* counter */}
       <Stack spacing={2} direction="column" sx={{ mt: 5, mb: 1 }}>
         <CommentBoard />
       </Stack>
@@ -184,33 +185,3 @@ const Post: React.FC = () => {
 };
 
 export default Post;
-
-/*
-  TODO : Comment + Replies Component
-    ? 1. component counter component
-      - comment, replies length를 더한 전체 값을 출력합니다.
-      - total값을 props로 전달받아 memo된 JSX를 반환합니다.
-    ? 2. comment input component
-      - comment를 작성하는 input 영역과 전송 button을 출력합니다.
-    ? 3. comment list component
-      - comment 개별 정보를 출력합니다.
-      - <CommentList />에서 comment의 갯수만큼 <Comment />를 출력합니다.
-      - comment component는 replies list를 출력하는 component를 children으로 두어야 합니다.
-      - 본인이 작성한 comment에는 수정, 삭제 버튼을 출력해야 합니다.
-      - 수정시 content 출력 영역이 input으로 변경되어야 합니다.
-    ? 4. replies list component
-      - replies 개별 정보를 출력합니다.
-      - <RepliesList /> 에서 replies의 갯수만큼 <Replies />를 출력합니다.
-      - 본인이 작성한 replies에는 수정, 삭제 버튼을 출력해야 합니다.
-      - 수정시 content 출력 영역이 input으로 변경되어야 합니다.
-    ? 5. replies input component toggle button
-      - comment에 답글을 달 수 있는 toggle button을 출력합니다.
-      - replies를 작성하는 input 영역과 전송, 취소 button을 출력합니다.
-      - 취소 버튼은 props.withCancleButton의 boolean값으로 출력 여부를 결정합니다.
-
-    TODO : component 구조 설정
-    ? comment, replies 작성 버튼은 공통의 input component를 사용합니다.
-    ? comment, replies 작성자 정보를 출력하는 부분은 공통의 <Author /> component를 사용합니다.
-    ? comment, replies 정보를 출력하는 component는 공통 컴포넌트를 사용합니다.
-    ? replies input component를 출력하는 toggle button 
-*/
