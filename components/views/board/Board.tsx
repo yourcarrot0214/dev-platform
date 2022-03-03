@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import Styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
 import { useRouter } from "next/router";
@@ -13,11 +13,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Stack, Button } from "@mui/material";
+import Badge, { BadgeProps } from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
 
 // * MUI Icon
 import CreateIcon from "@mui/icons-material/Create";
+import ChatIcon from "@mui/icons-material/Chat";
 
-const Container = styled.div`
+const Container = Styled.div`
   width: 100%;
   max-width: 1024px;
   margin: 0 auto;
@@ -27,6 +31,15 @@ const Container = styled.div`
     cursor: pointer;
   }
 `;
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 3,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
 
 function createData(
   index: number,
@@ -95,7 +108,16 @@ const Board: React.FC = () => {
                       className="post-title"
                       onClick={() => router.push(`/board/${post.id}`)}
                     >
-                      {post.title} {`[${getCommentAndRepliesCount(post.id)}]`}
+                      {post.title}
+                      <IconButton aria-label="comment">
+                        <StyledBadge
+                          badgeContent={getCommentAndRepliesCount(post.id)}
+                          color="info"
+                          showZero
+                        >
+                          <ChatIcon fontSize="small" />
+                        </StyledBadge>
+                      </IconButton>
                     </TableCell>
                     <TableCell align="left">{post.author}</TableCell>
                     <TableCell align="left">
