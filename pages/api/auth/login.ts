@@ -45,17 +45,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ).toUTCString()}; httponly`
       );
 
-      // * 7. delete user password for response
-      const userWithoutPassword: Partial<Pick<
-        StoredUserType,
-        "password"
-      >> = user;
-      // ! delete 명령이 적용되지 않아 비밀번호 정보 임시 초기화
-      userWithoutPassword.password = "";
-      delete userWithoutPassword.password;
+      // * 7. delete user password, token for response
+      const editUserData = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        profileImage: user.profileImage,
+      };
 
       res.statusCode = 200;
-      return res.send(userWithoutPassword);
+      return res.send(editUserData);
     } catch (error) {
       console.log("loginAPI error : ", error);
       res.statusCode = 500;
