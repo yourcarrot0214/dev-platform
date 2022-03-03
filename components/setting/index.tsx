@@ -3,18 +3,19 @@ import styled from "styled-components";
 import palette from "../../styles/palette";
 
 const Container = styled.div`
+  width: 100%;
   max-width: 1024px;
   margin: 0 auto;
   box-sizing: border-box;
   border: 1px solid ${palette.cardinal};
 `;
 
-const Profile: React.FC = () => {
+const Index: React.FC = () => {
   return (
     <Container>
-      <h2>Profile Page</h2>
+      <div>setting page</div>
     </Container>
   );
 };
 
-export default Profile;
+export default Index;

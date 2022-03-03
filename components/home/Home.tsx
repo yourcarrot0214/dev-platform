@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-// import HeadLine from "./header/HeadLine.tsx"
-// import WidgetList from "./widget/WidgetList.tsx"
 import palette from "../../styles/palette";
 import Mui from "../widgets/Mui";
 

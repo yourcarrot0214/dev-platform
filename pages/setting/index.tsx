@@ -3,10 +3,10 @@ import { NextPage } from "next";
 import wrapper from "../../store";
 import { Store } from "redux";
 import { NextPageContext } from "next/types";
-import Profile from "../../components/user/Profile";
+import Setting from "../../components/setting";
 
 const index: NextPage = () => {
-  return <Profile />;
+  return <Setting />;
 };
 
 index.getInitialProps = wrapper.getInitialAppProps(

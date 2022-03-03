@@ -74,7 +74,6 @@ const HeaderUserProfile: React.FC = () => {
     try {
       await logoutAPI(userId);
       dispatch(userActions.initUser());
-      router.push("/");
     } catch (error) {
       console.log(error.message);
     }
@@ -104,11 +103,6 @@ const HeaderUserProfile: React.FC = () => {
         </button>
         {isUsermenuOpened && (
           <ul className="header-usermenu">
-            <Link href={`/user?id=${userId}`}>
-              <a>
-                <li onClick={() => setIsUsermenuOpened(false)}>Profile</li>
-              </a>
-            </Link>
             <Link href="/">
               <a>
                 <li onClick={() => setIsUsermenuOpened(false)}>
@@ -117,6 +111,11 @@ const HeaderUserProfile: React.FC = () => {
               </a>
             </Link>
             <div className="header-usermenu-divider" />
+            <Link href="/setting ">
+              <a>
+                <li onClick={() => setIsUsermenuOpened(false)}>설정</li>
+              </a>
+            </Link>
             <li role="presentation" onClick={logout}>
               로그아웃
             </li>
