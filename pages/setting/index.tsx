@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import wrapper from "../../store";
 import { Store } from "redux";
 import { NextPageContext } from "next/types";
-import Setting from "../../components/setting";
+import Setting from "../../components/setting/Index";
 
 const index: NextPage = () => {
   return <Setting />;
