@@ -2,7 +2,7 @@
   TODO : comment, replies author의 정보와 action button을 출력합니다.
 */
 
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import palette from "../../../../styles/palette";
 
@@ -40,17 +40,20 @@ interface IProps {
 }
 
 const UserTab: React.FC<IProps> = ({ author, createdAt, updatedAt }) => {
-  const time = (createdAt: string, updatedAt: string) => {
-    const isUpdated = createdAt !== updatedAt;
-    const message = isUpdated ? "수정" : "";
+  const time = useCallback(
+    (createdAt: string, updatedAt: string) => {
+      const isUpdated = createdAt !== updatedAt;
+      const message = isUpdated ? "수정" : "";
 
-    return `${new Date(isUpdated ? updatedAt : createdAt).toLocaleString(
-      "ko-KR",
-      {
-        timeZone: "UTC",
-      }
-    )} ${message}`;
-  };
+      return `${new Date(isUpdated ? updatedAt : createdAt).toLocaleString(
+        "ko-KR",
+        {
+          timeZone: "UTC",
+        }
+      )} ${message}`;
+    },
+    [createdAt, updatedAt]
+  );
   return (
     <Container>
       <Stack

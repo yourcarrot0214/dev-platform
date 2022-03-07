@@ -18,7 +18,11 @@ export type DetailPostType = {
 export type CommentType = {
   _id: string;
   postId: string;
-  author: object;
+  author: {
+    _id: string;
+    name: string;
+    profileImage: string;
+  };
   content: string;
   createdAt: string;
   updatedAt: string;

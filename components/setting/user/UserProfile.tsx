@@ -23,7 +23,12 @@ const UserProfile: React.FC = () => {
   const user = useSelector((state) => state.user);
   return (
     <Container>
-      <Stack spacing={2} direction="column" sx={{ width: 100, mr: 2 }}>
+      <Stack
+        spacing={2}
+        direction="column"
+        alignItems="center"
+        sx={{ width: 100, mr: 2 }}
+      >
         <Avatar
           alt={user.name}
           src={user.profileImage}
@@ -48,3 +53,14 @@ const UserProfile: React.FC = () => {
 };
 
 export default React.memo(UserProfile);
+
+/*
+  TODO 1. Avatar
+    ? Avatar Profile Image 출력
+    ? Badge button update 기능 구현
+      * Badge를 클릭하면 Modal이 호출되고, Modal에 이미지 업로드, 이미지 제거 버튼 제공
+    
+  TODO 2. Name
+    ? Name 과 Pen Icon을 출력. row 정렬로.
+    ? Pen Icon 클릭시 Name 수정 기능을 제공
+*/

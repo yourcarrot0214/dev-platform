@@ -4,7 +4,6 @@
 */
 
 import React, { useState, useCallback, useMemo } from "react";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 import palette from "../../../../../styles/palette";
 import { useDispatch } from "react-redux";
@@ -12,7 +11,6 @@ import { useSelector } from "../../../../../store";
 import { CommentType } from "../../../../../types/post";
 import {
   deleteCommentAPI,
-  getCommentListAPI,
   updateCommentAPI,
 } from "../../../../../lib/api/board";
 import { boardActions } from "../../../../../store/board";

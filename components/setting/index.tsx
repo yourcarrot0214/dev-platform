@@ -10,7 +10,6 @@ const Container = styled.div`
   max-width: 1024px;
   margin: 0 auto;
   box-sizing: border-box;
-  border: 1px solid ${palette.cardinal};
 `;
 
 const Index: React.FC = () => {

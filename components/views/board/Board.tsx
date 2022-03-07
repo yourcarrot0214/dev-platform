@@ -67,15 +67,19 @@ const Board: React.FC = () => {
     )
   );
 
-  const getCommentAndRepliesCount = (postId: string) => {
-    const commentCount = commentlist.filter(
-      (comment) => comment.postId === postId
-    ).length;
-    const repliesCount = replieslist.filter(
-      (replies) => replies.postId === postId
-    ).length;
-    return commentCount + repliesCount;
-  };
+  /*
+    코드블록 내 임시변수 사용을 줄이기 위해 함수를 분리함.
+    임시변수를 줄여서 코드가 수정되는 경우를 줄이고, 이로 인한 사이드 이펙트 발생을 차단함.
+    함수는 한 가지 일만 수행함으로 에러 발생시 분석과 해결에 용이함.
+  */
+  const getCommentCount = (postId: string) =>
+    commentlist.filter((comment) => comment.postId === postId).length;
+
+  const getRepliesCount = (postId: string) =>
+    replieslist.filter((replies) => replies.postId === postId).length;
+
+  const getCommentAndRepliesCount = (postId: string) =>
+    getCommentCount(postId) + getRepliesCount(postId);
 
   return (
     <Container>
