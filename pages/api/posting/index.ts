@@ -27,10 +27,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // TODO 4. board에 포스팅 정보를 저장합니다.
       const catcher = (error: Error) => res.statusCode(400).json({ error });
-      await Board.create(newPosting).catch(catcher);
+      const newPost = await Board.create(newPosting).catch(catcher);
 
       res.statusCode = 201;
-      return res.end();
+      return res.send(newPost._id);
     } catch (error) {
       console.log(">> posting error :: ", error);
     }

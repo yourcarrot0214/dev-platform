@@ -99,10 +99,11 @@ const Write: React.FC = () => {
       };
 
       // ? 4. request api를 호출합니다.
-      await postingAPI(requestBody);
+      const { data } = await postingAPI(requestBody);
+      console.log(data);
 
       // ? 5. board route로 page를 전환합니다.
-      router.push("/board");
+      router.push(`/board/${data}`);
     } catch (error) {
       setLoading(false);
       console.log("write error :: ", error);
