@@ -75,7 +75,10 @@ const Post: React.FC = () => {
   useEffect(() => {
     document.title = `DEV-PLATFORM : ${title}`;
 
-    return () => (document.title = "DEV-PLATFORM");
+    return () => {
+      document.title = "DEV-PLATFORM";
+      return;
+    };
   }, []);
 
   return (

@@ -14,7 +14,7 @@ import Counter from "../Counter";
 import CommentInput from "./CommentInput";
 
 // * MUI component
-import { Stack } from "@mui/material";
+import { Stack, Alert } from "@mui/material";
 import Comment from "./Comment";
 
 // * API
@@ -69,12 +69,16 @@ const CommentBoard: React.FC = () => {
     <Container>
       <Stack spacing={2} direction="column">
         <Counter counter={commentState.length + repliesState.length} />
-        {isLogged && (
+        {isLogged ? (
           <CommentInput
             value={commentText}
             onChange={onChangeCommentText}
             onSubmitComment={onSubmitComment}
           />
+        ) : (
+          <Alert severity="info">
+            댓글 작성은 로그인 된 유저에게만 제공됩니다.
+          </Alert>
         )}
       </Stack>
       <Stack spacing={0} direction="column">

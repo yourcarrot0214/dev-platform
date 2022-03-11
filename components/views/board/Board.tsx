@@ -12,7 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Stack, Button } from "@mui/material";
+import { Stack, Button, Alert } from "@mui/material";
 import Badge, { BadgeProps } from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -67,11 +67,6 @@ const Board: React.FC = () => {
     )
   );
 
-  /*
-    코드블록 내 임시변수 사용을 줄이기 위해 함수를 분리함.
-    임시변수를 줄여서 코드가 수정되는 경우를 줄이고, 이로 인한 사이드 이펙트 발생을 차단함.
-    함수는 한 가지 일만 수행함으로 에러 발생시 분석과 해결에 용이함.
-  */
   const getCommentCount = (postId: string) =>
     commentlist.filter((comment) => comment.postId === postId).length;
 
@@ -84,6 +79,9 @@ const Board: React.FC = () => {
   return (
     <Container>
       <Stack spacing={2} direction="column" sx={{ mt: 1, mb: 1 }}>
+        <Alert severity="info">
+          게시글 작성 기능은 로그인 된 유저에게만 제공됩니다.
+        </Alert>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="posting list">
             <TableHead>
