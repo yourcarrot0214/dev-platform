@@ -27,12 +27,12 @@ const UserProfile: React.FC = () => {
         spacing={2}
         direction="column"
         alignItems="center"
-        sx={{ width: 100, mr: 2 }}
+        sx={{ width: 300, pl: 1, pr: 1 }}
       >
         <Avatar
           alt={user.name}
           src={user.profileImage}
-          sx={{ width: 56, height: 56 }}
+          sx={{ width: 100, height: 100 }}
         />
         <Button variant="contained" color="info" size="small">
           이미지 업로드

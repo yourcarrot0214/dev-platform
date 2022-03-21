@@ -3,6 +3,7 @@ import styled from "styled-components";
 import palette from "../../styles/palette";
 import Mui from "./Mui";
 import Board from "./Board";
+import Chat from "./Chat";
 
 const Container = styled.div`
   width: 100px;
@@ -23,6 +24,7 @@ const WidgetBar: React.FC = () => {
     <Container>
       <Mui />
       <Board />
+      <Chat />
     </Container>
   );
 };
