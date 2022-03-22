@@ -34,6 +34,7 @@ const Chatting: React.FC = () => {
   const [chat, setChat] = useState<IMessage[]>([]);
 
   const username = useSelector((state) => state.user.name);
+  const isLogged = useSelector((state) => state.user.isLogged);
 
   useEffect((): any => {
     // connect to socket server
@@ -108,30 +109,32 @@ const Chatting: React.FC = () => {
           </Paper>
         </Stack>
         {/* 채팅 메시지 입력 영역 */}
-        <Stack spacing={1} direction="row">
-          <TextField
-            id="chat-message-input"
-            label="enter your message"
-            variant="outlined"
-            value={sendMessage}
-            onChange={sendMessageHandler}
-            margin="normal"
-            autoFocus
-            multiline
-            rows={2}
-            fullWidth
-            onKeyPress={enterKeyPress}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            endIcon={<SendIcon />}
-            onClick={submitSendMessage}
-          >
-            Send
-          </Button>
-        </Stack>
+        {isLogged && (
+          <Stack spacing={1} direction="row">
+            <TextField
+              id="chat-message-input"
+              label="enter your message"
+              variant="outlined"
+              value={sendMessage}
+              onChange={sendMessageHandler}
+              margin="normal"
+              autoFocus
+              multiline
+              rows={2}
+              fullWidth
+              onKeyPress={enterKeyPress}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              endIcon={<SendIcon />}
+              onClick={submitSendMessage}
+            >
+              Send
+            </Button>
+          </Stack>
+        )}
       </Stack>
     </Container>
   );
