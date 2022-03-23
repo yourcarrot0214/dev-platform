@@ -18,6 +18,30 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       path: "/api/chat/socketio",
     });
 
+    io.on("connection", (socket) => {
+      console.log("io connected... 🌏");
+
+      socket.on("login", (data) => {
+        console.log("client login 🙋‍♂️ ", data.name);
+        socket.name = data.name;
+        socket._id = data._id;
+        socket.profileImage = data.profileImage;
+
+        io.emit("login", data.name);
+      });
+
+      socket.on("message", (data) => {
+        console.log("message from client 📨");
+        const message = {
+          user: socket.name,
+          profileImage: socket.profileImage,
+          message: data.message,
+        };
+
+        socket.broadcast.emit("message", message);
+      });
+    });
+
     res.socket.server.io = io;
   }
 

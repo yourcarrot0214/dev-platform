@@ -10,6 +10,7 @@ import SocketIOClient from "socket.io-client";
 // * MUI
 import { Stack, TextField, Alert, Button, Paper } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import socketio from "../../../pages/api/chat/socketio";
 
 const Container = styled.div`
   width: 100%;
@@ -33,8 +34,18 @@ const Chatting: React.FC = () => {
   const [connected, setConnected] = useState<boolean>(false);
   const [chat, setChat] = useState<IMessage[]>([]);
 
-  const username = useSelector((state) => state.user.name);
+  const { _id, name, profileImage } = useSelector((state) => state.user);
   const isLogged = useSelector((state) => state.user.isLogged);
+
+  const messageEnd = useRef(null);
+
+  useEffect((): any => {
+    const scrollToBottom = () => {
+      messageEnd.current.scrollIntoView({ behavior: "smooth" });
+    };
+
+    scrollToBottom();
+  }, [chat]);
 
   useEffect((): any => {
     // connect to socket server
@@ -42,9 +53,11 @@ const Chatting: React.FC = () => {
       path: "/api/chat/socketio",
     });
 
+    socket.emit("login", { name, _id, profileImage });
+
     // log socket connection
     socket.on("connect", () => {
-      console.log("SOCKET CONNECTED!", socket.id);
+      console.log("SOCKET CONNECTED!", socket);
       setConnected(true);
     });
 
@@ -79,7 +92,7 @@ const Chatting: React.FC = () => {
     event.preventDefault();
     if (sendMessage) {
       const message: IMessage = {
-        user: username,
+        user: name,
         message: sendMessage,
       };
 
@@ -95,17 +108,24 @@ const Chatting: React.FC = () => {
           채팅 기능은 로그인된 유저에게만 제공됩니다.
         </Alert>
         {/* 채팅 메시지 출력 영역 */}
-        <Stack spacing={2} direction="column">
-          <Paper variant="outlined" sx={{ minHeight: "300px" }}>
+        <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
+          <Paper
+            variant="outlined"
+            sx={{ overflow: "hidden", fontSize: "1.5rem", height: "500px" }}
+          >
             {chat.length ? (
               chat.map((chat, index) => (
                 <div className="chat-message" key={index}>
-                  {chat.user === username ? "Me" : chat.user} : {chat.message}
+                  {chat.user === name ? "Me" : chat.user} : {chat.message}
                 </div>
               ))
             ) : (
               <div className="alert-message">No Chat Messages</div>
             )}
+            <div
+              style={{ float: "left", clear: "both" }}
+              ref={(el) => (messageEnd.current = el)}
+            />
           </Paper>
         </Stack>
         {/* 채팅 메시지 입력 영역 */}
