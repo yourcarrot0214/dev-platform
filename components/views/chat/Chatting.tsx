@@ -55,6 +55,14 @@ const Chatting: React.FC = () => {
 
     socket.emit("login", { name, _id, profileImage });
 
+    socket.on("login", (data) => {
+      chat.push({
+        user: "SYSTEM",
+        message: `${data || "비회원"} 유저가 접속했습니다.`,
+      });
+      setChat([...chat]);
+    });
+
     // log socket connection
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket);
