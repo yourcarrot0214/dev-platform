@@ -12,6 +12,9 @@ import { Stack, TextField, Alert, Button, Paper } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import socketio from "../../../pages/api/chat/socketio";
 
+// * Children Component
+import MessageTab from "./MessageTab";
+
 const Container = styled.div`
   width: 100%;
   max-width: 1024px;
@@ -119,13 +122,20 @@ const Chatting: React.FC = () => {
         <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
           <Paper
             variant="outlined"
-            sx={{ overflow: "hidden", fontSize: "1.5rem", height: "500px" }}
+            sx={{ overflow: "hidden", height: "500px" }}
           >
             {chat.length ? (
               chat.map((chat, index) => (
-                <div className="chat-message" key={index}>
-                  {chat.user === name ? "Me" : chat.user} : {chat.message}
-                </div>
+                // <div className="chat-message" key={index}>
+                //   {chat.user === name ? "Me" : chat.user} : {chat.message}
+                // </div>
+                <MessageTab
+                  key={index}
+                  name={chat.user}
+                  profileImage={profileImage}
+                  message={chat.message}
+                  isMine={chat.user === name}
+                />
               ))
             ) : (
               <div className="alert-message">No Chat Messages</div>
@@ -169,3 +179,15 @@ const Chatting: React.FC = () => {
 };
 
 export default Chatting;
+
+/*
+  TODO : chat message 출력하기
+    ? 유저 정보 출력하기
+      * 이름, 프로필사진, 타임스탬프 ✅
+      * 좌(유저)/우(본인) 정렬 ✅
+      * max-width 설정 ✅
+      ! profileImage를 socket에서 전달받아 데이터를 저장하고 props로 전달하기
+    ? system 메시지 출력하기
+      * 이름, 메시지, 타임스탬프
+      * 중앙정렬
+*/
