@@ -16,15 +16,18 @@ const Container = styled.div<{ isMine: boolean }>`
     margin-bottom: 1rem;
 
     .user-name {
-      font-size: 1rem;
+      font-size: 0.8rem;
       font-weight: bold;
       margin-bottom: 0.5rem;
+      color: ${palette.gray_48};
     }
 
     .message {
       border-radius: 8px;
       padding: 1rem;
-      background-color: ${palette.main_pink};
+      background-color: ${palette.gray_eb};
+      font-size: 0.8rem;
+      line-height: 1.5;
     }
   }
 
@@ -34,7 +37,7 @@ const Container = styled.div<{ isMine: boolean }>`
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     margin-bottom: 1rem;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
   }
 `;
 
@@ -43,6 +46,7 @@ interface IProps {
   profileImage: string;
   message: string;
   isMine: boolean;
+  timestamp: string;
 }
 
 const MessageTab: React.FC<IProps> = ({
@@ -50,6 +54,7 @@ const MessageTab: React.FC<IProps> = ({
   profileImage,
   message,
   isMine,
+  timestamp,
 }) => {
   return (
     <Container isMine={isMine}>
@@ -58,7 +63,7 @@ const MessageTab: React.FC<IProps> = ({
           alt={name}
           src={profileImage}
           variant="rounded"
-          sx={{ width: 36, height: 36 }}
+          sx={{ width: 32, height: 32 }}
         />
         <div className="wrapper">
           <span className="user-name">{name}</span>
@@ -67,8 +72,7 @@ const MessageTab: React.FC<IProps> = ({
         <div className="time-stamp-wrapper">
           <span className="time-stamp">
             {/* ! dummy data -> props로 전달받은 데이터로 변경 */}
-            {new Date(Date.now()).getHours()}:
-            {new Date(Date.now()).getMinutes()}
+            {timestamp}
           </span>
         </div>
       </Stack>

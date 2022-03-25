@@ -10,10 +10,13 @@ import SocketIOClient from "socket.io-client";
 // * MUI
 import { Stack, TextField, Alert, Button, Paper } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import socketio from "../../../pages/api/chat/socketio";
 
 // * Children Component
 import MessageTab from "./MessageTab";
+import SystemMessage from "./SystemMessage";
+
+// * utils
+import useTimeStamp from "./useTimeStamp";
 
 const Container = styled.div`
   width: 100%;
@@ -30,6 +33,7 @@ const Container = styled.div`
 interface IMessage {
   user: string;
   message: string;
+  timestamp: string;
 }
 
 const Chatting: React.FC = () => {
@@ -59,9 +63,11 @@ const Chatting: React.FC = () => {
     socket.emit("login", { name, _id, profileImage });
 
     socket.on("login", (data) => {
+      const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
       chat.push({
         user: "SYSTEM",
         message: `${data || "비회원"} 유저가 접속했습니다.`,
+        timestamp: `${ampm} ${hours}:${minutes}`,
       });
       setChat([...chat]);
     });
@@ -102,9 +108,11 @@ const Chatting: React.FC = () => {
   ) => {
     event.preventDefault();
     if (sendMessage) {
+      const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
       const message: IMessage = {
         user: name,
         message: sendMessage,
+        timestamp: `${ampm} ${hours}:${minutes}`,
       };
 
       const response = await axios.post("/api/chat", message);
@@ -122,21 +130,26 @@ const Chatting: React.FC = () => {
         <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
           <Paper
             variant="outlined"
-            sx={{ overflow: "hidden", height: "500px" }}
+            sx={{ overflow: "hidden", height: "500px", padding: "1rem" }}
           >
             {chat.length ? (
-              chat.map((chat, index) => (
-                // <div className="chat-message" key={index}>
-                //   {chat.user === name ? "Me" : chat.user} : {chat.message}
-                // </div>
-                <MessageTab
-                  key={index}
-                  name={chat.user}
-                  profileImage={profileImage}
-                  message={chat.message}
-                  isMine={chat.user === name}
-                />
-              ))
+              chat.map((chat, index) =>
+                chat.user === "SYSTEM" ? (
+                  <SystemMessage
+                    message={chat.message}
+                    timestamp={chat.timestamp}
+                  />
+                ) : (
+                  <MessageTab
+                    key={index}
+                    name={chat.user}
+                    profileImage={profileImage}
+                    message={chat.message}
+                    isMine={chat.user === name}
+                    timestamp={chat.timestamp}
+                  />
+                )
+              )
             ) : (
               <div className="alert-message">No Chat Messages</div>
             )}
@@ -189,5 +202,7 @@ export default Chatting;
       ! profileImage를 socket에서 전달받아 데이터를 저장하고 props로 전달하기
     ? system 메시지 출력하기
       * 이름, 메시지, 타임스탬프
-      * 중앙정렬
+      * 중앙정렬 ✅
+    ? 타임 스탬프 정보 변환
+      * 오전/오후, 12시간제로 데이터 변환 출력
 */
