@@ -5,7 +5,7 @@ import palette from "../../../styles/palette";
 const Container = styled.div`
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 0.5rem;
 
   .message {
     text-align: center;

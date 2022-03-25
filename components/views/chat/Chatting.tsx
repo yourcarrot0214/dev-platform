@@ -28,6 +28,10 @@ const Container = styled.div`
     margin-top: 16px;
     margin-bottom: 8px;
   }
+
+  .message-end {
+    margin: 1rem 0;
+  }
 `;
 
 interface IMessage {
@@ -130,7 +134,7 @@ const Chatting: React.FC = () => {
         <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
           <Paper
             variant="outlined"
-            sx={{ overflow: "hidden", height: "500px", padding: "1rem" }}
+            sx={{ overflow: "scroll", height: "500px", padding: "1rem" }}
           >
             {chat.length ? (
               chat.map((chat, index) =>
@@ -156,6 +160,7 @@ const Chatting: React.FC = () => {
             <div
               style={{ float: "left", clear: "both" }}
               ref={(el) => (messageEnd.current = el)}
+              className="message-end"
             />
           </Paper>
         </Stack>

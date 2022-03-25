@@ -1,43 +1,66 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import palette from "../../../styles/palette";
 
 // * MUI
-import { Avatar, Stack } from "@mui/material";
+import { Avatar, Stack, TextField } from "@mui/material";
 
 const Container = styled.div<{ isMine: boolean }>`
-  /* border: 1px solid red; */
-  margin-left: ${(props) => (props.isMine ? "50%" : "0")};
-  margin-right: ${(props) => (props.isMine ? "0" : "50%")};
+  margin-bottom: 1rem;
 
-  .wrapper {
+  // ! TEST
+  display: flex;
+  flex-direction: row;
+  justify-content: ${(props) => (props.isMine ? "flex-end" : "flex-start")};
+  font-size: 0.8rem;
+  ${(props) =>
+    props.isMine &&
+    css`
+      margin-left: 40%;
+    `};
+
+  ${(props) =>
+    !props.isMine &&
+    css`
+      margin-right: 40%;
+    `};
+
+  .stack {
+    min-width: 30%;
     display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
+    flex-direction: row;
 
-    .user-name {
-      font-size: 0.8rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      color: ${palette.gray_48};
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
     }
 
-    .message {
-      border-radius: 8px;
-      padding: 1rem;
-      background-color: ${palette.gray_eb};
-      font-size: 0.8rem;
-      line-height: 1.5;
-    }
-  }
+    .wrapper {
+      margin-left: 0.5rem;
+      width: 100%;
 
-  .time-stamp-wrapper {
-    display: flex;
-    flex-direction: column-reverse;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 0.7rem;
+      .name-space {
+        margin-bottom: 0.5rem;
+        .name {
+          font-weight: bold;
+          font-size: 1rem;
+          color: ${palette.gray_48};
+        }
+        .time-stamp {
+          color: ${palette.gray_71};
+        }
+      }
+
+      .message {
+        font-size: 0.9rem;
+        border-radius: 8px;
+        background-color: #2196f3;
+        padding: 0.7rem;
+        color: white;
+        line-height: 1.5;
+      }
+    }
   }
 `;
 
@@ -58,26 +81,36 @@ const MessageTab: React.FC<IProps> = ({
 }) => {
   return (
     <Container isMine={isMine}>
-      <Stack direction="row" spacing={1}>
-        <Avatar
-          alt={name}
-          src={profileImage}
-          variant="rounded"
-          sx={{ width: 32, height: 32 }}
-        />
+      <div className="stack">
+        <img className="avatar" src={profileImage} alt="profile" />
         <div className="wrapper">
-          <span className="user-name">{name}</span>
-          <span className="message">{message}</span>
+          <div className="name-space">
+            <span className="name">{name} ✍🏼 </span>
+            <span className="time-stamp">{timestamp}</span>
+          </div>
+          <p className="message">{message}</p>
         </div>
-        <div className="time-stamp-wrapper">
-          <span className="time-stamp">
-            {/* ! dummy data -> props로 전달받은 데이터로 변경 */}
-            {timestamp}
-          </span>
-        </div>
-      </Stack>
+      </div>
     </Container>
   );
 };
 
 export default React.memo(MessageTab);
+
+/*
+<Avatar
+          alt={name}
+          src={profileImage}
+          variant="rounded"
+          sx={{ width: 32, height: 32 }}
+        />
+        <TextField
+          label={nameSpace}
+          value={message}
+          variant="filled"
+          color="info"
+          inputProps={{ readOnly: true }}
+          multiline
+          fullWidth
+        />
+*/
