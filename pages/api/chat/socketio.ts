@@ -2,6 +2,7 @@ import { NextApiRequest } from "next";
 import { NextApiResponseServerIO } from "../../../types/chat";
 import { Server as ServerIO } from "socket.io";
 import { Server as NetServer } from "http";
+import useTimeStamp from "../../../components/views/chat/useTimeStamp";
 
 export const config = {
   api: {
@@ -38,6 +39,17 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
           message: data.message,
         };
 
+        socket.broadcast.emit("message", message);
+      });
+
+      socket.on("disconnect", () => {
+        console.log("🌏 socket disconnect : ", socket.rooms);
+        const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
+        const message = {
+          user: "SYSTEM",
+          message: `${socket.name} 유저가 나갔습니다.`,
+          timestamp: `${ampm} ${hours}:${minutes}`,
+        };
         socket.broadcast.emit("message", message);
       });
     });

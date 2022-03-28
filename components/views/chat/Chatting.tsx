@@ -88,7 +88,12 @@ const Chatting: React.FC = () => {
       setChat([...chat]);
     });
 
+    // socket.on("disconnect", (reason) => {
+    //   console.log("Client disconnect : ", reason);
+    // });
+
     // socket disconnect on component unmount if exists
+    // * disconnect에서 socket.on으로 이벤트를 발생시켜야 함. -> 모든 클라이언트에 정보 전달.
     if (socket) return () => socket.disconnect();
   }, []);
 
@@ -140,6 +145,7 @@ const Chatting: React.FC = () => {
               chat.map((chat, index) =>
                 chat.user === "SYSTEM" ? (
                   <SystemMessage
+                    key={index}
                     message={chat.message}
                     timestamp={chat.timestamp}
                   />
