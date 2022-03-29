@@ -30,8 +30,8 @@ const Container = styled.div`
 
 const Write: React.FC = () => {
   const router = useRouter();
-  const userId = useSelector((state) => state.user._id);
-  const username = useSelector((state) => state.user.name);
+  const userId: string = useSelector((state) => state.user._id);
+  const username: string = useSelector((state) => state.user.name);
   const [title, setTitle] = useState<string | null>("");
   const [content, setContent] = useState<string>("");
   const [tag, setTag] = useState<string>("");

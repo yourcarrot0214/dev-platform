@@ -16,9 +16,11 @@ const postDetail: NextPage = () => {
   return <Post />;
 };
 
-postDetail.getInitialProps = wrapper.getInitialAppProps(
-  (store: Store) => async ({ query }: NextPageContext) => {
-    const { id } = query;
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store: Store) => async (context: NextPageContext) => {
+    console.log("getServerSideProps ✅");
+    console.log("context.query : ", context.query);
+    const { id } = context.query;
 
     try {
       if (id) {

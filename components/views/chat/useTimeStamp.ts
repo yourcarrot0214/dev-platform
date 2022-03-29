@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+interface IFunc {
+  (date: Date): { ampm: string; hours: string; minutes: string };
+}
 
-const useTimeStamp = (date: Date) => {
+const useTimeStamp: IFunc = (date: Date) => {
   let ampm, hours, minutes;
 
   const currentHours = date.getHours();

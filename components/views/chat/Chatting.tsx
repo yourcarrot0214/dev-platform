@@ -46,7 +46,7 @@ const Chatting: React.FC = () => {
   const [chat, setChat] = useState<IMessage[]>([]);
 
   const { _id, name, profileImage } = useSelector((state) => state.user);
-  const isLogged = useSelector((state) => state.user.isLogged);
+  const isLogged = useSelector<boolean>((state) => state.user.isLogged);
 
   const messageEnd = useRef(null);
 
@@ -88,12 +88,7 @@ const Chatting: React.FC = () => {
       setChat([...chat]);
     });
 
-    // socket.on("disconnect", (reason) => {
-    //   console.log("Client disconnect : ", reason);
-    // });
-
     // socket disconnect on component unmount if exists
-    // * disconnect에서 socket.on으로 이벤트를 발생시켜야 함. -> 모든 클라이언트에 정보 전달.
     if (socket) return () => socket.disconnect();
   }, []);
 
@@ -212,8 +207,8 @@ export default Chatting;
       * max-width 설정 ✅
       ! profileImage를 socket에서 전달받아 데이터를 저장하고 props로 전달하기
     ? system 메시지 출력하기
-      * 이름, 메시지, 타임스탬프
+      * 이름, 메시지, 타임스탬프 ✅
       * 중앙정렬 ✅
     ? 타임 스탬프 정보 변환
-      * 오전/오후, 12시간제로 데이터 변환 출력
+      * 오전/오후, 12시간제로 데이터 변환 출력 ✅
 */

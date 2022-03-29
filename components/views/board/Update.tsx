@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { updatePostingAPI } from "../../../lib/api/board";
 import { PostType } from "../../../types/post";
 
@@ -41,10 +40,9 @@ const onChangeHashtagsType = (hashtags: string[]) => {
 
 const Update: React.FC = () => {
   const dispatch = useDispatch();
-  const post = useSelector<PostType | null>((state) => state.board.detail.post);
-  console.log("post : ", post);
+  const post: PostType = useSelector((state) => state.board.detail.post);
   const router = useRouter();
-  const userId = useSelector((state) => state.user._id);
+  const userId: string = useSelector((state) => state.user._id);
   const [title, setTitle] = useState<string | null>(post.title);
   const [content, setContent] = useState<string>(post.content);
   const [tag, setTag] = useState<string>("");

@@ -17,9 +17,6 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { PostType } from "../../../types/post";
 import { deletePostingAPI } from "../../../lib/api/board";
-
-import Counter from "./common/Counter";
-import CommentInput from "./common/comment/CommentInput";
 import CommentBoard from "./common/comment/CommentBoard";
 
 interface ChipData {
@@ -53,16 +50,15 @@ const onChangeHashtagsType = (hashtags: string[]) => {
 };
 
 const Post: React.FC = () => {
-  const post = useSelector<PostType>((state) => state.board.detail.post);
+  const post: PostType = useSelector((state) => state.board.detail.post);
   const router = useRouter();
-  const userId = useSelector((state) => state.user._id);
+  const userId: string = useSelector((state) => state.user._id);
   const [title, setTitle] = useState<string | null>(post.title);
   const [content, setContent] = useState<string>(post.content);
   const [hashtags, setHashtags] = useState<ChipData[]>(
     onChangeHashtagsType(post.hashtags)
   );
   const [photos, setPhotos] = useState<string[]>(post.photos);
-  const [updateMode, setUpdateMode] = useState<boolean>(false);
 
   const onDeletePosting = async (postId: string) => {
     const confirm = window.confirm("정말로 삭제합니까?");

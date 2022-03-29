@@ -1,6 +1,5 @@
 import React from "react";
 import Styled from "styled-components";
-import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
 import { useRouter } from "next/router";
 
@@ -20,6 +19,7 @@ import IconButton from "@mui/material/IconButton";
 // * MUI Icon
 import CreateIcon from "@mui/icons-material/Create";
 import ChatIcon from "@mui/icons-material/Chat";
+import { PostType, CommentType, RepliesType } from "../../../types/post";
 
 const Container = Styled.div`
   width: 100%;
@@ -53,10 +53,14 @@ function createData(
 
 const Board: React.FC = () => {
   const router = useRouter();
-  const isLogged = useSelector((state) => state.user.isLogged);
-  const postlist = useSelector((state) => state.board.postlist);
-  const commentlist = useSelector((state) => state.board.commentlist);
-  const replieslist = useSelector((state) => state.board.replieslist);
+  const isLogged: boolean = useSelector((state) => state.user.isLogged);
+  const postlist: PostType[] = useSelector((state) => state.board.postlist);
+  const commentlist: CommentType[] = useSelector(
+    (state) => state.board.commentlist
+  );
+  const replieslist: RepliesType[] = useSelector(
+    (state) => state.board.replieslist
+  );
   const rows = postlist.map((post, index) =>
     createData(
       index + 1,

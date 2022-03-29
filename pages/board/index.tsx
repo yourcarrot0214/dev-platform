@@ -17,6 +17,7 @@ const index: NextPage = () => {
 
 index.getInitialProps = wrapper.getInitialAppProps(
   (store: Store) => async ({ query }: NextPageContext) => {
+    console.log("getInitialProps ✅");
     const boardList = await getBoardListAPI();
     const commentList = await getCommentListAPI();
     const repliesList = await getRepliesListAPI();
@@ -27,5 +28,17 @@ index.getInitialProps = wrapper.getInitialAppProps(
     return {};
   }
 );
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store: Store) => async (context: NextPageContext) => {
+//     const boardList = await getBoardListAPI();
+//     const commentList = await getCommentListAPI();
+//     const repliesList = await getRepliesListAPI();
+
+//     store.dispatch(boardActions.setPostlist(boardList.data));
+//     store.dispatch(boardActions.setCommentlist(commentList.data));
+//     store.dispatch(boardActions.setReplieslist(repliesList.data));
+//   }
+// );
 
 export default index;

@@ -2,13 +2,8 @@ import React from "react";
 import styled, { css } from "styled-components";
 import palette from "../../../styles/palette";
 
-// * MUI
-import { Avatar, Stack, TextField } from "@mui/material";
-
 const Container = styled.div<{ isMine: boolean }>`
   margin-bottom: 1rem;
-
-  // ! TEST
   display: flex;
   flex-direction: row;
   justify-content: ${(props) => (props.isMine ? "flex-end" : "flex-start")};
@@ -96,21 +91,3 @@ const MessageTab: React.FC<IProps> = ({
 };
 
 export default React.memo(MessageTab);
-
-/*
-<Avatar
-          alt={name}
-          src={profileImage}
-          variant="rounded"
-          sx={{ width: 32, height: 32 }}
-        />
-        <TextField
-          label={nameSpace}
-          value={message}
-          variant="filled"
-          color="info"
-          inputProps={{ readOnly: true }}
-          multiline
-          fullWidth
-        />
-*/
