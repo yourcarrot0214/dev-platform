@@ -34,16 +34,22 @@ const Container = styled.div`
   }
 `;
 
-interface IMessage {
+interface Message {
   user: string;
   message: string;
   timestamp: string;
 }
 
+interface ChatMembers {
+  name: string;
+  _id: string;
+  profileImage: string;
+}
+
 const Chatting: React.FC = () => {
   const [sendMessage, setSendMessage] = useState<string>("");
   const [connected, setConnected] = useState<boolean>(false);
-  const [chat, setChat] = useState<IMessage[]>([]);
+  const [chat, setChat] = useState<Message[]>([]);
 
   const { _id, name, profileImage } = useSelector((state) => state.user);
   const isLogged = useSelector<boolean>((state) => state.user.isLogged);
@@ -64,13 +70,13 @@ const Chatting: React.FC = () => {
       path: "/api/chat/socketio",
     });
 
-    socket.emit("login", { name, _id, profileImage });
+    socket.emit("login", { name: name, _id: _id, profileImage: profileImage });
 
     socket.on("login", (data) => {
       const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
       chat.push({
         user: "SYSTEM",
-        message: `${data || "비회원"} 유저가 접속했습니다.`,
+        message: `${data.name || "비회원"} 유저가 접속했습니다.`,
         timestamp: `${ampm} ${hours}:${minutes}`,
       });
       setChat([...chat]);
@@ -83,7 +89,7 @@ const Chatting: React.FC = () => {
     });
 
     // update chat on new message dispatched
-    socket.on("message", (message: IMessage) => {
+    socket.on("message", (message: Message) => {
       chat.push(message);
       setChat([...chat]);
     });

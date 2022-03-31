@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         socket._id = data._id;
         socket.profileImage = data.profileImage;
 
-        io.emit("login", data.name);
+        io.emit("login", data);
       });
 
       socket.on("message", (data) => {
