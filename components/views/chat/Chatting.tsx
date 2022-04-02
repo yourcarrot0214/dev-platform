@@ -85,6 +85,14 @@ const Chatting: React.FC = () => {
     // log socket connection
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket);
+      socket.emit("join room", {
+        name: name,
+        _id: _id,
+        profileImage: profileImage,
+      });
+      socket.on("test room message", (response) => {
+        console.log(response);
+      });
       setConnected(true);
     });
 
@@ -119,7 +127,7 @@ const Chatting: React.FC = () => {
     event.preventDefault();
     if (sendMessage) {
       const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
-      const message: IMessage = {
+      const message: Message = {
         user: name,
         message: sendMessage,
         timestamp: `${ampm} ${hours}:${minutes}`,

@@ -21,6 +21,17 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
     io.on("connection", (socket) => {
       console.log("io connected... 🌏");
+      console.log("🏛 socket.rooms : ", socket.rooms);
+
+      socket.on("join room", (user) => {
+        socket.join("test room");
+        console.log(`${user.name} join test room. 🎫`);
+
+        io.to("test room").emit("test room message", {
+          user: "SYSTEM",
+          message: "test room joined. 🎫",
+        });
+      });
 
       socket.on("login", (data) => {
         console.log("client login 🙋‍♂️ ", data.name);
@@ -59,3 +70,9 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
   res.end();
 };
+
+/*
+  TODO : Room 기능 적용하기
+    ? server -> io.of('pathname'), pathname.on('connect', (socket) => { ... something to do})
+    ? pages/api/[pathname].ts 경로에 위 로직 작성
+*/
