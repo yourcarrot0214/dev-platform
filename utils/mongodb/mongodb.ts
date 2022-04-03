@@ -3,6 +3,8 @@ import userSchema from "./models/userSchema";
 import boardSchema from "./models/boardSchema";
 import commentSchema from "./models/commentSchema";
 import repliesSchema from "./models/repliesSchema";
+import chatSchema from "./models/chatSchema";
+import messageSchema from "./models/messageSchema";
 
 export const connect = async () => {
   const connectDB = await mongoose
@@ -16,6 +18,9 @@ export const connect = async () => {
     mongoose.models.Comment || mongoose.model("Comment", commentSchema);
   const Replies =
     mongoose.models.Replies || mongoose.model("Replies", repliesSchema);
+  const Chat = mongoose.models.Chat || mongoose.model("Chat", chatSchema);
+  const Message =
+    mongoose.models.Message || mongoose.model("Message", messageSchema);
 
-  return { connectDB, User, Board, Comment, Replies };
+  return { connectDB, User, Board, Comment, Replies, Chat, Message };
 };

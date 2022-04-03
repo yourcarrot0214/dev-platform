@@ -1,15 +1,14 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const chatSchema = new mongoose.Schema(
+const messageSchema = new mongoose.Schema(
   {
-    members: {
-      type: [Schema.Types.ObjectId],
+    author: {
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
     message: {
-      type: [Schema.Types.ObjectId],
-      ref: "Message",
+      type: String,
     },
   },
   {
@@ -19,4 +18,4 @@ const chatSchema = new mongoose.Schema(
   }
 );
 
-export default chatSchema;
+export default messageSchema;
