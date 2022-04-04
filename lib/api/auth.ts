@@ -7,8 +7,13 @@ interface SignUpAPIBody {
   password: string;
 }
 
+const API_AUTH_SIGN_UP = "/api/auth/signup";
+const API_AUTH_LOG_IN = "/api/auth/login";
+const API_AUTH_LOG_OUT = "/api/auth/logout";
+const API_AUTH_AUTH = "/api/auth/auth";
+
 export const signupAPI = (body: SignUpAPIBody) =>
-  axios.post<UserType>("/api/auth/signup", body);
+  axios.post<UserType>(API_AUTH_SIGN_UP, body);
 
 interface LoginAPIBody {
   email: string;
@@ -16,9 +21,9 @@ interface LoginAPIBody {
 }
 
 export const loginAPI = (body: LoginAPIBody) =>
-  axios.post<UserType>("/api/auth/login", body);
+  axios.post<UserType>(API_AUTH_LOG_IN, body);
 
-export const authAPI = () => axios.get<UserType>("/api/auth/auth");
+export const authAPI = () => axios.get<UserType>(API_AUTH_AUTH);
 
 export const logoutAPI = (userId: string) =>
-  axios.delete(`/api/auth/logout/${userId}`);
+  axios.delete(`${API_AUTH_LOG_OUT}/${userId}`);
