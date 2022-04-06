@@ -4,7 +4,6 @@
 
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
-import palette from "../../../../../styles/palette";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../../../store";
 import { boardActions } from "../../../../../store/board";
@@ -22,19 +21,25 @@ import { commentAPI } from "../../../../../lib/api/board";
 
 // * constant
 import { REGEX } from "../../../../../components/auth/constant";
+import { CommentType, RepliesType } from "../../../../../types/post";
 
 const Container = styled.div`
   width: 100%;
 `;
 
 const CommentBoard: React.FC = () => {
-  console.log("CommentBoard rendering.");
   const dispatch = useDispatch();
-  const commentState = useSelector((state) => state.board.detail.comment);
-  const repliesState = useSelector((state) => state.board.detail.replies);
-  const isLogged = useSelector((state) => state.user.isLogged);
-  const userId = useSelector((state) => state.user._id);
-  const postId = useSelector((state) => state.board.detail?.post._id);
+  const commentState: CommentType[] = useSelector(
+    (state) => state.board.detail.comment
+  );
+  const repliesState: RepliesType[] = useSelector(
+    (state) => state.board.detail.replies
+  );
+  const isLogged: boolean = useSelector((state) => state.user.isLogged);
+  const userId: string = useSelector((state) => state.user._id);
+  const postId: string | undefined = useSelector(
+    (state) => state.board.detail?.post._id
+  );
 
   const [commentText, setCommentText] = useState<string>("");
 

@@ -5,10 +5,9 @@
 
 import React, { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
-import palette from "../../../../../styles/palette";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../../../store";
-import { CommentType } from "../../../../../types/post";
+import { CommentType, RepliesType } from "../../../../../types/post";
 import {
   deleteCommentAPI,
   updateCommentAPI,
@@ -35,9 +34,11 @@ interface IProps {
 
 const Comment: React.FC<IProps> = ({ comment }) => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user._id);
-  const isLogged = useSelector((state) => state.user.isLogged);
-  const repliesState = useSelector((state) => state.board.detail?.replies);
+  const userId: string = useSelector((state) => state.user._id);
+  const isLogged: boolean = useSelector((state) => state.user.isLogged);
+  const repliesState: RepliesType[] | undefined = useSelector(
+    (state) => state.board.detail?.replies
+  );
   const [editMode, setEditMode] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>(comment.content);
   const [updatedText, setUpdatedText] = useState<string>(comment.content);
@@ -46,7 +47,7 @@ const Comment: React.FC<IProps> = ({ comment }) => {
   const onUpdate = useCallback(() => setEditMode(!editMode), [editMode]);
 
   const onDelete = async () => {
-    const confirm = window.confirm("댓글을 삭제하시겠습니까?");
+    const confirm: boolean = window.confirm("댓글을 삭제하시겠습니까?");
     if (confirm) {
       try {
         await deleteCommentAPI(comment._id);

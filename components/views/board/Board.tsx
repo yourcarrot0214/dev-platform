@@ -71,13 +71,17 @@ const Board: React.FC = () => {
     )
   );
 
-  const getCommentCount = (postId: string) =>
+  interface IGetCount {
+    (postId: string): number;
+  }
+
+  const getCommentCount: IGetCount = (postId: string) =>
     commentlist.filter((comment) => comment.postId === postId).length;
 
-  const getRepliesCount = (postId: string) =>
+  const getRepliesCount: IGetCount = (postId: string) =>
     replieslist.filter((replies) => replies.postId === postId).length;
 
-  const getCommentAndRepliesCount = (postId: string) =>
+  const getCommentAndRepliesCount: IGetCount = (postId: string) =>
     getCommentCount(postId) + getRepliesCount(postId);
 
   return (
