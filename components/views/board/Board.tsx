@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Styled from "styled-components";
 import { useSelector } from "../../../store";
 import { useRouter } from "next/router";
@@ -11,7 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Stack, Button, Alert } from "@mui/material";
+import { Stack, Button, Alert, Snackbar } from "@mui/material";
 import Badge, { BadgeProps } from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -71,6 +71,12 @@ const Board: React.FC = () => {
     )
   );
 
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClick = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
   interface IGetCount {
     (postId: string): number;
   }
@@ -87,9 +93,6 @@ const Board: React.FC = () => {
   return (
     <Container>
       <Stack spacing={2} direction="column" sx={{ mt: 1, mb: 1 }}>
-        <Alert severity="info">
-          게시글 작성 기능은 로그인 된 유저에게만 제공됩니다.
-        </Alert>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="posting list">
             <TableHead>
@@ -146,7 +149,7 @@ const Board: React.FC = () => {
           </Table>
         </TableContainer>
       </Stack>
-      {isLogged && (
+      {isLogged ? (
         <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
           <Button
             variant="outlined"
@@ -157,6 +160,28 @@ const Board: React.FC = () => {
           >
             작성하기
           </Button>
+        </Stack>
+      ) : (
+        <Stack spacing={2} direction="row" sx={{ mt: 1, mb: 1 }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            endIcon={<CreateIcon />}
+            onClick={handleClick}
+          >
+            작성하기
+          </Button>
+          <Snackbar
+            open={open}
+            autoHideDuration={3000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert severity="error" onClose={handleClose} variant="filled">
+              게시글 작성 기능은 로그인 된 유저에게만 제공됩니다.
+            </Alert>
+          </Snackbar>
         </Stack>
       )}
     </Container>

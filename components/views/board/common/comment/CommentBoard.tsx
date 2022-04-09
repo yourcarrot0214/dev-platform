@@ -81,7 +81,7 @@ const CommentBoard: React.FC = () => {
             onSubmitComment={onSubmitComment}
           />
         ) : (
-          <Alert severity="info">
+          <Alert severity="warning" variant="filled">
             댓글 작성은 로그인 된 유저에게만 제공됩니다.
           </Alert>
         )}

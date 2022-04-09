@@ -2,7 +2,6 @@ import App, { AppContext, AppProps } from "next/app";
 import GlobalStyle from "../styles/GlobalStyle";
 import wrapper from "../store";
 import Header from "../components/header/Header";
-import WidgetBar from "../components/widgets";
 import axios from "../lib/api";
 import { cookieStringToObject } from "../utils";
 import { Store } from "redux";
@@ -21,7 +20,6 @@ const app = ({ Component, pageProps }: AppProps) => {
       <GlobalStyle />
       <Header />
       <MainContainer>
-        <WidgetBar />
         <Component {...pageProps} />
       </MainContainer>
       <div id="root-modal" />

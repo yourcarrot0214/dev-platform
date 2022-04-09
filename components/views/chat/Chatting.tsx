@@ -141,9 +141,11 @@ const Chatting: React.FC = () => {
   return (
     <Container>
       <Stack spacing={2} direction="column">
-        <Alert severity="info">
-          채팅 기능은 로그인된 유저에게만 제공됩니다.
-        </Alert>
+        {!isLogged && (
+          <Alert severity="warning" variant="filled">
+            채팅 기능은 로그인된 유저에게만 제공됩니다.
+          </Alert>
+        )}
         {/* 채팅 메시지 출력 영역 */}
         <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
           <Paper
