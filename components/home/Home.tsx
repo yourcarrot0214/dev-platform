@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 
 import CardSection from "../common/CardSection";
-import { list } from "../../lib/data/portfolio";
+import { implementList, projectList } from "../../lib/data/portfolio";
 
 const Container = styled.div`
   width: 100%;
@@ -14,15 +14,25 @@ const Container = styled.div`
   .card-wrapper {
     display: flex;
     flex-direction: column;
+    align-items: center;
 
-    max-width: 1440px;
     margin: 0 auto;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    @media screen and (min-width: 800px) {
+      max-width: 1440px;
+      min-width: 1064px;
+      margin: 0 auto;
+      margin-bottom: 2rem;
+      align-items: flex-start;
+    }
 
     .title {
       font-size: 2.5rem;
       font-weight: bold;
       margin-left: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       color: #222222;
     }
 
@@ -43,9 +53,25 @@ const Home: React.FC = () => {
   return (
     <Container>
       <div className="card-wrapper">
+        <h1 className="title">🎮 Implement</h1>
+        <div className="card-section">
+          {implementList.map((item) => (
+            <Link href={{ pathname: item.path }} key={item.id}>
+              <a target={item.target}>
+                <CardSection
+                  title={item.title}
+                  summary={item.summary}
+                  tags={item.tags}
+                />
+              </a>
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div className="card-wrapper">
         <h1 className="title">🖥 Project</h1>
         <div className="card-section">
-          {list.map((item) => (
+          {projectList.map((item) => (
             <Link href={{ pathname: item.path }} key={item.id}>
               <a target={item.target}>
                 <CardSection
