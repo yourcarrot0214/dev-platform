@@ -111,11 +111,11 @@ const Comment: React.FC<IProps> = ({ comment }) => {
           onCancle={onUpdate}
           onSubmit={onUpdateComment}
         />
-        {repliesList.length === 0 && !isLogged ? null : (
+        {repliesList!.length === 0 && !isLogged ? null : (
           <RepliesButton
             onClick={onRepliesToggle}
             open={repliesOpen}
-            count={repliesList.length}
+            count={repliesList!.length}
           />
         )}
         {repliesOpen && (

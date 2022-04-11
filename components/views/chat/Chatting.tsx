@@ -54,19 +54,18 @@ const Chatting: React.FC = () => {
   const { _id, name, profileImage } = useSelector((state) => state.user);
   const isLogged = useSelector<boolean>((state) => state.user.isLogged);
 
-  const messageEnd = useRef(null);
+  const messageEnd = useRef<null | HTMLDivElement>(null);
 
   useEffect((): any => {
     const scrollToBottom = () => {
-      messageEnd.current.scrollIntoView({ behavior: "smooth" });
+      messageEnd.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     scrollToBottom();
   }, [chat]);
 
   useEffect((): any => {
-    // connect to socket server
-    const socket = SocketIOClient.connect(process.env.NEXT_PUBLIC_API_URL, {
+    const socket = SocketIOClient({
       path: "/api/chat/socketio",
     });
 
@@ -122,7 +121,9 @@ const Chatting: React.FC = () => {
   };
 
   const submitSendMessage = async (
-    event: React.FormEvent<HTMLButtonElement>
+    event:
+      | React.FormEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLInputElement>
   ) => {
     event.preventDefault();
     if (sendMessage) {
@@ -176,7 +177,7 @@ const Chatting: React.FC = () => {
             )}
             <div
               style={{ float: "left", clear: "both" }}
-              ref={(el) => (messageEnd.current = el)}
+              ref={messageEnd}
               className="message-end"
             />
           </Paper>

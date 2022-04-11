@@ -1,6 +1,6 @@
 export type PostType = {
   _id: string;
-  author: object;
+  author: { _id: string; name: string; profileImage: string };
   title: string;
   content: string;
   hashtags: string[];
@@ -32,7 +32,7 @@ export type RepliesType = {
   _id: string;
   postId: string;
   responseTo: string;
-  author: object;
+  author: { _id: string; name: string; profileImage: string };
   content: string;
   createdAt: string;
   updatedAt: string;

@@ -9,6 +9,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import HamburgerIcon from "../../public/static/svg/header/hamburger.svg";
 import { userActions } from "../../store/user";
 import { logoutAPI } from "../../lib/api/auth";
+import { MongoSystemError } from "mongodb";
 
 const Container = styled.div`
   @media screen and (max-width: 500px) {
@@ -81,6 +82,11 @@ const Container = styled.div`
   }
 `;
 
+interface SystemError {
+  code: string;
+  message: string;
+}
+
 const HeaderUserProfile: React.FC = () => {
   const [isUsermenuOpened, setIsUsermenuOpened] = useState(false);
   const userProfileImage = useSelector((state) => state.user.profileImage);
@@ -94,7 +100,8 @@ const HeaderUserProfile: React.FC = () => {
       await logoutAPI(userId);
       dispatch(userActions.initUser());
     } catch (error) {
-      console.log(error.message);
+      const err = error as SystemError;
+      console.log(err.message);
     }
   };
 

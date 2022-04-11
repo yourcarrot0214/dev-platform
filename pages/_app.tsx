@@ -1,4 +1,5 @@
 import App, { AppContext, AppProps } from "next/app";
+import { NextPageContext } from "next";
 import GlobalStyle from "../styles/GlobalStyle";
 import wrapper from "../store";
 import Header from "../components/header/Header";
@@ -14,6 +15,11 @@ const MainContainer = styled.div`
   flex-direction: row;
 `;
 
+interface SystemError {
+  code: string;
+  message: string;
+}
+
 const app = ({ Component, pageProps }: AppProps) => {
   return (
     <>
@@ -27,7 +33,7 @@ const app = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-app.getInitialProps = wrapper.getInitialPageProps(
+app.getInitialProps = wrapper.getInitialAppProps(
   (store: Store) => async (context: AppContext) => {
     const appInitialProps = await App.getInitialProps(context);
     const { isLogged } = store.getState().user;
@@ -35,14 +41,15 @@ app.getInitialProps = wrapper.getInitialPageProps(
 
     try {
       if (!isLogged && cookieObject.access_token) {
-        axios.defaults.headers.cookie = cookieObject.access_token;
+        axios.defaults.headers.common.cookie = cookieObject.access_token;
         const { data } = await authAPI();
         const userdataWithoutPassword = data;
-        delete data.password;
+
         store.dispatch(userActions.setLoggedUser(userdataWithoutPassword));
       }
     } catch (error) {
-      console.log(">> app.getInitialProps error :: ", error.message);
+      const err = error as SystemError;
+      console.log(">> app.getInitialProps error :: ", err.message);
     }
 
     return { ...appInitialProps };

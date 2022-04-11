@@ -15,8 +15,10 @@ const useFriendStatus = async (userId: string) => {
   if (userId) {
     try {
       // userId로 api 요청을 보내서 결과를 받습니다.
-      const { status } = await axios.get(`/api/auth/user/status/${userId}`);
-      setStatus(status);
+      const { data } = await axios.get<boolean>(
+        `/api/auth/user/status/${userId}`
+      );
+      setStatus(data);
     } catch (error) {
       console.log(">> userFriendStatus hooks Error :: ", error);
     }

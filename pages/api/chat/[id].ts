@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       members: [req.body._id],
     };
 
-    const catcher = (error: Error) => res.statusCode(400).json({ error });
+    const catcher = (error: Error) => res.status(400).json({ error });
     const newChat = await Chat.create(chat).catch(catcher);
 
     res.statusCode = 201;
@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   if (req.method === "PATCH") {
     const { Chat, Message } = await connect();
 
-    const catcher = (error: Error) => res.statusCode(400).json({ error });
+    const catcher = (error: Error) => res.status(400).json({ error });
     const chatroom = await Chat.findOne({ _id: req.query.id }).catch(catcher);
     const newMessage = await Message.create(req.body).catch(catcher);
     chatroom.message.push(newMessage._id);

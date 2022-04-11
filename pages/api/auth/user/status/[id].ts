@@ -9,10 +9,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const friend = await User.findById(id).exec();
 
     if (!friend) {
-      res.status(404).send("Friend Not Found.");
+      res.status(404).send(false);
     }
 
-    return res.status(201).json({ status: friend.token !== "" ? true : false });
+    return res.status(201).json(friend.token !== "" ? true : false);
   }
 
   res.status(405).end();

@@ -61,7 +61,7 @@ const Board: React.FC = () => {
   const replieslist: RepliesType[] = useSelector(
     (state) => state.board.replieslist
   );
-  const rows = postlist.map((post, index) =>
+  const rows = postlist.map((post: PostType, index) =>
     createData(
       index + 1,
       post._id,

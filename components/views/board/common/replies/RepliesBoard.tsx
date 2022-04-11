@@ -34,7 +34,7 @@ interface IProps {
 const RepliesBoard: React.FC<IProps> = ({ repliesList, commentId }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
-  const postId = useSelector((state) => state.board.detail.post._id);
+  const postId = useSelector((state) => state.board.detail!.post._id);
   const isLogged = useSelector((state) => state.user.isLogged);
 
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -72,7 +72,7 @@ const RepliesBoard: React.FC<IProps> = ({ repliesList, commentId }) => {
     <Container>
       <Stack spacing={2} direction="column">
         <div className="replies-wrapper">
-          {repliesList.map((reply) => (
+          {repliesList?.map((reply) => (
             <Replies key={reply._id} replies={reply} />
           ))}
         </div>

@@ -5,7 +5,6 @@ import palette from "../../styles/palette";
 import HeaderAuth from "./HeaderAuth";
 import HeaderUserProfile from "./HeaderUserProfile";
 import { useSelector } from "../../store";
-import DrawerHeaderMenu from "./DrawerHeaderMenu";
 
 const Container = styled.div`
   @media screen and (max-width: 500px) {

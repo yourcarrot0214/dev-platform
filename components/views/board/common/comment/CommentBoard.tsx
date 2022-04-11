@@ -29,11 +29,11 @@ const Container = styled.div`
 
 const CommentBoard: React.FC = () => {
   const dispatch = useDispatch();
-  const commentState: CommentType[] = useSelector(
-    (state) => state.board.detail.comment
+  const commentState: CommentType[] | undefined = useSelector(
+    (state) => state.board.detail?.comment
   );
-  const repliesState: RepliesType[] = useSelector(
-    (state) => state.board.detail.replies
+  const repliesState: RepliesType[] | undefined = useSelector(
+    (state) => state.board.detail?.replies
   );
   const isLogged: boolean = useSelector((state) => state.user.isLogged);
   const userId: string = useSelector((state) => state.user._id);
@@ -73,7 +73,7 @@ const CommentBoard: React.FC = () => {
   return (
     <Container>
       <Stack spacing={2} direction="column">
-        <Counter counter={commentState.length + repliesState.length} />
+        <Counter counter={commentState!.length + repliesState!.length} />
         {isLogged ? (
           <CommentInput
             value={commentText}

@@ -50,7 +50,7 @@ const onChangeHashtagsType = (hashtags: string[]) => {
 };
 
 const Post: React.FC = () => {
-  const post: PostType = useSelector((state) => state.board.detail.post);
+  const post: PostType = useSelector((state) => state.board.detail!.post);
   const router = useRouter();
   const userId: string = useSelector((state) => state.user._id);
   const [title, setTitle] = useState<string | null>(post.title);
