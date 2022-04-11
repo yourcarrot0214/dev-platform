@@ -11,6 +11,15 @@ import { userActions } from "../../store/user";
 import { logoutAPI } from "../../lib/api/auth";
 
 const Container = styled.div`
+  @media screen and (max-width: 500px) {
+    .header-user-profile-image {
+      display: none;
+    }
+    .header-user-profile > p {
+      display: none;
+    }
+  }
+
   .header-user-profile {
     display: flex;
     align-items: center;
@@ -30,6 +39,16 @@ const Container = styled.div`
       width: 30px;
       height: 30px;
       border-radius: 50%;
+    }
+
+    @media screen and (max-width: 500px) {
+      border: none;
+      box-shadow: none;
+      border-radius: none;
+      padding: 0 1rem;
+      &:hover {
+        box-shadow: none;
+      }
     }
   }
 
@@ -103,14 +122,14 @@ const HeaderUserProfile: React.FC = () => {
         </button>
         {isUsermenuOpened && (
           <ul className="header-usermenu">
-            <Link href="/">
+            {/* <Link href="#">
               <a>
                 <li onClick={() => setIsUsermenuOpened(false)}>
-                  Profile Menu 2
+                  준비중인 메뉴입니다.
                 </li>
               </a>
-            </Link>
-            <div className="header-usermenu-divider" />
+            </Link> */}
+            {/* <div className="header-usermenu-divider" /> */}
             <Link href="/setting ">
               <a>
                 <li onClick={() => setIsUsermenuOpened(false)}>설정</li>

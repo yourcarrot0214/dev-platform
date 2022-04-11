@@ -5,8 +5,14 @@ import palette from "../../styles/palette";
 import HeaderAuth from "./HeaderAuth";
 import HeaderUserProfile from "./HeaderUserProfile";
 import { useSelector } from "../../store";
+import DrawerHeaderMenu from "./DrawerHeaderMenu";
 
 const Container = styled.div`
+  @media screen and (max-width: 500px) {
+    justify-content: center;
+    height: 60px;
+  }
+
   position: sticky;
   top: 0;
   width: 100%;
@@ -22,7 +28,6 @@ const Container = styled.div`
   .header-title-wrapper {
     display: flex;
     align-items: center;
-    /* margin: 0 auto; */
 
     .header-title {
       font-weight: 800;
@@ -37,7 +42,6 @@ const Container = styled.div`
 
 const Header: React.FC = () => {
   const isLogged = useSelector((state) => state.user.isLogged);
-  console.log("isLogged : ", isLogged);
   return (
     <Container>
       <Link href="/">
