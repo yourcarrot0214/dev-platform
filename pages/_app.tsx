@@ -33,7 +33,7 @@ const app = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-app.getInitialProps = wrapper.getInitialAppProps(
+app.getInitialProps = wrapper.getInitialPageProps(
   (store: Store) => async (context: AppContext) => {
     const appInitialProps = await App.getInitialProps(context);
     const { isLogged } = store.getState().user;
@@ -41,7 +41,7 @@ app.getInitialProps = wrapper.getInitialAppProps(
 
     try {
       if (!isLogged && cookieObject.access_token) {
-        axios.defaults.headers.common.cookie = cookieObject.access_token;
+        axios.defaults.headers.cookie = cookieObject.access_token;
         const { data } = await authAPI();
         const userdataWithoutPassword = data;
 
