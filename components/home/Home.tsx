@@ -22,7 +22,6 @@ const Container = styled.div`
 
     @media screen and (min-width: 800px) {
       max-width: 1440px;
-      min-width: 1064px;
       margin: 0 auto;
       margin-bottom: 2rem;
       align-items: flex-start;

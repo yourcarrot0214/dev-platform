@@ -20,14 +20,15 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     });
 
     io.on("connection", (socket) => {
-      console.log("io connected... 🌏");
-      console.log("🏛 socket.rooms : ", socket.rooms);
+      console.log("🌏 io connected : ", socket.rooms);
 
       socket.on("join room", (user) => {
         socket.join("test room");
         console.log(`${user.name} join test room. 🎫`);
+        socket.rooms.add(`${socket.id}`);
+        console.log("🥕 socket.rooms : ", socket.rooms);
 
-        io.to("test room").emit("test room message", {
+        io.to(`${socket.id}`).emit("test room message", {
           user: "SYSTEM",
           message: "test room joined. 🎫",
         });
@@ -35,9 +36,9 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
       socket.on("login", (data) => {
         console.log("client login 🙋‍♂️ ", data.name);
-        socket.name = data.name;
-        socket._id = data._id;
-        socket.profileImage = data.profileImage;
+        socket.data.name = data.name;
+        socket.data._id = data._id;
+        socket.data.profileImage = data.profileImage;
 
         io.emit("login", data);
       });
@@ -45,8 +46,8 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       socket.on("message", (data) => {
         console.log("message from client 📨");
         const message = {
-          user: socket.name,
-          profileImage: socket.profileImage,
+          user: socket.data.name,
+          profileImage: socket.data.profileImage,
           message: data.message,
         };
 
@@ -58,7 +59,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
         const message = {
           user: "SYSTEM",
-          message: `${socket.name} 유저가 나갔습니다.`,
+          message: `${socket.data.name} 유저가 나갔습니다.`,
           timestamp: `${ampm} ${hours}:${minutes}`,
         };
         socket.broadcast.emit("message", message);

@@ -84,15 +84,18 @@ const Chatting: React.FC = () => {
     // log socket connection
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket);
-      socket.emit("join room", {
-        name: name,
-        _id: _id,
-        profileImage: profileImage,
-      });
-      socket.on("test room message", (response) => {
-        console.log(response);
-      });
+
       setConnected(true);
+    });
+
+    socket.emit("join room", {
+      name: name,
+      _id: _id,
+      profileImage: profileImage,
+    });
+
+    socket.on("test room message", (response) => {
+      console.log(response);
     });
 
     // update chat on new message dispatched
@@ -151,7 +154,7 @@ const Chatting: React.FC = () => {
         <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
           <Paper
             variant="outlined"
-            sx={{ overflow: "scroll", height: "500px", padding: "1rem" }}
+            sx={{ overflow: "auto", height: "500px", padding: "1rem" }}
           >
             {chat.length ? (
               chat.map((chat, index) =>
