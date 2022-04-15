@@ -5,13 +5,15 @@ import user, { UserReducerState } from "./user";
 import auth, { AuthReducerState } from "./auth";
 import common, { CommonReducerState } from "./common";
 import board, { BoardReducerState } from "./board";
+import chat, { ChatReducerState } from "./chat";
 
-export interface IState {
+export type IState = {
   user: UserReducerState;
   auth: AuthReducerState;
   common: CommonReducerState;
   board: BoardReducerState;
-}
+  chat: ChatReducerState;
+};
 
 const rootReducer = (
   state: IState,
@@ -26,6 +28,7 @@ const rootReducer = (
         auth: auth.reducer,
         common: common.reducer,
         board: board.reducer,
+        chat: chat.reducer,
       });
       return combinedReducer(state, action);
     }

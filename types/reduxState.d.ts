@@ -1,5 +1,6 @@
 import { UserType } from "./user.d";
 import { PostType, CommentType, RepliesType, DetailPostType } from "./post.d";
+import { ChatRoomList, ChatRoom } from "./chat";
 
 // * user redux state
 export type UserState = UserType & {
@@ -22,4 +23,10 @@ export type BoardState = {
   commentlist: CommentType[];
   replieslist: RepliesType[];
   detail: DetailPostType | null;
+};
+
+// * chat redux state
+export type ChatState = {
+  chatlist: ChatRoomList[];
+  chatRoom: ChatRoom | null;
 };

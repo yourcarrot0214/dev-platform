@@ -9,3 +9,27 @@ export type NextApiResponseServerIO = NextApiResponse & {
     };
   };
 };
+
+export type ChatRoomList = {
+  _id: string;
+  members: ChatMember[];
+};
+
+export type ChatMember = {
+  _id: string;
+  name: string;
+  profileImage: string;
+};
+
+export type ChatRoom = {
+  _id: string;
+  members: ChatMember[];
+  messages: Message[];
+};
+
+export type Message = {
+  _id: string;
+  author: ChatMember;
+  message: string;
+  createdAt: string;
+};
