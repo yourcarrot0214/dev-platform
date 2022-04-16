@@ -10,6 +10,10 @@ const messageSchema = new mongoose.Schema(
     message: {
       type: String,
     },
+    roomId: {
+      type: Schema.Types.ObjectId,
+      ref: "Chat",
+    },
   },
   {
     timestamps: {

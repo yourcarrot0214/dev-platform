@@ -1,8 +1,8 @@
 import axios from ".";
 import { ChatRoomList, ChatMember, ChatRoom, Message } from "../../types/chat";
 
-const API_CHAT = "/api/chat";
-const API_CHAT_MESSAGE = "/api/chat/message";
+const API_CHAT = "/api/chats";
+const API_CHAT_MESSAGE = "/api/chats/messages";
 
 /*
   TODO. API 호출 상황 정리
@@ -25,28 +25,52 @@ const API_CHAT_MESSAGE = "/api/chat/message";
       * POST
       * {userId, message}
       * 생성된 message document를 받아온다.
+    ? 유저가 채팅방을 생성할 때.
+      * `${API_CHAT}`
+      * POST
+      * {userId}
+      * 신규 Chat document를 생성하고 생성된 document를 받아온다.
 */
 
-// * 채팅방 목록 불러오기
+// * 채팅방 목록 불러오기 ✅
 export const getChatListAPI = () => axios.get<ChatRoomList[]>(API_CHAT);
 
-// * 채팅방 정보 불러오기
-type ChatRoomAPIBody = {
+// * 채팅방 입장하기
+type JoinChatRoomAPI = {
   roomId: string;
   userId: string;
 };
-export const getChatRoomAPI = ({ roomId, userId }: ChatRoomAPIBody) =>
-  axios.post<ChatRoom>(`${API_CHAT}/${roomId}`, { roomId, userId });
+export const joinChatRoomAPI = ({ roomId, userId }: JoinChatRoomAPI) =>
+  axios.post(`${API_CHAT}/${roomId}`, userId);
 
-// * 채팅방 퇴장시
-export const exitChatRoomAPI = ({ roomId, userId }: ChatRoomAPIBody) => {
-  axios.patch(`${API_CHAT}/${roomId}`, { roomId, userId });
+// * 채팅방 생성하기 ✅
+type CreateChatRoom = {
+  userId: string;
+};
+export const createChatRoomAPI = (userId: CreateChatRoom) =>
+  axios.post<ChatRoom>(API_CHAT, { userId });
+
+// * 채팅방 정보 불러오기 ✅
+type GetChatRoomAPI = {
+  roomId: string;
+};
+export const getChatRoomAPI = (roomId: GetChatRoomAPI) =>
+  axios.get<ChatRoom>(`${API_CHAT}/${roomId}`);
+
+// * 채팅방 퇴장시 ✅
+type ExitChatRoomAPI = {
+  roomId: string;
+  userId: string;
+};
+export const exitChatRoomAPI = ({ roomId, userId }: ExitChatRoomAPI) => {
+  axios.patch(`${API_CHAT}/${roomId}`, { userId });
 };
 
-// * 채팅방 메시지 보내기
+// * 채팅방 메시지 보내기 ✅
 type MessageAPIBody = {
   userId: string;
   message: string;
+  roomId: string;
 };
-export const sendMessageAPI = ({ userId, message }: MessageAPIBody) =>
-  axios.post<Message>(API_CHAT_MESSAGE, { userId, message });
+export const sendMessageAPI = ({ userId, message, roomId }: MessageAPIBody) =>
+  axios.post<Message>(API_CHAT_MESSAGE, { userId, message, roomId });

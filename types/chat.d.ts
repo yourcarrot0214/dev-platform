@@ -32,4 +32,12 @@ export type Message = {
   author: ChatMember;
   message: string;
   createdAt: string;
+  roomId: string;
+};
+
+export type ChatDB = {
+  _id: string;
+  members: string[];
+  createdAt: string;
+  updatedAt: string;
 };

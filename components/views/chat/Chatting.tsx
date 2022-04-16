@@ -137,7 +137,7 @@ const Chatting: React.FC = () => {
         timestamp: `${ampm} ${hours}:${minutes}`,
       };
 
-      const response = await axios.post("/api/chat", message);
+      const response = await axios.patch("/api/chats/messages", message);
       setSendMessage("");
     }
   };
