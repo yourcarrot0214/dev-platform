@@ -8,7 +8,10 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   // * getChatRoomAPI ✅
   if (req.method === "GET") {
     const { roomId } = req.query;
-    const chatRoom = await Chat.findById(roomId).catch(catcher);
+    const chatRoom = await Chat.findById(roomId)
+      .populate("members", "_id name profileImage")
+      .populate("messages", "author message")
+      .catch(catcher);
 
     return res.status(201).send(chatRoom);
   }

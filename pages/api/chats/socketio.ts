@@ -3,6 +3,8 @@ import { NextApiResponseServerIO } from "../../../types/chat";
 import { Server as ServerIO } from "socket.io";
 import { Server as NetServer } from "http";
 import useTimeStamp from "../../../components/views/chat/useTimeStamp";
+import EVENTS from "../../../utils/socket/events";
+import { connect } from "../../../utils/mongodb/mongodb";
 
 export const config = {
   api: {
@@ -16,23 +18,34 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
     const httpServer: NetServer = res.socket.server as any;
     const io = new ServerIO(httpServer, {
-      path: "/api/chat/socketio",
+      path: "/api/chats/socketio",
     });
+    const { Chat } = await connect();
+    const catcher = (error: Error) => res.status(400).json({ error });
 
-    io.on("connection", (socket) => {
+    io.on("connection", async (socket) => {
       console.log("🌏 io connected : ", socket.rooms);
 
-      socket.on("join room", (user) => {
-        socket.join("test room");
-        console.log(`${user.name} join test room. 🎫`);
-        socket.rooms.add(`${socket.id}`);
-        console.log("🥕 socket.rooms : ", socket.rooms);
+      // ! SOCKET TEST CODE
+      const { data } = await Chat.find({}).catch(catcher);
+      socket.emit(EVENTS.SERVER.ROOMS, data);
 
-        io.to(`${socket.id}`).emit("test room message", {
-          user: "SYSTEM",
-          message: "test room joined. 🎫",
-        });
+      socket.on(EVENTS.CLIENT.JOIN_ROOM, (roomId) => {
+        socket.join(roomId);
+        socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
       });
+
+      // socket.on("join room", (user) => {
+      //   socket.join("test room");
+      //   console.log(`${user.name} join test room. 🎫`);
+      //   socket.rooms.add(`${socket.id}`);
+      //   console.log("🥕 socket.rooms : ", socket.rooms);
+
+      //   io.to(`${socket.id}`).emit("test room message", {
+      //     user: "SYSTEM",
+      //     message: "test room joined. 🎫",
+      //   });
+      // });
 
       socket.on("login", (data) => {
         console.log("client login 🙋‍♂️ ", data.name);

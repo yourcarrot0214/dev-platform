@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const message = req.body;
     res.socket.server.io.emit("message", message);
 
-    res.status(201).json(message);
+    res.status(201).send(message);
   }
 
   return res.status(400).end();

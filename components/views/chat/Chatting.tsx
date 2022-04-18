@@ -17,6 +17,9 @@ import SystemMessage from "./SystemMessage";
 
 // * utils
 import useTimeStamp from "./useTimeStamp";
+import useSocket from "../../../utils/socket/useSocket";
+import EVENTS from "../../../utils/socket/events";
+import { getChatRoomAPI } from "../../../lib/api/chat";
 
 const Container = styled.div`
   width: 100%;
@@ -66,7 +69,7 @@ const Chatting: React.FC = () => {
 
   useEffect((): any => {
     const socket = SocketIOClient({
-      path: "/api/chat/socketio",
+      path: "/api/chats/socketio",
     });
 
     socket.emit("login", { name: name, _id: _id, profileImage: profileImage });
@@ -88,15 +91,23 @@ const Chatting: React.FC = () => {
       setConnected(true);
     });
 
-    socket.emit("join room", {
-      name: name,
-      _id: _id,
-      profileImage: profileImage,
+    // ! SOCKET TEST CODE
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM, "625a662be85b8bd10c4c3a17");
+    socket.on(EVENTS.SERVER.JOINED_ROOM, async (roomId) => {
+      console.log("roomId : ", roomId);
+      const { data } = await getChatRoomAPI(roomId);
+      console.log(data);
     });
 
-    socket.on("test room message", (response) => {
-      console.log(response);
-    });
+    // socket.emit("join room", {
+    //   name: name,
+    //   _id: _id,
+    //   profileImage: profileImage,
+    // });
+
+    // socket.on("test room message", (response) => {
+    //   console.log(response);
+    // });
 
     // update chat on new message dispatched
     socket.on("message", (message: Message) => {

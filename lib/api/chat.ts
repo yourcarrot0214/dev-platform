@@ -51,10 +51,7 @@ export const createChatRoomAPI = (userId: CreateChatRoom) =>
   axios.post<ChatRoom>(API_CHAT, { userId });
 
 // * 채팅방 정보 불러오기 ✅
-type GetChatRoomAPI = {
-  roomId: string;
-};
-export const getChatRoomAPI = (roomId: GetChatRoomAPI) =>
+export const getChatRoomAPI = (roomId: string) =>
   axios.get<ChatRoom>(`${API_CHAT}/${roomId}`);
 
 // * 채팅방 퇴장시 ✅
