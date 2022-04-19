@@ -19,7 +19,9 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   if (req.method === "GET") {
     const { Chat } = await connect();
     const catcher = (error: Error) => res.status(400).json({ error });
-    const chatlist = await Chat.find({}).catch(catcher);
+    const chatlist = await Chat.find({})
+      .populate("members", "_id name profileImage")
+      .catch(catcher);
 
     return res.status(201).send(
       chatlist.map((chat: ChatDB) => {

@@ -17,14 +17,13 @@ import SystemMessage from "./SystemMessage";
 
 // * utils
 import useTimeStamp from "./useTimeStamp";
-import useSocket from "../../../utils/socket/useSocket";
 import EVENTS from "../../../utils/socket/events";
 import { getChatRoomAPI } from "../../../lib/api/chat";
+import { ChatRoom } from "../../../types/chat";
 
 const Container = styled.div`
   width: 100%;
   max-width: 1024px;
-  margin: 0 auto;
   padding: 2rem;
 
   .MuiButton-root {
@@ -43,13 +42,8 @@ interface Message {
   timestamp: string;
 }
 
-interface ChatMembers {
-  name: string;
-  _id: string;
-  profileImage: string;
-}
-
 const Chatting: React.FC = () => {
+  const chatRoom = useSelector<ChatRoom | null>((state) => state.chat.chatRoom);
   const [sendMessage, setSendMessage] = useState<string>("");
   const [connected, setConnected] = useState<boolean>(false);
   const [chat, setChat] = useState<Message[]>([]);
@@ -72,6 +66,13 @@ const Chatting: React.FC = () => {
       path: "/api/chats/socketio",
     });
 
+    // log socket connection
+    socket.on("connect", () => {
+      console.log("SOCKET CONNECTED!", socket);
+
+      setConnected(true);
+    });
+
     socket.emit("login", { name: name, _id: _id, profileImage: profileImage });
 
     socket.on("login", (data) => {
@@ -82,13 +83,6 @@ const Chatting: React.FC = () => {
         timestamp: `${ampm} ${hours}:${minutes}`,
       });
       setChat([...chat]);
-    });
-
-    // log socket connection
-    socket.on("connect", () => {
-      console.log("SOCKET CONNECTED!", socket);
-
-      setConnected(true);
     });
 
     // ! SOCKET TEST CODE
@@ -142,7 +136,7 @@ const Chatting: React.FC = () => {
     event.preventDefault();
     if (sendMessage) {
       const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
-      const message: Message = {
+      const message = {
         user: name,
         message: sendMessage,
         timestamp: `${ampm} ${hours}:${minutes}`,
@@ -167,28 +161,44 @@ const Chatting: React.FC = () => {
             variant="outlined"
             sx={{ overflow: "auto", height: "500px", padding: "1rem" }}
           >
-            {chat.length ? (
-              chat.map((chat, index) =>
-                chat.user === "SYSTEM" ? (
-                  <SystemMessage
-                    key={index}
-                    message={chat.message}
-                    timestamp={chat.timestamp}
-                  />
-                ) : (
+            {chatRoom?.messages &&
+              chatRoom.messages.map((chat, index) => {
+                const { ampm, hours, minutes } = useTimeStamp(
+                  new Date(chat.createdAt)
+                );
+                return (
                   <MessageTab
                     key={index}
-                    name={chat.user}
+                    name={chat.author.name}
                     profileImage={profileImage}
                     message={chat.message}
-                    isMine={chat.user === name}
-                    timestamp={chat.timestamp}
+                    isMine={chat.author.name === name}
+                    timestamp={`${ampm} ${hours}:${minutes}`}
                   />
+                );
+              })}
+            {chat?.length
+              ? chat.map((chat, index) =>
+                  chat.user === "SYSTEM" ? (
+                    <SystemMessage
+                      key={index}
+                      message={chat.message}
+                      timestamp={chat.timestamp}
+                    />
+                  ) : (
+                    <MessageTab
+                      key={index}
+                      name={chat.user}
+                      profileImage={profileImage}
+                      message={chat.message}
+                      isMine={chat.user === name}
+                      timestamp={chat.timestamp}
+                    />
+                  )
                 )
-              )
-            ) : (
-              <div className="alert-message">No Chat Messages</div>
-            )}
+              : !chatRoom?.messages && (
+                  <div className="alert-message">No Chat Messages</div>
+                )}
             <div
               style={{ float: "left", clear: "both" }}
               ref={messageEnd}

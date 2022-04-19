@@ -10,7 +10,10 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const { roomId } = req.query;
     const chatRoom = await Chat.findById(roomId)
       .populate("members", "_id name profileImage")
-      .populate("messages", "author message")
+      .populate({
+        path: "messages",
+        populate: { path: "author", select: "_id name profileImage" },
+      })
       .catch(catcher);
 
     return res.status(201).send(chatRoom);

@@ -32,6 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
       socket.on(EVENTS.CLIENT.JOIN_ROOM, (roomId) => {
         socket.join(roomId);
+        console.log(`🥕 User joined ${roomId}...`);
         socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
       });
 
