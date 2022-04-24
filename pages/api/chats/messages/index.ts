@@ -1,6 +1,7 @@
 import { NextApiRequest } from "next";
 import { NextApiResponseServerIO } from "../../../../types/chat";
 import { connect } from "../../../../utils/mongodb/mongodb";
+import EVENTS from "../../../../utils/socket/events";
 
 export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   const { Chat, Message } = await connect();
@@ -25,8 +26,11 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   // * 임시 socket response
   if (req.method === "PATCH") {
     console.log(">> socketio API");
-    const message = req.body;
-    res.socket.server.io.emit("message", message);
+    const message = req.body.message;
+    console.log(req.body);
+    res.socket.server.io
+      .to(req.body.roomId)
+      .emit(EVENTS.SERVER.ROOM_MESSAGE, message);
 
     res.status(201).send(message);
   }

@@ -23,30 +23,17 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const { Chat } = await connect();
     const catcher = (error: Error) => res.status(400).json({ error });
 
-    io.on("connection", async (socket) => {
+    io.on(EVENTS.connection, async (socket) => {
       console.log("🌏 io connected : ", socket.rooms);
 
-      // ! SOCKET TEST CODE
       const { data } = await Chat.find({}).catch(catcher);
       socket.emit(EVENTS.SERVER.ROOMS, data);
 
-      socket.on(EVENTS.CLIENT.JOIN_ROOM, (roomId) => {
+      socket.on(EVENTS.CLIENT.JOIN_ROOM, (roomId: string) => {
         socket.join(roomId);
         console.log(`🥕 User joined ${roomId}...`);
         socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
       });
-
-      // socket.on("join room", (user) => {
-      //   socket.join("test room");
-      //   console.log(`${user.name} join test room. 🎫`);
-      //   socket.rooms.add(`${socket.id}`);
-      //   console.log("🥕 socket.rooms : ", socket.rooms);
-
-      //   io.to(`${socket.id}`).emit("test room message", {
-      //     user: "SYSTEM",
-      //     message: "test room joined. 🎫",
-      //   });
-      // });
 
       socket.on("login", (data) => {
         console.log("client login 🙋‍♂️ ", data.name);

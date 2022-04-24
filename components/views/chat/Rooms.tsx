@@ -6,6 +6,9 @@ import { ChatRoomList } from "../../../types/chat";
 import { getChatRoomAPI } from "../../../lib/api/chat";
 import { chatActions } from "../../../store/chat";
 
+import useSocketClient from "../../../hooks/useSocketClient";
+import EVENTS from "../../../utils/socket/events";
+
 const Container = styled.div`
   width: 30%;
   padding: 2rem 0;
@@ -25,10 +28,13 @@ const Container = styled.div`
 const Rooms: React.FC = () => {
   const dispatch = useDispatch();
   const rooms: ChatRoomList[] = useSelector((state) => state.chat.chatlist);
+  const { socket, setRoomId } = useSocketClient();
 
   const getChatRoomData = async (roomId: string) => {
     const { data } = await getChatRoomAPI(roomId);
     dispatch(chatActions.setChatRoom(data));
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM, roomId);
+    setRoomId(roomId);
   };
 
   return (

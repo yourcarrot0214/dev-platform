@@ -21,6 +21,8 @@ import EVENTS from "../../../utils/socket/events";
 import { getChatRoomAPI } from "../../../lib/api/chat";
 import { ChatRoom } from "../../../types/chat";
 
+import useSocketClient from "../../../hooks/useSocketClient";
+
 const Container = styled.div`
   width: 100%;
   max-width: 1024px;
@@ -46,12 +48,13 @@ const Chatting: React.FC = () => {
   const chatRoom = useSelector<ChatRoom | null>((state) => state.chat.chatRoom);
   const [sendMessage, setSendMessage] = useState<string>("");
   const [connected, setConnected] = useState<boolean>(false);
-  const [chat, setChat] = useState<Message[]>([]);
+  // const [chat, setChat] = useState<Message[]>([]);
 
   const { _id, name, profileImage } = useSelector((state) => state.user);
   const isLogged = useSelector<boolean>((state) => state.user.isLogged);
 
   const messageEnd = useRef<null | HTMLDivElement>(null);
+  const { socket, roomId, messages, setMessages } = useSocketClient();
 
   useEffect((): any => {
     const scrollToBottom = () => {
@@ -59,54 +62,25 @@ const Chatting: React.FC = () => {
     };
 
     scrollToBottom();
-  }, [chat]);
+  }, [messages]);
 
   useEffect((): any => {
-    const socket = SocketIOClient({
-      path: "/api/chats/socketio",
-    });
-
-    // log socket connection
-    socket.on("connect", () => {
-      console.log("SOCKET CONNECTED!", socket);
-
-      setConnected(true);
-    });
-
     socket.emit("login", { name: name, _id: _id, profileImage: profileImage });
 
     socket.on("login", (data) => {
       const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
-      chat.push({
+      messages.push({
         user: "SYSTEM",
         message: `${data.name || "비회원"} 유저가 접속했습니다.`,
         timestamp: `${ampm} ${hours}:${minutes}`,
       });
-      setChat([...chat]);
+      setMessages([...messages]);
     });
 
-    // ! SOCKET TEST CODE
-    socket.emit(EVENTS.CLIENT.JOIN_ROOM, "625a662be85b8bd10c4c3a17");
     socket.on(EVENTS.SERVER.JOINED_ROOM, async (roomId) => {
       console.log("roomId : ", roomId);
       const { data } = await getChatRoomAPI(roomId);
       console.log(data);
-    });
-
-    // socket.emit("join room", {
-    //   name: name,
-    //   _id: _id,
-    //   profileImage: profileImage,
-    // });
-
-    // socket.on("test room message", (response) => {
-    //   console.log(response);
-    // });
-
-    // update chat on new message dispatched
-    socket.on("message", (message: Message) => {
-      chat.push(message);
-      setChat([...chat]);
     });
 
     // socket disconnect on component unmount if exists
@@ -142,7 +116,7 @@ const Chatting: React.FC = () => {
         timestamp: `${ampm} ${hours}:${minutes}`,
       };
 
-      const response = await axios.patch("/api/chats/messages", message);
+      const response = await axios.patch("/api/chats/messages", {message, roomId: chatRoom?._id});
       setSendMessage("");
     }
   };
@@ -177,8 +151,8 @@ const Chatting: React.FC = () => {
                   />
                 );
               })}
-            {chat?.length
-              ? chat.map((chat, index) =>
+            {messages?.length
+              ? messages.map((chat, index) =>
                   chat.user === "SYSTEM" ? (
                     <SystemMessage
                       key={index}
