@@ -28,13 +28,18 @@ const Container = styled.div`
 const Rooms: React.FC = () => {
   const dispatch = useDispatch();
   const rooms: ChatRoomList[] = useSelector((state) => state.chat.chatlist);
+  const roomId = useSelector((state) => state.chat.chatRoom?._id);
+  const username = useSelector((state) => state.user.name);
   const { socket, setRoomId } = useSocketClient();
 
-  const getChatRoomData = async (roomId: string) => {
-    const { data } = await getChatRoomAPI(roomId);
+  const getChatRoomData = async (currentRoomId: string) => {
+    const { data } = await getChatRoomAPI(currentRoomId);
     dispatch(chatActions.setChatRoom(data));
-    socket.emit(EVENTS.CLIENT.JOIN_ROOM, roomId);
-    setRoomId(roomId);
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM, {
+      roomId: currentRoomId,
+      user: username,
+    });
+    setRoomId(currentRoomId);
   };
 
   return (

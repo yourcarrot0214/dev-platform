@@ -41,3 +41,12 @@ export type ChatDB = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type SendRoomMessage = {
+  message: {
+    user: string;
+    message: string;
+    timestamp: string;
+  };
+  roomId: string;
+};

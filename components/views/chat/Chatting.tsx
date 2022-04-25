@@ -22,6 +22,7 @@ import { getChatRoomAPI } from "../../../lib/api/chat";
 import { ChatRoom } from "../../../types/chat";
 
 import useSocketClient from "../../../hooks/useSocketClient";
+import { SendRoomMessage } from "../../../types/chat";
 
 const Container = styled.div`
   width: 100%;
@@ -48,7 +49,6 @@ const Chatting: React.FC = () => {
   const chatRoom = useSelector<ChatRoom | null>((state) => state.chat.chatRoom);
   const [sendMessage, setSendMessage] = useState<string>("");
   const [connected, setConnected] = useState<boolean>(false);
-  // const [chat, setChat] = useState<Message[]>([]);
 
   const { _id, name, profileImage } = useSelector((state) => state.user);
   const isLogged = useSelector<boolean>((state) => state.user.isLogged);
@@ -65,27 +65,11 @@ const Chatting: React.FC = () => {
   }, [messages]);
 
   useEffect((): any => {
-    socket.emit("login", { name: name, _id: _id, profileImage: profileImage });
-
-    socket.on("login", (data) => {
-      const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
-      messages.push({
-        user: "SYSTEM",
-        message: `${data.name || "비회원"} 유저가 접속했습니다.`,
-        timestamp: `${ampm} ${hours}:${minutes}`,
-      });
-      setMessages([...messages]);
-    });
-
-    socket.on(EVENTS.SERVER.JOINED_ROOM, async (roomId) => {
-      console.log("roomId : ", roomId);
-      const { data } = await getChatRoomAPI(roomId);
-      console.log(data);
-    });
-
-    // socket disconnect on component unmount if exists
-    if (socket) return () => socket.disconnect();
-  }, []);
+    return () => {
+      console.log("Chatting Component clean up.");
+      socket.emit(EVENTS.CLIENT.LEAVE_ROOM, roomId);
+    };
+  }, [roomId]);
 
   const sendMessageHandler = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +100,11 @@ const Chatting: React.FC = () => {
         timestamp: `${ampm} ${hours}:${minutes}`,
       };
 
-      const response = await axios.patch("/api/chats/messages", {message, roomId: chatRoom?._id});
+      socket.emit(EVENTS.CLIENT.SEND_ROOM_MESSAGE, {
+        message,
+        roomId: chatRoom?._id,
+      });
+      setMessages((messages) => [...messages, message]);
       setSendMessage("");
     }
   };

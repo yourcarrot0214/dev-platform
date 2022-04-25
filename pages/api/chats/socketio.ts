@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { NextApiResponseServerIO } from "../../../types/chat";
+import { NextApiResponseServerIO, SendRoomMessage } from "../../../types/chat";
 import { Server as ServerIO } from "socket.io";
 import { Server as NetServer } from "http";
 import useTimeStamp from "../../../components/views/chat/useTimeStamp";
@@ -29,31 +29,30 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       const { data } = await Chat.find({}).catch(catcher);
       socket.emit(EVENTS.SERVER.ROOMS, data);
 
-      socket.on(EVENTS.CLIENT.JOIN_ROOM, (roomId: string) => {
+      socket.on(EVENTS.CLIENT.JOIN_ROOM, ({ roomId, user }) => {
+        socket.data.name = user;
         socket.join(roomId);
-        console.log(`🥕 User joined ${roomId}...`);
+        console.log(`🥕 ${user} joined ${roomId}...`);
+        console.log(socket.rooms);
         socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
       });
 
-      socket.on("login", (data) => {
-        console.log("client login 🙋‍♂️ ", data.name);
-        socket.data.name = data.name;
-        socket.data._id = data._id;
-        socket.data.profileImage = data.profileImage;
-
-        io.emit("login", data);
+      socket.on(EVENTS.CLIENT.LEAVE_ROOM, (roomId: string) => {
+        socket.leave(roomId);
+        console.log("🌏 user leaved room : ", roomId);
+        console.log(socket.rooms);
       });
 
-      socket.on("message", (data) => {
-        console.log("message from client 📨");
-        const message = {
-          user: socket.data.name,
-          profileImage: socket.data.profileImage,
-          message: data.message,
-        };
-
-        socket.broadcast.emit("message", message);
-      });
+      socket.on(
+        EVENTS.CLIENT.SEND_ROOM_MESSAGE,
+        ({ message, roomId }: SendRoomMessage) => {
+          console.log("🌏 EVENTS.CLIENT.SEND_ROOM_MESSAGE", {
+            message,
+            roomId,
+          });
+          socket.to(roomId).emit(EVENTS.SERVER.ROOM_MESSAGE, message);
+        }
+      );
 
       socket.on("disconnect", () => {
         console.log("🌏 socket disconnect : ", socket.rooms);
@@ -63,7 +62,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
           message: `${socket.data.name} 유저가 나갔습니다.`,
           timestamp: `${ampm} ${hours}:${minutes}`,
         };
-        socket.broadcast.emit("message", message);
+        socket.broadcast.emit(EVENTS.SERVER.ROOM_MESSAGE, message);
       });
     });
 
@@ -74,7 +73,6 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 };
 
 /*
-  TODO : Room 기능 적용하기
-    ? server -> io.of('pathname'), pathname.on('connect', (socket) => { ... something to do})
-    ? pages/api/[pathname].ts 경로에 위 로직 작성
+  TODO : join message
+    ? user가 접속하면 message 전달
 */
