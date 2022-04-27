@@ -2,10 +2,6 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
-import axios from "../../../lib/api";
-
-// * Socket.io
-import SocketIOClient from "socket.io-client";
 
 // * MUI
 import { Stack, TextField, Alert, Button, Paper } from "@mui/material";
@@ -17,12 +13,14 @@ import SystemMessage from "./SystemMessage";
 
 // * utils
 import useTimeStamp from "./useTimeStamp";
-import EVENTS from "../../../utils/socket/events";
-import { getChatRoomAPI } from "../../../lib/api/chat";
 import { ChatRoom } from "../../../types/chat";
 
-import useSocketClient from "../../../hooks/useSocketClient";
-import { SendRoomMessage } from "../../../types/chat";
+import {
+  initiateSocket,
+  disconnectSocket,
+  subscribeToChat,
+  emitMessage,
+} from "../../../lib/api/socket";
 
 const Container = styled.div`
   width: 100%;
@@ -40,9 +38,10 @@ const Container = styled.div`
 `;
 
 interface Message {
-  user: string;
+  username: string;
   message: string;
   timestamp: string;
+  roomId: string;
 }
 
 const Chatting: React.FC = () => {
@@ -54,7 +53,27 @@ const Chatting: React.FC = () => {
   const isLogged = useSelector<boolean>((state) => state.user.isLogged);
 
   const messageEnd = useRef<null | HTMLDivElement>(null);
-  const { socket, roomId, messages, setMessages } = useSocketClient();
+
+  const rooms = useSelector((state) => state.chat.chatlist);
+  const roomId = useSelector((state) => state.chat.chatRoom?._id);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect((): any => {
+    console.log(roomId);
+    if (roomId)
+      initiateSocket({ room: roomId, user: { _id, name, profileImage } });
+
+    subscribeToChat((err, message) => {
+      if (err) return;
+
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    return () => {
+      setMessages([]);
+      disconnectSocket();
+    };
+  }, [roomId]);
 
   useEffect((): any => {
     const scrollToBottom = () => {
@@ -63,13 +82,6 @@ const Chatting: React.FC = () => {
 
     scrollToBottom();
   }, [messages]);
-
-  useEffect((): any => {
-    return () => {
-      console.log("Chatting Component clean up.");
-      socket.emit(EVENTS.CLIENT.LEAVE_ROOM, roomId);
-    };
-  }, [roomId]);
 
   const sendMessageHandler = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,16 +107,14 @@ const Chatting: React.FC = () => {
     if (sendMessage) {
       const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
       const message = {
-        user: name,
+        username: name,
         message: sendMessage,
         timestamp: `${ampm} ${hours}:${minutes}`,
+        roomId: roomId,
       };
 
-      socket.emit(EVENTS.CLIENT.SEND_ROOM_MESSAGE, {
-        message,
-        roomId: chatRoom?._id,
-      });
-      setMessages((messages) => [...messages, message]);
+      emitMessage(message);
+
       setSendMessage("");
     }
   };
@@ -141,7 +151,7 @@ const Chatting: React.FC = () => {
               })}
             {messages?.length
               ? messages.map((chat, index) =>
-                  chat.user === "SYSTEM" ? (
+                  chat.username === "SYSTEM" ? (
                     <SystemMessage
                       key={index}
                       message={chat.message}
@@ -150,10 +160,10 @@ const Chatting: React.FC = () => {
                   ) : (
                     <MessageTab
                       key={index}
-                      name={chat.user}
+                      name={chat.username}
                       profileImage={profileImage}
                       message={chat.message}
-                      isMine={chat.user === name}
+                      isMine={chat.username === name}
                       timestamp={chat.timestamp}
                     />
                   )

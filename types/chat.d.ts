@@ -35,6 +35,13 @@ export type Message = {
   roomId: string;
 };
 
+export type EmitMessage = {
+  username: string;
+  message: string;
+  timestamp: string;
+  roomId: string;
+};
+
 export type ChatDB = {
   _id: string;
   members: string[];

@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { NextApiResponseServerIO, SendRoomMessage } from "../../../types/chat";
+import { NextApiResponseServerIO, EmitMessage } from "../../../types/chat";
 import { Server as ServerIO } from "socket.io";
 import { Server as NetServer } from "http";
 import useTimeStamp from "../../../components/views/chat/useTimeStamp";
@@ -20,49 +20,42 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const io = new ServerIO(httpServer, {
       path: "/api/chats/socketio",
     });
-    const { Chat } = await connect();
-    const catcher = (error: Error) => res.status(400).json({ error });
 
     io.on(EVENTS.connection, async (socket) => {
       console.log("🌏 io connected : ", socket.rooms);
+      let socketRoomId: undefined | string;
 
-      const { data } = await Chat.find({}).catch(catcher);
-      socket.emit(EVENTS.SERVER.ROOMS, data);
+      socket.on(EVENTS.CLIENT.JOIN_ROOM, ({ room, user }) => {
+        console.log(`🌏 ${socket.id} joining ${room}`);
+        socketRoomId = room;
+        socket.data.name = user.name;
+        socket.join(room);
 
-      socket.on(EVENTS.CLIENT.JOIN_ROOM, ({ roomId, user }) => {
-        socket.data.name = user;
-        socket.join(roomId);
-        console.log(`🥕 ${user} joined ${roomId}...`);
-        console.log(socket.rooms);
-        socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
-      });
-
-      socket.on(EVENTS.CLIENT.LEAVE_ROOM, (roomId: string) => {
-        socket.leave(roomId);
-        console.log("🌏 user leaved room : ", roomId);
-        console.log(socket.rooms);
-      });
-
-      socket.on(
-        EVENTS.CLIENT.SEND_ROOM_MESSAGE,
-        ({ message, roomId }: SendRoomMessage) => {
-          console.log("🌏 EVENTS.CLIENT.SEND_ROOM_MESSAGE", {
-            message,
-            roomId,
-          });
-          socket.to(roomId).emit(EVENTS.SERVER.ROOM_MESSAGE, message);
-        }
-      );
-
-      socket.on("disconnect", () => {
-        console.log("🌏 socket disconnect : ", socket.rooms);
         const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
         const message = {
-          user: "SYSTEM",
+          username: "SYSTEM",
+          message: `${socket.data.name} 유저가 접속했습니다.`,
+          timestamp: `${ampm} ${hours}:${minutes}`,
+          roomId: socketRoomId,
+        };
+        io.to(socketRoomId as string).emit(EVENTS.SERVER.ROOM_MESSAGE, message);
+      });
+
+      socket.on(EVENTS.CLIENT.SEND_ROOM_MESSAGE, (message: EmitMessage) => {
+        console.log("💬 Client send Message : ", message);
+        io.to(message.roomId).emit(EVENTS.SERVER.ROOM_MESSAGE, message);
+      });
+
+      socket.on("disconnect", () => {
+        console.log("🌏 socket disconnect : ", socket.id);
+        const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
+        const message = {
+          username: "SYSTEM",
           message: `${socket.data.name} 유저가 나갔습니다.`,
           timestamp: `${ampm} ${hours}:${minutes}`,
+          roomId: socketRoomId,
         };
-        socket.broadcast.emit(EVENTS.SERVER.ROOM_MESSAGE, message);
+        io.to(socketRoomId as string).emit(EVENTS.SERVER.ROOM_MESSAGE, message);
       });
     });
 
