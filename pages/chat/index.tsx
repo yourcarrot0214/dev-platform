@@ -36,3 +36,24 @@ index.getInitialProps = wrapper.getInitialAppProps(
 );
 
 export default index;
+
+/*
+  TODO 1. 채팅방 목록 및 채팅창 출력 변경
+    ? /chat
+      * [채팅방 생성하기]
+        -> popup form으로 title 정보 입력받기
+        -> store에 정보 업데이트 하기
+        -> db에 신규 채팅방 생성 요청 보내기
+        -> /chat/[roomId].tsx 페이지로 이동하기
+      * 채팅방 목록 출력하기
+        -> db에서 채팅방 목록 가져오기
+        -> title, members avatar로 목록 출력하기
+    ? /chat/[roomId].tsx
+      * <Chatting /> 출력
+      * [채팅방 나가기]
+        -> /chat route로 이동하기
+        -> db members 배열에서 id값 제거하기
+      * [채팅방 삭제하기]
+        -> /chat route로 이동하기
+        -> db document 삭제하기
+*/
