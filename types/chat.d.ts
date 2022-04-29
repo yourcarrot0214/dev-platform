@@ -13,6 +13,7 @@ export type NextApiResponseServerIO = NextApiResponse & {
 export type ChatRoomList = {
   _id: string;
   members: ChatMember[];
+  title: string;
 };
 
 export type ChatMember = {
@@ -23,6 +24,7 @@ export type ChatMember = {
 
 export type ChatRoom = {
   _id: string;
+  title: string;
   members: ChatMember[];
   messages: Message[];
 };

@@ -25,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
     return res.status(201).send(
       chatlist.map((chat: ChatDB) => {
-        return { _id: chat._id, members: chat.members };
+        return { _id: chat._id, members: chat.members, title: chat.title };
       })
     );
   }

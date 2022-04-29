@@ -6,18 +6,18 @@ import { ChatRoomList } from "../../../types/chat";
 import { getChatRoomAPI } from "../../../lib/api/chat";
 import { chatActions } from "../../../store/chat";
 
+import Room from "./Room";
+
 const Container = styled.div`
-  width: 30%;
-  padding: 2rem 0;
-  max-width: 250px;
+  min-width: 250px;
+  padding: 2rem 0.5rem;
+  max-width: 400px;
 
   ul {
     list-style: none;
-    border: 1px solid gray;
 
     li {
-      padding: 1rem;
-      border: 1px dashed tomato;
+      margin-bottom: 1rem;
     }
   }
 `;
@@ -36,7 +36,7 @@ const Rooms: React.FC = () => {
       <ul>
         {rooms.map((room) => (
           <li key={room._id} onClick={() => getChatRoomData(room._id)}>
-            {room.members[0].name} 님의 채팅방
+            <Room title={room.title} members={room.members} />
           </li>
         ))}
       </ul>
