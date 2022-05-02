@@ -13,6 +13,15 @@ export const config = {
   },
 };
 
+interface UseStringTimeStamp {
+  (date: Date): string;
+}
+
+const useStringTimeStamp: UseStringTimeStamp = (date: Date) => {
+  const { ampm, hours, minutes } = useTimeStamp(date);
+  return `${ampm} ${hours}:${minutes}`;
+};
+
 export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   if (!res.socket.server.io) {
     console.log("New Socket.io server...✅");
@@ -34,11 +43,10 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.data.name = user.name;
           socket.join(room);
 
-          const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
           const message = {
             username: "SYSTEM",
             message: `${socket.data.name} 유저가 접속했습니다.`,
-            timestamp: `${ampm} ${hours}:${minutes}`,
+            timestamp: useStringTimeStamp(new Date(Date.now())),
             roomId: socketRoomId,
           };
           io.to(socketRoomId as string).emit(
@@ -55,11 +63,10 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
       socket.on("disconnect", () => {
         console.log("🌏 socket disconnect : ", socket.id);
-        const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
         const message = {
           username: "SYSTEM",
           message: `${socket.data.name} 유저가 나갔습니다.`,
-          timestamp: `${ampm} ${hours}:${minutes}`,
+          timestamp: useStringTimeStamp(new Date(Date.now())),
           roomId: socketRoomId,
         };
         io.to(socketRoomId as string).emit(EVENTS.SERVER.ROOM_MESSAGE, message);
