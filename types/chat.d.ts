@@ -46,6 +46,7 @@ export type EmitMessage = {
 
 export type ChatDB = {
   _id: string;
+  title: string;
   members: string[];
   createdAt: string;
   updatedAt: string;
