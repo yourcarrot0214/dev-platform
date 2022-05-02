@@ -6,7 +6,14 @@ import { useRouter } from "next/dist/client/router";
 import { useDispatch } from "react-redux";
 
 // * MUI
-import { Stack, TextField, Alert, Button, Paper } from "@mui/material";
+import {
+  Stack,
+  TextField,
+  Alert,
+  Button,
+  Paper,
+  IconButton,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
@@ -137,15 +144,12 @@ const Chatting: React.FC = () => {
         {/* 채팅 메뉴 출력 영역 */}
         {chatRoom?.messages && (
           <Stack direction="row">
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-              startIcon={<ArrowBackIosNewIcon />}
+            <IconButton
+              aria-label="back"
               onClick={() => dispatch(chatActions.setInitChatRoom())}
             >
-              돌아가기
-            </Button>
+              <ArrowBackIosNewIcon color="action" />
+            </IconButton>
           </Stack>
         )}
         {/* 채팅 메시지 출력 영역 */}

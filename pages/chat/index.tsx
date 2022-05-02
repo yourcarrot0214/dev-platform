@@ -52,7 +52,6 @@ export default index;
       * <Chatting /> 출력
         -> ✅ chatRoom 데이터가 없을 때 출력할 Info 컴포넌트 만들기
       * [채팅방 나가기]
-        -> /chat route로 이동하기
         -> db members 배열에서 id값 제거하기
         -> state.chat.chatRoom 초기화
       * [채팅방 삭제하기]
