@@ -41,7 +41,7 @@ type JoinChatRoomAPI = {
   userId: string;
 };
 export const joinChatRoomAPI = ({ roomId, userId }: JoinChatRoomAPI) =>
-  axios.post(`${API_CHAT}/${roomId}`, userId);
+  axios.post(`${API_CHAT}/${roomId}`, { userId });
 
 // * 채팅방 생성하기 ✅
 type CreateChatRoom = {
