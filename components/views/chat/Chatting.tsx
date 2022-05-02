@@ -2,10 +2,13 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
+import { useRouter } from "next/dist/client/router";
+import { useDispatch } from "react-redux";
 
 // * MUI
 import { Stack, TextField, Alert, Button, Paper } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 // * Children Component
 import MessageTab from "./MessageTab";
@@ -22,6 +25,7 @@ import {
   subscribeToChat,
   emitMessage,
 } from "../../../lib/api/socket";
+import { chatActions } from "../../../store/chat";
 
 const Container = styled.div`
   width: 100%;
@@ -46,6 +50,8 @@ interface Message {
 }
 
 const Chatting: React.FC = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const chatRoom = useSelector<ChatRoom | null>((state) => state.chat.chatRoom);
   const [sendMessage, setSendMessage] = useState<string>("");
   const [connected, setConnected] = useState<boolean>(false);
@@ -111,7 +117,7 @@ const Chatting: React.FC = () => {
         username: name,
         message: sendMessage,
         timestamp: `${ampm} ${hours}:${minutes}`,
-        roomId: roomId,
+        roomId: roomId as string,
       };
 
       emitMessage(message);
@@ -122,11 +128,25 @@ const Chatting: React.FC = () => {
 
   return (
     <Container>
-      <Stack spacing={2} direction="column">
+      <Stack spacing={1} direction="column">
         {!isLogged && (
           <Alert severity="warning" variant="filled">
             채팅 기능은 로그인된 유저에게만 제공됩니다.
           </Alert>
+        )}
+        {/* 채팅 메뉴 출력 영역 */}
+        {chatRoom?.messages && (
+          <Stack direction="row">
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              startIcon={<ArrowBackIosNewIcon />}
+              onClick={() => dispatch(chatActions.setInitChatRoom())}
+            >
+              돌아가기
+            </Button>
+          </Stack>
         )}
         {/* 채팅 메시지 출력 영역 */}
         <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
@@ -143,7 +163,7 @@ const Chatting: React.FC = () => {
                   <MessageTab
                     key={index}
                     name={chat.author.name}
-                    profileImage={profileImage}
+                    profileImage={chat.author.profileImage}
                     message={chat.message}
                     isMine={chat.author.name === name}
                     timestamp={`${ampm} ${hours}:${minutes}`}
