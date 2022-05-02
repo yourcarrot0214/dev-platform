@@ -13,9 +13,11 @@ import {
   Button,
   Paper,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 // * Children Component
 import MessageTab from "./MessageTab";
@@ -144,12 +146,22 @@ const Chatting: React.FC = () => {
         {/* 채팅 메뉴 출력 영역 */}
         {chatRoom?.messages && (
           <Stack direction="row">
-            <IconButton
-              aria-label="back"
-              onClick={() => dispatch(chatActions.setInitChatRoom())}
-            >
-              <ArrowBackIosNewIcon color="action" />
-            </IconButton>
+            <Tooltip title="돌아가기" arrow>
+              <IconButton
+                aria-label="back"
+                onClick={() => dispatch(chatActions.setInitChatRoom())}
+              >
+                <ArrowBackIosNewIcon color="action" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="채팅방 나가기" arrow>
+              <IconButton
+                aria-label="exit"
+                onClick={() => console.log("EXIT Button Clicked.")}
+              >
+                <LogoutIcon color="error" />
+              </IconButton>
+            </Tooltip>
           </Stack>
         )}
         {/* 채팅 메시지 출력 영역 */}
