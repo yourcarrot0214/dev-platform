@@ -10,6 +10,7 @@ import SendIcon from "@mui/icons-material/Send";
 // * Children Component
 import MessageTab from "./MessageTab";
 import SystemMessage from "./SystemMessage";
+import Info from "./Info";
 
 // * utils
 import useTimeStamp from "./useTimeStamp";
@@ -168,9 +169,7 @@ const Chatting: React.FC = () => {
                     />
                   )
                 )
-              : !chatRoom?.messages && (
-                  <div className="alert-message">No Chat Messages</div>
-                )}
+              : !chatRoom?.messages && <Info message="채팅에 참여하세요!" />}
             <div
               style={{ float: "left", clear: "both" }}
               ref={messageEnd}
@@ -179,7 +178,7 @@ const Chatting: React.FC = () => {
           </Paper>
         </Stack>
         {/* 채팅 메시지 입력 영역 */}
-        {isLogged && (
+        {isLogged && chatRoom?.messages && (
           <Stack spacing={1} direction="row">
             <TextField
               id="chat-message-input"
