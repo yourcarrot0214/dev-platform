@@ -5,6 +5,7 @@ import { Server as NetServer } from "http";
 import useTimeStamp from "../../../components/views/chat/useTimeStamp";
 import EVENTS from "../../../utils/socket/events";
 import { connect } from "../../../utils/mongodb/mongodb";
+import { InitiateSocketProps } from "../../../lib/api/socket";
 
 export const config = {
   api: {
@@ -25,21 +26,27 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       console.log("🌏 io connected : ", socket.rooms);
       let socketRoomId: undefined | string;
 
-      socket.on(EVENTS.CLIENT.JOIN_ROOM, ({ room, user }) => {
-        console.log(`🌏 ${socket.id} joining ${room}`);
-        socketRoomId = room;
-        socket.data.name = user.name;
-        socket.join(room);
+      socket.on(
+        EVENTS.CLIENT.JOIN_ROOM,
+        ({ room, user }: InitiateSocketProps) => {
+          console.log(`🌏 ${socket.id} joining ${room}`);
+          socketRoomId = room;
+          socket.data.name = user.name;
+          socket.join(room);
 
-        const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
-        const message = {
-          username: "SYSTEM",
-          message: `${socket.data.name} 유저가 접속했습니다.`,
-          timestamp: `${ampm} ${hours}:${minutes}`,
-          roomId: socketRoomId,
-        };
-        io.to(socketRoomId as string).emit(EVENTS.SERVER.ROOM_MESSAGE, message);
-      });
+          const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
+          const message = {
+            username: "SYSTEM",
+            message: `${socket.data.name} 유저가 접속했습니다.`,
+            timestamp: `${ampm} ${hours}:${minutes}`,
+            roomId: socketRoomId,
+          };
+          io.to(socketRoomId as string).emit(
+            EVENTS.SERVER.ROOM_MESSAGE,
+            message
+          );
+        }
+      );
 
       socket.on(EVENTS.CLIENT.SEND_ROOM_MESSAGE, (message: EmitMessage) => {
         console.log("💬 Client send Message : ", message);

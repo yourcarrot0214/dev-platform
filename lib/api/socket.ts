@@ -2,7 +2,7 @@ import io, { Socket } from "socket.io-client";
 import EVENTS from "../../utils/socket/events";
 let socket: undefined | Socket;
 
-type InitiateSocketProps = {
+export type InitiateSocketProps = {
   room: string;
   user: {
     _id: string;
