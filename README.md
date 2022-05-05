@@ -1,6 +1,6 @@
 # dev-platform
 
-> 학습한 내용을 직접 구현해 보는 프로젝트 공간 입니다.
+> 학습한 내용을 직접 구현해 보는 프로젝트 공간 입니다. 각각의 기능들은 독립된 route로 구현하였습니다. 각각의 기능에 필요한 권한 및 의존성은 로그인 Auth 정도로 제한하여 재활용 가능한 모듈화를 지향하여 구현하고 있습니다.
 
 # Base Stack
 
@@ -86,3 +86,48 @@ export const getServerSideProps = wrapper.getServerSideProps(
 );
 ...
 ```
+
+<br />
+
+## 3. 채팅
+
+> socket.io 라이브러리를 활용한 채팅 기능입니다.
+
+<img src="public/static/screenshot/chatting.png" alt="채팅" />
+
+### 구현내용
+
+- Socket Instance를 활용한 서버 연결
+- Socket event를 활용한 client-server간 데이터 전송
+- styled-components를 활용한 UI
+
+```ts
+// lib/api/socket.ts
+export const initiateSocket = ({ room, user }: InitiateSocketProps) => {
+  socket = io({ path: "/api/chats/socketio" });
+  if (socket && room) socket.emit(EVENTS.CLIENT.JOIN_ROOM, { room, user });
+};
+
+export const disconnectSocket = () => {
+  if (socket) socket.disconnect();
+};
+
+export const subscribeToChat = (cb: Function) => {
+  if (!socket) return true;
+
+  socket.on(EVENTS.SERVER.ROOM_MESSAGE, (message) => {
+    return cb(null, message);
+  });
+};
+
+export const emitMessage = (message: EmitMessage) => {
+  if (socket) socket.emit(EVENTS.CLIENT.SEND_ROOM_MESSAGE, message);
+};
+```
+
+### 구현예정
+
+- MongoDB 데이터 연동
+- 채팅방 목록에 대한 UI 업데이트
+
+<br />
