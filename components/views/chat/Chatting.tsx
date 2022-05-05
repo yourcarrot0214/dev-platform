@@ -79,7 +79,7 @@ const Chatting: React.FC = () => {
     if (roomId)
       initiateSocket({ room: roomId, user: { _id, name, profileImage } });
 
-    subscribeToChat((err, message) => {
+    subscribeToChat((err: Error, message: Message) => {
       if (err) return;
 
       setMessages((prevMessages) => [...prevMessages, message]);
