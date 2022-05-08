@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../store";
 import { ChatRoomList } from "../../../types/chat";
-import { getChatRoomAPI } from "../../../lib/api/chat";
-import { chatActions } from "../../../store/chat";
 
 import Room from "./Room";
 
@@ -23,20 +21,14 @@ const Container = styled.div`
 `;
 
 const Rooms: React.FC = () => {
-  const dispatch = useDispatch();
   const rooms: ChatRoomList[] = useSelector((state) => state.chat.chatlist);
-
-  const getChatRoomData = async (currentRoomId: string) => {
-    const { data } = await getChatRoomAPI(currentRoomId);
-    dispatch(chatActions.setChatRoom(data));
-  };
 
   return (
     <Container>
       <ul>
         {rooms.map((room) => (
-          <li key={room._id} onClick={() => getChatRoomData(room._id)}>
-            <Room title={room.title} members={room.members} />
+          <li key={room._id}>
+            <Room id={room._id} />
           </li>
         ))}
       </ul>
@@ -47,9 +39,8 @@ const Rooms: React.FC = () => {
 export default Rooms;
 
 /*
-  TODO : create room
-    - 신규 채팅방을 생성하고 목록에 추가하기
-  TODO : room routing
-    - room 클릭시 해당 roomId의 정보를 받아와서 리덕스에 업데이트 하기 ✅
-    - Chatting component가 store.cath.chatRoom 정보를 구독하게 만들기 ✅
+  TODO : logic 수정
+    ? client user id 값이 members에 포함되어 있는지 여부를 검증한다.
+    ? 없으면 chat db의 members 배열에 userId를 포함하는 API를 호출한다.
+    ? response 값을 store에 update 한다.
 */
