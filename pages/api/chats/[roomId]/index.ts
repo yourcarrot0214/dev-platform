@@ -1,6 +1,6 @@
 import { NextApiRequest } from "next";
-import { NextApiResponseServerIO } from "../../../types/chat";
-import { connect } from "../../../utils/mongodb/mongodb";
+import { NextApiResponseServerIO } from "../../../../types/chat";
+import { connect } from "../../../../utils/mongodb/mongodb";
 
 export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   const { Chat } = await connect();
