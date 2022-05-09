@@ -32,36 +32,35 @@ type Member = {
 };
 
 type Props = {
-  id: string;
+  _id: string;
+  title: string;
+  members: Member[];
 };
 
-const Room: React.FC<Props> = ({ id }) => {
+const Room: React.FC<Props> = ({ _id, title, members }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user._id);
-  const chatRoom: ChatRoomList | undefined = useSelector((state) =>
-    state.chat.chatlist.find((chat) => chat._id === id)
-  );
 
   const validateRoomMembers = () =>
-    chatRoom?.members.find((member) => member._id === userId);
+    members.find((member) => member._id === userId);
 
   const getChatRoomData = async () => {
     if (!validateRoomMembers()) {
       // * members에 로그인한 유저의 정보가 없는 경우
       console.log("db members에 userid를 추가하는 api");
     }
-    const { data } = await getChatRoomAPI(id);
+    const { data } = await getChatRoomAPI(_id);
     dispatch(chatActions.setChatRoom(data));
   };
 
   return (
     <Container onClick={getChatRoomData}>
       <div className="title-wrapper">
-        <h3>{chatRoom?.title}</h3>
+        <h3>{title}</h3>
       </div>
       <div className="members-wrapper">
         <AvatarGroup max={4}>
-          {chatRoom?.members.map((member, index) => (
+          {members.map((member, index) => (
             <Avatar key={index} alt={member.name} src={member.profileImage} />
           ))}
         </AvatarGroup>

@@ -28,7 +28,7 @@ const Rooms: React.FC = () => {
       <ul>
         {rooms.map((room) => (
           <li key={room._id}>
-            <Room id={room._id} />
+            <Room _id={room._id} title={room.title} members={room.members} />
           </li>
         ))}
       </ul>
