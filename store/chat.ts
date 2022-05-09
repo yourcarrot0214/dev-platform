@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
-import { ChatRoomList, ChatRoom, Message } from "../types/chat";
+import { ChatRoomList, ChatRoom, Message, ChatMember } from "../types/chat";
 import { ChatState } from "../types/reduxState";
 
 const initialState: ChatState = {
@@ -16,6 +16,16 @@ const chat = createSlice({
   reducers: {
     setChatList(state: ChatState, action: PayloadAction<ChatRoomList[]>) {
       state.chatlist = action.payload;
+    },
+    updateChatMembers(
+      state: ChatState,
+      action: PayloadAction<{ _id: string; members: ChatMember[] }>
+    ) {
+      state.chatlist.map((chatRoom) =>
+        chatRoom._id === action.payload._id
+          ? (chatRoom.members = action.payload.members)
+          : chatRoom
+      );
     },
     setChatRoom(state: ChatState, action: PayloadAction<ChatRoom>) {
       state.chatRoom = action.payload;

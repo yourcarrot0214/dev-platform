@@ -3,7 +3,7 @@ import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../store";
-import { getChatRoomAPI } from "../../../lib/api/chat";
+import { getChatRoomAPI, joinChatRoomAPI } from "../../../lib/api/chat";
 import { chatActions } from "../../../store/chat";
 
 // * MUI
@@ -39,15 +39,22 @@ type Props = {
 
 const Room: React.FC<Props> = ({ _id, title, members }) => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user._id);
+  const user = useSelector((state) => state.user);
 
   const validateRoomMembers = () =>
-    members.find((member) => member._id === userId);
+    members.find((member) => member._id === user._id);
 
   const getChatRoomData = async () => {
     if (!validateRoomMembers()) {
-      // * members에 로그인한 유저의 정보가 없는 경우
-      console.log("db members에 userid를 추가하는 api");
+      await joinChatRoomAPI({ roomId: _id, userId: user._id });
+      let updateData = {
+        _id,
+        members: [
+          ...members,
+          { _id: user._id, name: user.name, profileImage: user.profileImage },
+        ],
+      };
+      dispatch(chatActions.updateChatMembers(updateData));
     }
     const { data } = await getChatRoomAPI(_id);
     dispatch(chatActions.setChatRoom(data));
