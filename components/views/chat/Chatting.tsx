@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
-import { useRouter } from "next/dist/client/router";
 import { useDispatch } from "react-redux";
 
 // * MUI
@@ -33,6 +32,7 @@ import {
   disconnectSocket,
   subscribeToChat,
   emitMessage,
+  subscribeToChatMember,
 } from "../../../lib/api/socket";
 import { chatActions } from "../../../store/chat";
 
@@ -58,8 +58,13 @@ interface Message {
   roomId: string;
 }
 
+interface User {
+  _id: string;
+  name: string;
+  profileImage: string;
+}
+
 const Chatting: React.FC = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const chatRoom = useSelector<ChatRoom | null>((state) => state.chat.chatRoom);
   const [sendMessage, setSendMessage] = useState<string>("");
@@ -70,12 +75,11 @@ const Chatting: React.FC = () => {
 
   const messageEnd = useRef<null | HTMLDivElement>(null);
 
-  const rooms = useSelector((state) => state.chat.chatlist);
   const roomId = useSelector((state) => state.chat.chatRoom?._id);
+  const members = useSelector((state) => state.chat.chatRoom?.members);
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect((): any => {
-    console.log(roomId);
     if (roomId)
       initiateSocket({ room: roomId, user: { _id, name, profileImage } });
 
@@ -85,11 +89,27 @@ const Chatting: React.FC = () => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
+    subscribeToChatMember((err: Error, user: User) => {
+      if (err) return;
+
+      let updateChatMembers = members?.find((member) => member._id === user._id)
+        ? members
+        : members?.concat(user);
+
+      if (updateChatMembers === members) return;
+      dispatch(
+        chatActions.updateChatMembers({
+          _id: roomId,
+          members: updateChatMembers,
+        })
+      );
+    });
+
     return () => {
       setMessages([]);
       disconnectSocket();
     };
-  }, [roomId]);
+  }, [roomId, members]);
 
   useEffect((): any => {
     const scrollToBottom = () => {

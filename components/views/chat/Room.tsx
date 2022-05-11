@@ -8,7 +8,6 @@ import { chatActions } from "../../../store/chat";
 
 // * MUI
 import { Avatar, AvatarGroup } from "@mui/material";
-import { ChatRoomList } from "../../../types/chat";
 
 const Container = styled.div`
   display: flex;

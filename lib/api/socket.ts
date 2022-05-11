@@ -31,6 +31,15 @@ export const subscribeToChat = (cb: Function) => {
   });
 };
 
+export const subscribeToChatMember = (cb: Function) => {
+  if (!socket) return true;
+
+  socket.on(EVENTS.SERVER.JOINED_ROOM, (user) => {
+    console.log("🌏 USER JOINED ROOM : ", user);
+    return cb(null, user);
+  });
+};
+
 type EmitMessage = {
   username: string;
   message: string;

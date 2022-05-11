@@ -53,6 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
             EVENTS.SERVER.ROOM_MESSAGE,
             message
           );
+          io.to(socketRoomId as string).emit(EVENTS.SERVER.JOINED_ROOM, user);
         }
       );
 
