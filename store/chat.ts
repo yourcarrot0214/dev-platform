@@ -21,7 +21,6 @@ const chat = createSlice({
       state: ChatState,
       action: PayloadAction<{ _id: string; members: ChatMember[] }>
     ) {
-      console.log(action.payload);
       state.chatlist.map((chatRoom) =>
         chatRoom._id === action.payload._id
           ? (chatRoom.members = action.payload.members)

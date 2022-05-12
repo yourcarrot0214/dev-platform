@@ -57,6 +57,11 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         }
       );
 
+      socket.on(EVENTS.CLIENT.LEAVE_ROOM, (userId: string) => {
+        console.log("🌏 LEAVED_ROOM : ", userId);
+        io.to(socketRoomId as string).emit(EVENTS.SERVER.LEAVED_ROOM, userId);
+      });
+
       socket.on(EVENTS.CLIENT.SEND_ROOM_MESSAGE, (message: EmitMessage) => {
         console.log("💬 Client send Message : ", message);
         io.to(message.roomId).emit(EVENTS.SERVER.ROOM_MESSAGE, message);

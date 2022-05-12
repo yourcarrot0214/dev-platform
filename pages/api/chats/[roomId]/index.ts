@@ -48,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     chatRoom.save();
 
     // ! chatRoom.save() method 검증
-    return res.status(201).send(chatRoom);
+    return res.status(201).end();
   }
 
   res.status(400).end();

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
-import { useDispatch } from "react-redux";
+import { useDispatch, shallowEqual } from "react-redux";
 
 // * MUI
 import {
@@ -33,8 +33,11 @@ import {
   subscribeToChat,
   emitMessage,
   subscribeToChatMember,
+  emitExitRoom,
+  subscribeToExitMember,
 } from "../../../lib/api/socket";
 import { chatActions } from "../../../store/chat";
+import { exitChatRoomAPI } from "../../../lib/api/chat";
 
 const Container = styled.div`
   width: 100%;
@@ -76,7 +79,10 @@ const Chatting: React.FC = () => {
   const messageEnd = useRef<null | HTMLDivElement>(null);
 
   const roomId = useSelector((state) => state.chat.chatRoom?._id);
-  const members = useSelector((state) => state.chat.chatRoom?.members);
+  const members = useSelector(
+    (state) => state.chat.chatRoom?.members,
+    shallowEqual
+  );
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect((): any => {
@@ -96,7 +102,6 @@ const Chatting: React.FC = () => {
         ? members
         : members?.concat(user);
 
-      if (updateChatMembers === members) return;
       dispatch(
         chatActions.updateChatMembers({
           _id: roomId,
@@ -105,11 +110,26 @@ const Chatting: React.FC = () => {
       );
     });
 
+    subscribeToExitMember((err: Error, userId: string) => {
+      if (err) return;
+      let updateChatMembers = members?.filter(
+        (member) => member._id !== userId
+      );
+      if (updateChatMembers === members) return;
+      dispatch(
+        chatActions.updateChatMembers({
+          _id: roomId,
+          members: updateChatMembers,
+        })
+      );
+      if (userId === _id) dispatch(chatActions.setInitChatRoom());
+    });
+
     return () => {
       setMessages([]);
       disconnectSocket();
     };
-  }, [roomId, members]);
+  }, [roomId, members, dispatch]);
 
   useEffect((): any => {
     const scrollToBottom = () => {
@@ -155,6 +175,11 @@ const Chatting: React.FC = () => {
     }
   };
 
+  const exitRoomHandler = async () => {
+    exitChatRoomAPI({ roomId: roomId as string, userId: _id });
+    emitExitRoom(_id);
+  };
+
   return (
     <Container>
       <Stack spacing={1} direction="column">
@@ -175,10 +200,7 @@ const Chatting: React.FC = () => {
               </IconButton>
             </Tooltip>
             <Tooltip title="채팅방 나가기" arrow>
-              <IconButton
-                aria-label="exit"
-                onClick={() => console.log("EXIT Button Clicked.")}
-              >
+              <IconButton aria-label="exit" onClick={exitRoomHandler}>
                 <LogoutIcon color="error" />
               </IconButton>
             </Tooltip>

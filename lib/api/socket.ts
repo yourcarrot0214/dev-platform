@@ -40,11 +40,23 @@ export const subscribeToChatMember = (cb: Function) => {
   });
 };
 
+export const subscribeToExitMember = (cb: Function) => {
+  if (!socket) return true;
+
+  socket.on(EVENTS.SERVER.LEAVED_ROOM, (userId) => {
+    return cb(null, userId);
+  });
+};
+
 type EmitMessage = {
   username: string;
   message: string;
   timestamp: string;
   roomId: string;
+};
+
+export const emitExitRoom = (userId: string) => {
+  if (socket) socket.emit(EVENTS.CLIENT.LEAVE_ROOM, userId);
 };
 
 export const emitMessage = (message: EmitMessage) => {
