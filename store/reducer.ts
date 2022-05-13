@@ -23,7 +23,7 @@ const rootReducer = (
     case HYDRATE:
       return action.payload;
     default: {
-      const combinedReducer = combineReducers({
+      const combinedReducer = combineReducers<IState>({
         user: user.reducer,
         auth: auth.reducer,
         common: common.reducer,

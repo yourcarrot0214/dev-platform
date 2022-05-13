@@ -25,7 +25,7 @@ import Info from "./Info";
 
 // * utils
 import useTimeStamp from "./useTimeStamp";
-import { ChatRoom } from "../../../types/chat";
+import { ChatRoom, ChatMember } from "../../../types/chat";
 
 import {
   initiateSocket,
@@ -104,8 +104,8 @@ const Chatting: React.FC = () => {
 
       dispatch(
         chatActions.updateChatMembers({
-          _id: roomId,
-          members: updateChatMembers,
+          _id: roomId as string,
+          members: updateChatMembers as ChatMember[],
         })
       );
     });
@@ -118,8 +118,8 @@ const Chatting: React.FC = () => {
       if (updateChatMembers === members) return;
       dispatch(
         chatActions.updateChatMembers({
-          _id: roomId,
-          members: updateChatMembers,
+          _id: roomId as string,
+          members: updateChatMembers as ChatMember[],
         })
       );
       if (userId === _id) dispatch(chatActions.setInitChatRoom());
