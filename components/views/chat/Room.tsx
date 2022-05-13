@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useDispatch } from "react-redux";
@@ -9,16 +9,21 @@ import { chatActions } from "../../../store/chat";
 // * MUI
 import { Avatar, AvatarGroup } from "@mui/material";
 
-const Container = styled.div`
+const Container = styled.div<{ selected: boolean }>`
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  border: 1px solid gray;
+  border: ${(props) =>
+    props.selected ? "3px solid #0fbcf9" : "3px solid #222222"};
   border-radius: 6px;
+  background-color: #222222;
+  box-sizing: border-box;
 
   .title-wrapper {
-    margin: 1rem 0;
+    margin-bottom: 1rem;
     font-size: 1.2rem;
+    font-weight: bold;
+    color: #0fbcf9;
   }
   .members-wrapper {
   }
@@ -39,6 +44,7 @@ type Props = {
 const Room: React.FC<Props> = ({ _id, title, members }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [selected, setSelected] = useState<boolean>(false);
 
   const validateRoomMembers = () =>
     members.find((member) => member._id === user._id);
@@ -60,7 +66,7 @@ const Room: React.FC<Props> = ({ _id, title, members }) => {
   };
 
   return (
-    <Container onClick={getChatRoomData}>
+    <Container onClick={getChatRoomData} selected={selected}>
       <div className="title-wrapper">
         <h3>{title}</h3>
       </div>
