@@ -34,10 +34,9 @@ const app = ({ Component, pageProps }: AppProps) => {
 };
 
 app.getInitialProps = wrapper.getInitialPageProps(
-  (store: Store) => async (context: AppContext) => {
-    const appInitialProps = await App.getInitialProps(context);
+  (store) => async ({ Component, ctx }: AppContext) => {
     const { isLogged } = store.getState().user;
-    const cookieObject = cookieStringToObject(context.ctx.req?.headers.cookie);
+    const cookieObject = cookieStringToObject(ctx.req?.headers.cookie);
 
     try {
       if (!isLogged && cookieObject.access_token) {
@@ -52,7 +51,14 @@ app.getInitialProps = wrapper.getInitialPageProps(
       console.log(">> app.getInitialProps error :: ", err.message);
     }
 
-    return { ...appInitialProps };
+    return {
+      pageProps: {
+        ...(Component.getInitialProps
+          ? await Component.getInitialProps(ctx)
+          : {}),
+        AppProps: ctx.pathname,
+      },
+    };
   }
 );
 

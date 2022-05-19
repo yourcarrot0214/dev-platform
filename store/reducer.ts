@@ -20,8 +20,10 @@ const rootReducer = (
   action: AnyAction
 ): CombinedState<IState> => {
   switch (action.type) {
-    case HYDRATE:
-      return action.payload;
+    case HYDRATE: {
+      const nextState = { ...state, ...action.payload };
+      return nextState;
+    }
     default: {
       const combinedReducer = combineReducers<IState>({
         user: user.reducer,

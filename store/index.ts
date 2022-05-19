@@ -14,6 +14,6 @@ const makeStore = (context: Context) =>
 
 export const useSelector: TypedUseSelectorHook<IState> = useReduxSelector;
 
-const wrapper = createWrapper(makeStore, { debug: false });
+const wrapper = createWrapper(makeStore, { debug: isDevMode });
 
 export default wrapper;

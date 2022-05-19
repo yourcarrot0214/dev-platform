@@ -15,8 +15,8 @@ const index: NextPage = () => {
   return <Board />;
 };
 
-index.getInitialProps = wrapper.getInitialAppProps(
-  (store: Store) => async ({ query }: NextPageContext) => {
+index.getInitialProps = wrapper.getInitialPageProps(
+  (store: Store) => async (context: NextPageContext) => {
     console.log("getInitialProps ✅");
     const boardList = await getBoardListAPI();
     const commentList = await getCommentListAPI();
@@ -28,17 +28,5 @@ index.getInitialProps = wrapper.getInitialAppProps(
     return {};
   }
 );
-
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store: Store) => async (context: NextPageContext) => {
-//     const boardList = await getBoardListAPI();
-//     const commentList = await getCommentListAPI();
-//     const repliesList = await getRepliesListAPI();
-
-//     store.dispatch(boardActions.setPostlist(boardList.data));
-//     store.dispatch(boardActions.setCommentlist(commentList.data));
-//     store.dispatch(boardActions.setReplieslist(repliesList.data));
-//   }
-// );
 
 export default index;
