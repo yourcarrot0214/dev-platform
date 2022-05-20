@@ -51,7 +51,7 @@ const Container = styled.div`
     .header-menu-icon {
       display: block;
       border: none;
-      background-color: white;
+      background: none;
       padding: 0 1rem;
     }
 

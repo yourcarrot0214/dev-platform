@@ -10,10 +10,7 @@ import { authAPI } from "../lib/api/auth";
 import { userActions } from "../store/user";
 import styled from "styled-components";
 
-const MainContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+const MainContainer = styled.div``;
 
 interface SystemError {
   code: string;
@@ -24,8 +21,8 @@ const app = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <GlobalStyle />
-      <Header />
       <MainContainer>
+        <Header />
         <Component {...pageProps} />
       </MainContainer>
       <div id="root-modal" />

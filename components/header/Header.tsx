@@ -30,6 +30,7 @@ const Container = styled.div`
 
     .header-title {
       font-weight: 800;
+      font-size: 1.2rem;
     }
   }
 
