@@ -42,6 +42,7 @@ export type EmitMessage = {
   message: string;
   timestamp: string;
   roomId: string;
+  profileImage: string;
 };
 
 export type ChatDB = {

@@ -59,6 +59,7 @@ interface Message {
   message: string;
   timestamp: string;
   roomId: string;
+  profileImage: string;
 }
 
 interface User {
@@ -167,6 +168,7 @@ const Chatting: React.FC = () => {
         message: sendMessage,
         timestamp: `${ampm} ${hours}:${minutes}`,
         roomId: roomId as string,
+        profileImage: profileImage,
       };
 
       emitMessage(message);
@@ -240,7 +242,7 @@ const Chatting: React.FC = () => {
                     <MessageTab
                       key={index}
                       name={chat.username}
-                      profileImage={profileImage}
+                      profileImage={chat.profileImage}
                       message={chat.message}
                       isMine={chat.username === name}
                       timestamp={chat.timestamp}
