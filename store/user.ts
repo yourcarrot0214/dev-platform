@@ -29,6 +29,10 @@ const user = createSlice({
       state.profileImage = action.payload;
       return state;
     },
+    initProfileImage(state: UserState) {
+      state.profileImage = "/static/image/user/default_user_profile_image.jpg";
+      return state;
+    },
   },
 });
 

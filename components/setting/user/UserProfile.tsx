@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 // * MUI
 import { Avatar, Stack, Button } from "@mui/material";
 import { userActions } from "../../../store/user";
+import { patchProfileImageAPI } from "../../../lib/api/setting/user";
 
 const Container = styled.div`
   width: 100%;
@@ -38,6 +39,8 @@ const UserProfile: React.FC = () => {
         uploadFileAPI(formdata);
         const { data } = await uploadFileAPI(formdata);
         if (data) dispatch(userActions.setProfileImage(data));
+        // ! MongoDB에 client user profileImage 정보 업데이트
+        await patchProfileImageAPI({ userId: user._id, imageLocation: data });
       } catch (error) {
         console.log(error);
       }
