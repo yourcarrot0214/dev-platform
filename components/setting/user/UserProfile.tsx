@@ -21,6 +21,14 @@ const Container = styled.div`
     font-weight: bold;
     color: ${palette.black};
   }
+
+  input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
 `;
 
 const UserProfile: React.FC = () => {
@@ -36,10 +44,8 @@ const UserProfile: React.FC = () => {
       formdata.append("file", file);
 
       try {
-        uploadFileAPI(formdata);
         const { data } = await uploadFileAPI(formdata);
         if (data) dispatch(userActions.setProfileImage(data));
-        // ! MongoDB에 client user profileImage 정보 업데이트
         await patchProfileImageAPI({ userId: user._id, imageLocation: data });
       } catch (error) {
         console.log(error);
@@ -60,8 +66,8 @@ const UserProfile: React.FC = () => {
           src={user.profileImage}
           sx={{ width: 100, height: 100 }}
         />
-        <input type="file" accept="image/*" onChange={uploadImage} />
         <Button variant="contained" color="info" size="small">
+          <input type="file" accept="image/*" onChange={uploadImage} />
           이미지 업로드
         </Button>
         <Button variant="text" color="error" size="small">
