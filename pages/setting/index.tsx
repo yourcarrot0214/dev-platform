@@ -9,7 +9,7 @@ const index: NextPage = () => {
   return <Setting />;
 };
 
-index.getInitialProps = wrapper.getInitialAppProps(
+index.getInitialProps = wrapper.getInitialPageProps(
   (store: Store) => async ({ query }: NextPageContext) => {
     console.log(">> user page query ::", query);
 

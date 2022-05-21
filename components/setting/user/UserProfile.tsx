@@ -3,9 +3,11 @@ import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
 import { uploadFileAPI } from "../../../lib/api/file";
+import { useDispatch } from "react-redux";
 
 // * MUI
 import { Avatar, Stack, Button } from "@mui/material";
+import { userActions } from "../../../store/user";
 
 const Container = styled.div`
   width: 100%;
@@ -21,11 +23,11 @@ const Container = styled.div`
 `;
 
 const UserProfile: React.FC = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
   const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
-    console.log(files);
 
     if (files && files.length > 0) {
       const file = files[0];
@@ -33,7 +35,9 @@ const UserProfile: React.FC = () => {
       formdata.append("file", file);
 
       try {
-        await uploadFileAPI(formdata);
+        uploadFileAPI(formdata);
+        const { data } = await uploadFileAPI(formdata);
+        if (data) dispatch(userActions.setProfileImage(data));
       } catch (error) {
         console.log(error);
       }

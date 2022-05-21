@@ -25,6 +25,10 @@ const user = createSlice({
       state = initialState;
       return state;
     },
+    setProfileImage(state: UserState, action: PayloadAction<string>) {
+      state.profileImage = action.payload;
+      return state;
+    },
   },
 });
 
