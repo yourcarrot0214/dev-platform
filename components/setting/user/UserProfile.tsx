@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
+import { uploadFileAPI } from "../../../lib/api/file";
 
 // * MUI
 import { Avatar, Stack, Button } from "@mui/material";
@@ -21,6 +22,24 @@ const Container = styled.div`
 
 const UserProfile: React.FC = () => {
   const user = useSelector((state) => state.user);
+
+  const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    console.log(files);
+
+    if (files && files.length > 0) {
+      const file = files[0];
+      const formdata = new FormData();
+      formdata.append("file", file);
+
+      try {
+        await uploadFileAPI(formdata);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <Container>
       <Stack
@@ -34,6 +53,7 @@ const UserProfile: React.FC = () => {
           src={user.profileImage}
           sx={{ width: 100, height: 100 }}
         />
+        <input type="file" accept="image/*" onChange={uploadImage} />
         <Button variant="contained" color="info" size="small">
           이미지 업로드
         </Button>
