@@ -53,6 +53,14 @@ const UserProfile: React.FC = () => {
     }
   };
 
+  const initProfileImage = async () => {
+    dispatch(userActions.initProfileImage());
+    await patchProfileImageAPI({
+      userId: user._id,
+      imageLocation: "/static/image/user/default_user_profile_image.jpg",
+    });
+  };
+
   return (
     <Container>
       <Stack
@@ -70,8 +78,13 @@ const UserProfile: React.FC = () => {
           <input type="file" accept="image/*" onChange={uploadImage} />
           이미지 업로드
         </Button>
-        <Button variant="text" color="error" size="small">
-          이미지 제거
+        <Button
+          variant="text"
+          color="error"
+          size="small"
+          onClick={initProfileImage}
+        >
+          이미지 초기화
         </Button>
       </Stack>
       <Stack spacing={2} direction="column" alignItems="flex-start">
