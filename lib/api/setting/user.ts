@@ -7,8 +7,14 @@ export type PatchProfileImageAPI = {
   imageLocation: string;
 };
 
-export const patchProfileImageAPI = ({
-  userId,
-  imageLocation,
-}: PatchProfileImageAPI) =>
-  axios.patch(API_SETTING_USER, { userId, imageLocation });
+export type UserProps = {
+  _id: string;
+  name?: string;
+  profileImage?: string;
+};
+
+export const updateProfileImageAPI = ({ _id, profileImage }: UserProps) =>
+  axios.patch(API_SETTING_USER, { _id, profileImage });
+
+export const updateUserNameAPI = ({ _id, name }: UserProps) =>
+  axios.patch(API_SETTING_USER, { _id, name });

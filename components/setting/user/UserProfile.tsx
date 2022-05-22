@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
@@ -6,34 +6,67 @@ import { uploadFileAPI } from "../../../lib/api/file";
 import { useDispatch } from "react-redux";
 
 // * MUI
-import { Avatar, Stack, Button } from "@mui/material";
+import { Avatar, Stack, Button, IconButton } from "@mui/material";
 import { userActions } from "../../../store/user";
-import { patchProfileImageAPI } from "../../../lib/api/setting/user";
+import {
+  updateProfileImageAPI,
+  updateUserNameAPI,
+} from "../../../lib/api/setting/user";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Container = styled.div`
-  width: 100%;
+  width: 80%;
+  margin: 1rem auto;
   padding: 1rem;
   display: flex;
   flex-direction: row;
+  background: ${palette.gray_eb};
+  border-radius: 6px;
 
-  .user-name {
-    font-size: 2rem;
-    font-weight: bold;
-    color: ${palette.black};
-  }
-
-  input {
+  .upload {
     position: absolute;
     width: 100%;
     height: 100%;
     opacity: 0;
     cursor: pointer;
   }
+
+  .user-name-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .user-name {
+      width: auto;
+      height: 46px;
+      outline: none;
+      border: none;
+      font-size: 1.7rem;
+      font-weight: bold;
+      background: none;
+      & :focus {
+        border-color: ${palette.charcoal};
+      }
+    }
+  }
 `;
 
 const UserProfile: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const nameRef = useRef(null);
+
+  const [username, setUsername] = useState<string>(user.name);
+  const [updateMode, setUpdateMode] = useState<boolean>(false);
+
+  const onChangeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
+  const toggleUpdateMode = () => {
+    setUpdateMode((prev) => !prev);
+    nameRef.current.focus();
+  };
 
   const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -46,7 +79,7 @@ const UserProfile: React.FC = () => {
       try {
         const { data } = await uploadFileAPI(formdata);
         if (data) dispatch(userActions.setProfileImage(data));
-        await patchProfileImageAPI({ userId: user._id, imageLocation: data });
+        await updateProfileImageAPI({ _id: user._id, profileImage: data });
       } catch (error) {
         console.log(error);
       }
@@ -55,10 +88,25 @@ const UserProfile: React.FC = () => {
 
   const initProfileImage = async () => {
     dispatch(userActions.initProfileImage());
-    await patchProfileImageAPI({
-      userId: user._id,
-      imageLocation: "/static/image/user/default_user_profile_image.jpg",
+    await updateProfileImageAPI({
+      _id: user._id,
+      profileImage: "/static/image/user/default_user_profile_image.jpg",
     });
+  };
+
+  // ? change user name
+  const updateUserName = async () => {
+    dispatch(userActions.setUserName(username));
+    await updateUserNameAPI({ _id: user._id, name: username });
+  };
+
+  // ? key press event function
+  const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      updateUserName();
+      setUpdateMode(false);
+    }
   };
 
   return (
@@ -67,7 +115,7 @@ const UserProfile: React.FC = () => {
         spacing={2}
         direction="column"
         alignItems="center"
-        sx={{ width: 300, pl: 1, pr: 1 }}
+        sx={{ width: "200px" }}
       >
         <Avatar
           alt={user.name}
@@ -75,7 +123,12 @@ const UserProfile: React.FC = () => {
           sx={{ width: 100, height: 100 }}
         />
         <Button variant="contained" color="info" size="small">
-          <input type="file" accept="image/*" onChange={uploadImage} />
+          <input
+            className="upload"
+            type="file"
+            accept="image/*"
+            onChange={uploadImage}
+          />
           이미지 업로드
         </Button>
         <Button
@@ -87,12 +140,32 @@ const UserProfile: React.FC = () => {
           이미지 초기화
         </Button>
       </Stack>
-      <Stack spacing={2} direction="column" alignItems="flex-start">
-        <h1 className="user-name">{user.name}</h1>
+      <Stack
+        spacing={2}
+        direction="column"
+        alignItems="flex-start"
+        sx={{ width: "100%" }}
+      >
+        <div className="user-name-wrapper">
+          <input
+            className="user-name"
+            value={username}
+            readOnly={!updateMode}
+            onChange={onChangeUserName}
+            autoFocus={updateMode}
+            ref={nameRef}
+            onKeyPress={onKeyPress}
+            onSubmit={updateUserName}
+          />
+          <IconButton
+            aria-label="edit name"
+            color="info"
+            onClick={toggleUpdateMode}
+          >
+            <EditIcon />
+          </IconButton>
+        </div>
         <p className="user-email">{user.email}</p>
-        <Button variant="text" size="small" color="success">
-          수정
-        </Button>
       </Stack>
     </Container>
   );
@@ -101,12 +174,16 @@ const UserProfile: React.FC = () => {
 export default React.memo(UserProfile);
 
 /*
-  TODO 1. Avatar
-    ? Avatar Profile Image 출력
-    ? Badge button update 기능 구현
-      * Badge를 클릭하면 Modal이 호출되고, Modal에 이미지 업로드, 이미지 제거 버튼 제공
-    
-  TODO 2. Name
-    ? Name 과 Pen Icon을 출력. row 정렬로.
-    ? Pen Icon 클릭시 Name 수정 기능을 제공
+  TODO 1. 회원 이름 변경 기능 구현
+    ? function
+      * change button -> name element updatedMode toggle -> readonly true/false
+      * name element -> update db api, store dispatch api, updateMode false
+    ? api
+  TODO 2. 회원탈퇴 기능 구현
+    ? JSX Button
+    ? function
+    ? api
+
+  TODO 3. css update
+    ? CARD design -> figma search
 */
