@@ -73,7 +73,12 @@ const Room: React.FC<Props> = ({ _id, title, members }) => {
       <div className="members-wrapper">
         <AvatarGroup max={4}>
           {members.map((member, index) => (
-            <Avatar key={index} alt={member.name} src={member.profileImage} />
+            <Avatar
+              key={index}
+              alt={member.name}
+              src={member.profileImage}
+              sx={{ bgcolor: `${palette.snow}` }}
+            />
           ))}
         </AvatarGroup>
       </div>
