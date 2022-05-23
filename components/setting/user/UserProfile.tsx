@@ -39,7 +39,6 @@ const Container = styled.div`
     width: 100%;
 
     .user-name {
-      width: auto;
       height: 46px;
       outline: none;
       border: none;
@@ -172,6 +171,7 @@ const UserProfile: React.FC = () => {
             ref={nameRef}
             onKeyPress={onKeyPress}
             onSubmit={updateUserName}
+            size={username.length}
           />
           <IconButton
             aria-label="edit name"
