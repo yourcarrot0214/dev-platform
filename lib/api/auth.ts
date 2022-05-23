@@ -11,6 +11,7 @@ const API_AUTH_SIGN_UP = "/api/auth/signup";
 const API_AUTH_LOG_IN = "/api/auth/login";
 const API_AUTH_LOG_OUT = "/api/auth/logout";
 const API_AUTH_AUTH = "/api/auth/auth";
+const API_AUTH_USER = "/api/auth/user";
 
 export const signupAPI = (body: SignUpAPIBody) =>
   axios.post<UserType>(API_AUTH_SIGN_UP, body);
@@ -27,3 +28,6 @@ export const authAPI = () => axios.get<UserType>(API_AUTH_AUTH);
 
 export const logoutAPI = (userId: string) =>
   axios.delete(`${API_AUTH_LOG_OUT}/${userId}`);
+
+export const secessionAPI = (_id: string) =>
+  axios.delete(`${API_AUTH_USER}/${_id}`);

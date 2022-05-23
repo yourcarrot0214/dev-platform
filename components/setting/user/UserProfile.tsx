@@ -4,6 +4,7 @@ import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
 import { uploadFileAPI } from "../../../lib/api/file";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/dist/client/router";
 
 // * MUI
 import { Avatar, Stack, Button, IconButton } from "@mui/material";
@@ -13,6 +14,7 @@ import {
   updateUserNameAPI,
 } from "../../../lib/api/setting/user";
 import EditIcon from "@mui/icons-material/Edit";
+import { secessionAPI } from "../../../lib/api/auth";
 
 const Container = styled.div`
   width: 80%;
@@ -55,6 +57,7 @@ const UserProfile: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const nameRef = useRef(null);
+  const router = useRouter();
 
   const [username, setUsername] = useState<string>(user.name);
   const [updateMode, setUpdateMode] = useState<boolean>(false);
@@ -94,18 +97,31 @@ const UserProfile: React.FC = () => {
     });
   };
 
-  // ? change user name
   const updateUserName = async () => {
     dispatch(userActions.setUserName(username));
     await updateUserNameAPI({ _id: user._id, name: username });
   };
 
-  // ? key press event function
   const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
       updateUserName();
       setUpdateMode(false);
+    }
+  };
+
+  // ? 회원 탈퇴하기
+  const secession = async () => {
+    const confirm = window.confirm(
+      "회원님의 모든 정보가 삭제됩니다. 탈퇴하시겠습니까?"
+    );
+
+    if (confirm) {
+      await secessionAPI(user._id);
+      dispatch(userActions.initUser());
+      router.push("/");
+    } else {
+      return;
     }
   };
 
@@ -166,6 +182,14 @@ const UserProfile: React.FC = () => {
           </IconButton>
         </div>
         <p className="user-email">{user.email}</p>
+        <Button
+          color="error"
+          variant="outlined"
+          size="small"
+          onClick={secession}
+        >
+          회원탈퇴하기
+        </Button>
       </Stack>
     </Container>
   );
@@ -182,7 +206,13 @@ export default React.memo(UserProfile);
   TODO 2. 회원탈퇴 기능 구현
     ? JSX Button
     ? function
+      * await secessionAPI(user._id)
+      * dispatch(userActions.setInit())
+      * router.push("/")
+      * delete token
     ? api
+      * method -> DELETE
+      * path -> /api/auth/user/[id].ts
 
   TODO 3. css update
     ? CARD design -> figma search
