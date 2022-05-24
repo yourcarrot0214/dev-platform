@@ -6,10 +6,35 @@ import CardSection from "../common/CardSection";
 import { implementList, projectList } from "../../lib/data/portfolio";
 
 const Container = styled.div`
-  width: 100%;
-  padding: 1rem;
+  padding: 96px 1rem 1rem;
+  margin-top: -80px;
   display: flex;
   flex-direction: column;
+
+  width: 100%;
+  height: 100vmax;
+  background: linear-gradient(
+    132deg,
+    #24c6dc,
+    #3494e6,
+    #ec6ead,
+    #f80759,
+    #bc4e9c
+  );
+  background-size: 400% 400%;
+  animation: Gradient 60s ease infinite;
+
+  @keyframes Gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 
   .card-wrapper {
     display: flex;

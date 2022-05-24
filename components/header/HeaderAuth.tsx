@@ -17,11 +17,12 @@ const Container = styled.div`
       padding: 0 16px;
       border: 0;
       border-radius: 21px;
-      background-color: white;
+      background: none;
       cursor: pointer;
       outline: none;
+      color: ${palette.snow};
       &:hover {
-        background-color: ${palette.gray_f7};
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
       }
     }
     .header-login-button {
@@ -30,9 +31,10 @@ const Container = styled.div`
       border: 0;
       box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
       border-radius: 21px;
-      background-color: white;
+      background: none;
       cursor: pointer;
       outline: none;
+      color: ${palette.snow};
       &:hover {
         box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
       }

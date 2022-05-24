@@ -29,7 +29,7 @@ const Container = styled.div`
     border: 0;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
     border-radius: 21px;
-    background-color: white;
+    background: none;
     cursor: pointer;
     outline: none;
     &:hover {

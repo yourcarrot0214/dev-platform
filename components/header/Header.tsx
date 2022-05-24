@@ -12,7 +12,6 @@ const Container = styled.div`
     height: 60px;
   }
 
-  position: sticky;
   top: 0;
   width: 100%;
   height: 80px;
@@ -20,9 +19,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 80px;
-  background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 12px;
-  z-index: 10;
+  background-color: none;
 
   .header-title-wrapper {
     display: flex;
@@ -31,6 +28,7 @@ const Container = styled.div`
     .header-title {
       font-weight: 800;
       font-size: 1.2rem;
+      color: ${palette.black};
     }
   }
 
