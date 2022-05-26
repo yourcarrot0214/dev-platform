@@ -1,6 +1,4 @@
 import App, { AppContext, AppProps } from "next/app";
-import { NextPageContext } from "next";
-import GlobalStyle from "../styles/GlobalStyle";
 import wrapper from "../store";
 import Header from "../components/header/Header";
 import axios from "../lib/api";
@@ -9,6 +7,7 @@ import { Store } from "redux";
 import { authAPI } from "../lib/api/auth";
 import { userActions } from "../store/user";
 import styled from "styled-components";
+import "./app.css";
 
 const MainContainer = styled.div``;
 
@@ -20,7 +19,6 @@ interface SystemError {
 const app = ({ Component, pageProps }: AppProps) => {
   return (
     <>
-      <GlobalStyle />
       <MainContainer>
         <Header />
         <Component {...pageProps} />

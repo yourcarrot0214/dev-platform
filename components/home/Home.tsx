@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
+import LandingPage from "./LandingPage";
 import CardSection from "../common/CardSection";
 import { implementList, projectList } from "../../lib/data/portfolio";
 
@@ -76,7 +77,8 @@ const Container = styled.div`
 const Home: React.FC = () => {
   return (
     <Container>
-      <div className="card-wrapper">
+      <LandingPage />
+      {/* <div className="card-wrapper">
         <h1 className="title">🎮 Implement</h1>
         <div className="card-section">
           {implementList.map((item) => (
@@ -107,7 +109,7 @@ const Home: React.FC = () => {
             </Link>
           ))}
         </div>
-      </div>
+      </div> */}
     </Container>
   );
 };

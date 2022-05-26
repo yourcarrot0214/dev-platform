@@ -40,11 +40,7 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
-            rel="stylesheet"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Sans:wght@400;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;0,900;1,900&family=Poppins:ital,wght@0,900;1,900&display=swap"
             rel="stylesheet"
           />
           {/* MUI use to Roboto font */}

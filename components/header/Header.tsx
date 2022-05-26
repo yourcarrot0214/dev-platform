@@ -7,6 +7,8 @@ import HeaderUserProfile from "./HeaderUserProfile";
 import { useSelector } from "../../store";
 
 const Container = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
   @media screen and (max-width: 500px) {
     justify-content: center;
     height: 60px;
@@ -27,8 +29,9 @@ const Container = styled.div`
 
     .header-title {
       font-weight: 800;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       color: ${palette.black};
+      font-family: Bebas Neue;
     }
   }
 

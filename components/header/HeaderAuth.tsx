@@ -7,7 +7,9 @@ import { useDispatch } from "react-redux";
 import AuthModal from "./AuthModal";
 
 import OutsideClickHandler from "react-outside-click-handler";
-import HamburgerIcon from "../../public/static/svg/header/hamburger.svg";
+
+import IconButton from "@mui/material/IconButton";
+import ViewListIcon from "@mui/icons-material/ViewList";
 
 const Container = styled.div`
   .header-auth-buttons {
@@ -52,9 +54,6 @@ const Container = styled.div`
 
     .header-menu-icon {
       display: block;
-      border: none;
-      background: none;
-      padding: 0 1rem;
     }
 
     .header-menu {
@@ -115,12 +114,11 @@ const HeaderAuth: React.FC = () => {
           로그인
         </button>
       </div>
-      <button
-        className="header-menu-icon"
-        onClick={() => setIsUsermenuOpened(true)}
-      >
-        <HamburgerIcon />
-      </button>
+      <div className="header-menu-icon">
+        <IconButton aria-label="menu" onClick={() => setIsUsermenuOpened(true)}>
+          <ViewListIcon sx={{ color: palette.black }} />
+        </IconButton>
+      </div>
       <ModalPortal>
         <AuthModal closeModal={closeModal} />
       </ModalPortal>
