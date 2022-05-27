@@ -11,9 +11,7 @@ const Container = styled.div`
   margin-top: -80px;
   display: flex;
   flex-direction: column;
-
   width: 100%;
-  height: 100vmax;
   background: linear-gradient(
     132deg,
     #24c6dc,

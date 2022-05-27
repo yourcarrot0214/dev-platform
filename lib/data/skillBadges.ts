@@ -19,6 +19,21 @@ export const frontendBadges = [
     src:
       "https://img.shields.io/badge/redux-764ABC.svg?&style=for-the-badge&logo=redux&logoColor=white",
   },
+  {
+    alt: "html",
+    src:
+      "https://img.shields.io/badge/html-E34F26.svg?&style=for-the-badge&logo=html5&logoColor=white",
+  },
+  {
+    alt: "css",
+    src:
+      "https://img.shields.io/badge/css-1572B6.svg?&style=for-the-badge&logo=css3&logoColor=white",
+  },
+  {
+    alt: "javascript",
+    src:
+      "https://img.shields.io/badge/javascript-F7DF1E.svg?&style=for-the-badge&logo=javascript&logoColor=white",
+  },
 ];
 
 export const backendBadges = [
