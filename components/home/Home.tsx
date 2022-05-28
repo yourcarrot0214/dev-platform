@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
 
 import LandingPage from "./LandingPage";
-import CardSection from "../common/CardSection";
-import { implementList, projectList } from "../../lib/data/portfolio";
 
 const Container = styled.div`
   padding: 96px 1rem 1rem;
@@ -12,6 +9,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 100vh;
   background: linear-gradient(
     132deg,
     #24c6dc,
@@ -76,38 +74,6 @@ const Home: React.FC = () => {
   return (
     <Container>
       <LandingPage />
-      {/* <div className="card-wrapper">
-        <h1 className="title">🎮 Implement</h1>
-        <div className="card-section">
-          {implementList.map((item) => (
-            <Link href={{ pathname: item.path }} key={item.id}>
-              <a target={item.target}>
-                <CardSection
-                  title={item.title}
-                  summary={item.summary}
-                  tags={item.tags}
-                />
-              </a>
-            </Link>
-          ))}
-        </div>
-      </div>
-      <div className="card-wrapper">
-        <h1 className="title">🖥 Project</h1>
-        <div className="card-section">
-          {projectList.map((item) => (
-            <Link href={{ pathname: item.path }} key={item.id}>
-              <a target={item.target}>
-                <CardSection
-                  title={item.title}
-                  summary={item.summary}
-                  tags={item.tags}
-                />
-              </a>
-            </Link>
-          ))}
-        </div>
-      </div> */}
     </Container>
   );
 };
