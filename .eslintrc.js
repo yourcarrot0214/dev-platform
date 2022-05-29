@@ -63,6 +63,18 @@ module.exports = {
     "no-console": "off",
     "react/require-default-props": "off",
     "@next/next/no-page-custom-font": "off",
+    "import/no-anonymous-default-export": [
+      "error",
+      {
+        allowArray: true,
+        allowArrowFunction: true,
+        allowAnonymousClass: true,
+        allowAnonymousFunction: true,
+        allowCallExpression: true, // The true value here is for backward compatibility
+        allowLiteral: true,
+        allowObject: true,
+      },
+    ],
   },
   settings: {
     "import/resolver": {

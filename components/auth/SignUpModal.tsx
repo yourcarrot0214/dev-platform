@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import CloseXIcon from "../../public/static/svg/modal/modal_colose_x_icon.svg";
@@ -135,28 +135,20 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const { setValidateMode } = useValidateMode();
 
-  const onChangeEmail = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(event.target.value);
-    },
-    [email]
-  );
+  const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
 
-  const onChangeName = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value),
-    [name]
-  );
+  const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setName(event.target.value);
 
-  const onChangePassword = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(event.target.value);
-    },
-    [password]
-  );
+  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
 
-  const toggleHidePassword = useCallback(() => {
+  const toggleHidePassword = () => {
     setHidePassword(!hidePassword);
-  }, [hidePassword]);
+  };
 
   const ChangeToLoginModal = () => {
     dispatch(authActions.setAuthMode("login"));
@@ -197,7 +189,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         errorMessage="이메일 주소가 필요합니다."
       />
     ),
-    [email]
+    [email, onChangeEmail]
   );
 
   const usernameInput = useMemo(
@@ -211,7 +203,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         errorMessage="이름을 입력하세요."
       />
     ),
-    [name]
+    [name, onChangeName]
   );
 
   const passwordInput = useMemo(
@@ -237,14 +229,21 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         onFocus={onFocusPassword}
       />
     ),
-    [password]
+    [
+      password,
+      hidePassword,
+      toggleHidePassword,
+      isPasswordHasNameOrEmail,
+      isPasswordOverMinLength,
+      isPasswordHasNumberOrSymbol,
+    ]
   );
 
   useEffect(() => {
     return () => {
       setValidateMode(false);
     };
-  }, []);
+  }, [setValidateMode]);
 
   return (
     <Container onSubmit={onSubmitSignUp}>

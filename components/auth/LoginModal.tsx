@@ -141,7 +141,7 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
         errorMessage="비밀번호를 입력해 주세요."
       />
     ),
-    [password]
+    [password, isPasswordHided, togglePasswordHiding]
   );
 
   const loadingButton = useMemo(
@@ -164,7 +164,7 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
     return () => {
       setValidateMode(false);
     };
-  }, []);
+  }, [setValidateMode]);
 
   return (
     <Container onSubmit={onSubmitLogin}>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import Image from "next/image";
 import palette from "../../styles/palette";
 import { useSelector } from "../../store";
 import { useDispatch } from "react-redux";

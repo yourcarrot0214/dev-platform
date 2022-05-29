@@ -23,7 +23,7 @@ import SystemMessage from "./SystemMessage";
 import Info from "./Info";
 
 // * utils
-import useTimeStamp from "./useTimeStamp";
+import useTimeStamp from "./timeStamp";
 import { ChatRoom, ChatMember } from "../../../types/chat";
 
 import {

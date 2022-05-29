@@ -2,7 +2,7 @@ interface IFunc {
   (date: Date): { ampm: string; hours: string; minutes: string };
 }
 
-const useTimeStamp: IFunc = (date: Date) => {
+const timeStamp: IFunc = (date: Date) => {
   let ampm, hours, minutes;
 
   const currentHours = date.getHours();
@@ -15,4 +15,4 @@ const useTimeStamp: IFunc = (date: Date) => {
   return { ampm, hours, minutes };
 };
 
-export default useTimeStamp;
+export default timeStamp;
