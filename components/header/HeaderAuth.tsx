@@ -22,7 +22,7 @@ const Container = styled.div`
       background: none;
       cursor: pointer;
       outline: none;
-      color: ${palette.snow};
+      color: ${palette.black};
       &:hover {
         box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
       }
@@ -36,7 +36,7 @@ const Container = styled.div`
       background: none;
       cursor: pointer;
       outline: none;
-      color: ${palette.snow};
+      color: ${palette.black};
       &:hover {
         box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
       }
