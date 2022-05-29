@@ -44,7 +44,7 @@ type Props = {
 const Room: React.FC<Props> = ({ _id, title, members }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [selected, setSelected] = useState<boolean>(false);
+  const [selected] = useState<boolean>(false);
 
   const validateRoomMembers = () =>
     members.find((member) => member._id === user._id);

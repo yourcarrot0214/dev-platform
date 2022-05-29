@@ -1,5 +1,5 @@
 import axios from ".";
-import { ChatRoomList, ChatMember, ChatRoom, Message } from "../../types/chat";
+import { ChatRoomList, ChatRoom, Message } from "../../types/chat";
 
 const API_CHAT = "/api/chats";
 const API_CHAT_MESSAGE = "/api/chats/messages";

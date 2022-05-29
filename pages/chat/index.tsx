@@ -28,7 +28,7 @@ const index: NextPage = () => {
 };
 
 index.getInitialProps = wrapper.getInitialPageProps(
-  (store: Store) => async ({ query }: NextPageContext) => {
+  (store: Store) => async () => {
     const { data } = await getChatListAPI();
     store.dispatch(chatActions.setChatList(data));
     return {};

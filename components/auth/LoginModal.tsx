@@ -61,21 +61,6 @@ interface IProps {
   closeModal: () => void;
 }
 
-function loadingButton(loading: boolean) {
-  return (
-    <LoadingButton
-      loading={loading}
-      variant="contained"
-      color="info"
-      size="large"
-      fullWidth
-      type="submit"
-    >
-      로그인
-    </LoadingButton>
-  );
-}
-
 const LoginModal: React.FC<IProps> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const { setValidateMode } = useValidateMode();
@@ -121,8 +106,8 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
     }
   };
 
-  const emailInput = (email: string) => {
-    return (
+  const emailInput = useMemo(
+    () => (
       <Input
         placeholder="이메일 주소"
         name="email"
@@ -133,11 +118,12 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
         isValid={email !== ""}
         errorMessage="이메일이 필요합니다."
       />
-    );
-  };
+    ),
+    [email]
+  );
 
-  const passwordInput = (password: string) => {
-    return (
+  const passwordInput = useMemo(
+    () => (
       <Input
         placeholder="비밀번호"
         type={isPasswordHided ? "password" : "text"}
@@ -154,12 +140,25 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
         isValid={password !== ""}
         errorMessage="비밀번호를 입력해 주세요."
       />
-    );
-  };
+    ),
+    [password]
+  );
 
-  const button = useMemo(() => loadingButton(loading), [loading]);
-  const InputForEmail = useMemo(() => emailInput(email), [email]);
-  const PasswordInput = useMemo(() => passwordInput(password), [password]);
+  const loadingButton = useMemo(
+    () => (
+      <LoadingButton
+        loading={loading}
+        variant="contained"
+        color="info"
+        size="large"
+        fullWidth
+        type="submit"
+      >
+        로그인
+      </LoadingButton>
+    ),
+    [loading]
+  );
 
   useEffect(() => {
     return () => {
@@ -171,11 +170,11 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
     <Container onSubmit={onSubmitLogin}>
       <CloseXIcon className="modal-close-x-icon" onClick={closeModal} />
       <h2 className="login-modal-title">DEV - PLATFORM</h2>
-      <div className="login-input-wrapper">{InputForEmail}</div>
+      <div className="login-input-wrapper">{emailInput}</div>
       <div className="login-input-wrapper login-password-input-wrapper">
-        {PasswordInput}
+        {passwordInput}
       </div>
-      <div className="login-modal-submit-button-wrapper">{button}</div>
+      <div className="login-modal-submit-button-wrapper">{loadingButton}</div>
       <p>
         <span>DEV - PLATFORM 회원이 아니신가요?</span>
         <span

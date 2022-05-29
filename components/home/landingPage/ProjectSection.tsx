@@ -54,6 +54,7 @@ const ProjectSection = () => {
         <div className="project-card">
           <div className="project-name">
             <a
+              rel="noreferrer"
               href="https://yourcarrot0214.github.io/carrotfield/#/"
               target="_blank"
             >
@@ -68,6 +69,7 @@ const ProjectSection = () => {
         <div className="project-card">
           <div className="project-name">
             <a
+              rel="noreferrer"
               href="https://devcarrot-skilltree.herokuapp.com/"
               target="_blank"
             >

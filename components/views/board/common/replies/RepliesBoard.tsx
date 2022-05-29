@@ -4,9 +4,8 @@
     ? replies의 갯수만큼 Replies 컴포넌트를 출력합니다.
 */
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
-import palette from "../../../../../styles/palette";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../../../../store";
 import { RepliesType } from "../../../../../types/post";
@@ -36,8 +35,6 @@ const RepliesBoard: React.FC<IProps> = ({ repliesList, commentId }) => {
   const userId = useSelector((state) => state.user._id);
   const postId = useSelector((state) => state.board.detail!.post._id);
   const isLogged = useSelector((state) => state.user.isLogged);
-
-  const [editMode, setEditMode] = useState<boolean>(false);
   const [repliesText, setRepliesText] = useState<string>("");
 
   const onChangeRepliesText = (event: React.ChangeEvent<HTMLInputElement>) =>

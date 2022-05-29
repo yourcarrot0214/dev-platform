@@ -2,7 +2,6 @@ import React from "react";
 import { NextPage } from "next";
 import Board from "../../components/views/board/Board";
 import wrapper from "../../store";
-import { NextPageContext } from "next/types";
 import { Store } from "redux";
 import { boardActions } from "../../store/board";
 import {
@@ -16,7 +15,7 @@ const index: NextPage = () => {
 };
 
 index.getInitialProps = wrapper.getInitialPageProps(
-  (store: Store) => async (context: NextPageContext) => {
+  (store: Store) => async () => {
     console.log("getInitialProps ✅");
     const boardList = await getBoardListAPI();
     const commentList = await getCommentListAPI();

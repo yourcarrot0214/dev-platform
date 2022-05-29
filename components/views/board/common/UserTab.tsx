@@ -40,20 +40,17 @@ interface IProps {
 }
 
 const UserTab: React.FC<IProps> = ({ author, createdAt, updatedAt }) => {
-  const time = useCallback(
-    (createdAt: string, updatedAt: string) => {
-      const isUpdated = createdAt !== updatedAt;
-      const message = isUpdated ? "수정" : "";
+  const time = useCallback((createdAt: string, updatedAt: string) => {
+    const isUpdated = createdAt !== updatedAt;
+    const message = isUpdated ? "수정" : "";
 
-      return `${new Date(isUpdated ? updatedAt : createdAt).toLocaleString(
-        "ko-KR",
-        {
-          timeZone: "UTC",
-        }
-      )} ${message}`;
-    },
-    [createdAt, updatedAt]
-  );
+    return `${new Date(isUpdated ? updatedAt : createdAt).toLocaleString(
+      "ko-KR",
+      {
+        timeZone: "UTC",
+      }
+    )} ${message}`;
+  }, []);
   return (
     <Container>
       <Stack

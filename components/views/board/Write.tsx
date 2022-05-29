@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
@@ -35,32 +35,23 @@ const Write: React.FC = () => {
   const [content, setContent] = useState<string>("");
   const [tag, setTag] = useState<string>("");
   const [hashtags, setHashtags] = useState<ChipData[]>([]);
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onChangeTitle = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setTitle(value);
-    },
-    [title]
-  );
+  const onChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setTitle(value);
+  };
 
-  const onChangeTag = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setTag(value);
-    },
-    [tag]
-  );
+  const onChangeTag = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setTag(value);
+  };
 
-  const onChangeContent = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setContent(value);
-    },
-    [content]
-  );
+  const onChangeContent = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setContent(value);
+  };
 
   const onSubmitTag = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

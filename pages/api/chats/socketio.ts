@@ -4,7 +4,6 @@ import { Server as ServerIO } from "socket.io";
 import { Server as NetServer } from "http";
 import useTimeStamp from "../../../components/views/chat/useTimeStamp";
 import EVENTS from "../../../utils/socket/events";
-import { connect } from "../../../utils/mongodb/mongodb";
 import { InitiateSocketProps } from "../../../lib/api/socket";
 
 export const config = {

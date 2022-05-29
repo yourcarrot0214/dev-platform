@@ -1,7 +1,6 @@
 import { NextApiRequest } from "next";
-import { NextApiResponseServerIO, ChatRoom } from "../../../../types/chat";
+import { NextApiResponseServerIO } from "../../../../types/chat";
 import { connect } from "../../../../utils/mongodb/mongodb";
-import { CallbackError } from "mongoose";
 
 export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   const { Chat } = await connect();

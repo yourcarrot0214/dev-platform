@@ -61,11 +61,11 @@ const Comment: React.FC<IProps> = ({ comment }) => {
     setUpdatedText(event.target.value);
   };
   const onRepliesToggle = useCallback(() => setRepliesOpen(!repliesOpen), [
-    !repliesOpen,
+    repliesOpen,
   ]);
   const repliesList = useMemo(
     () => repliesState?.filter((replies) => replies.responseTo === comment._id),
-    [repliesState]
+    [repliesState, comment._id]
   );
 
   const onUpdateComment = async () => {

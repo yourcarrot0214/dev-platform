@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/mongodb/mongodb";
-import { ResponseFuncs } from "../../../types/config";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
 import { StoredUserType } from "../../../types/user.d";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

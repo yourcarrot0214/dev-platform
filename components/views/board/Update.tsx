@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
@@ -49,32 +49,23 @@ const Update: React.FC = () => {
   const [hashtags, setHashtags] = useState<ChipData[]>(
     onChangeHashtagsType(post.hashtags)
   );
-  const [photos, setPhotos] = useState<string[]>(post.photos);
+  const [photos] = useState<string[]>(post.photos);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onChangeTitle = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setTitle(value);
-    },
-    [title]
-  );
+  const onChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setTitle(value);
+  };
 
-  const onChangeTag = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setTag(value);
-    },
-    [tag]
-  );
+  const onChangeTag = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setTag(value);
+  };
 
-  const onChangeContent = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target;
-      setContent(value);
-    },
-    [content]
-  );
+  const onChangeContent = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setContent(value);
+  };
 
   const onSubmitTag = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -207,7 +198,7 @@ const Update: React.FC = () => {
           endIcon={<SendIcon />}
           onClick={onUpdatePosting}
         >
-          업데이트
+          {loading ? 업데이트중 : 업데이트}
         </Button>
       </Stack>
     </Container>

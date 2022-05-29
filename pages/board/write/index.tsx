@@ -3,13 +3,13 @@ import { NextPage } from "next";
 import { useSelector } from "../../../store";
 import Write from "../../../components/views/board/Write";
 
-const write: NextPage = () => {
+const Index: NextPage = () => {
   const userId = useSelector((state) => state.user._id);
 
   return userId ? <Write /> : <div>접근 권한이 없습니다.</div>;
 };
 
-export default write;
+export default Index;
 
 /*
   TODO 1. auth

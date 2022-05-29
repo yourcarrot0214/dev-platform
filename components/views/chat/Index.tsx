@@ -1,6 +1,4 @@
 import React from "react";
-import styled from "styled-components";
-import palette from "../../../styles/palette";
 
 const Index: React.FC = () => {
   return (

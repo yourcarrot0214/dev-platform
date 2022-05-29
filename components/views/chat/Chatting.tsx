@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";
 import { useDispatch, shallowEqual } from "react-redux";
 
@@ -72,7 +71,6 @@ const Chatting: React.FC = () => {
   const dispatch = useDispatch();
   const chatRoom = useSelector<ChatRoom | null>((state) => state.chat.chatRoom);
   const [sendMessage, setSendMessage] = useState<string>("");
-  const [connected, setConnected] = useState<boolean>(false);
 
   const { _id, name, profileImage } = useSelector((state) => state.user);
   const isLogged = useSelector<boolean>((state) => state.user.isLogged);
@@ -130,7 +128,7 @@ const Chatting: React.FC = () => {
       setMessages([]);
       disconnectSocket();
     };
-  }, [roomId, members, dispatch]);
+  }, [roomId, members, dispatch, _id, name, profileImage]);
 
   useEffect((): any => {
     const scrollToBottom = () => {
@@ -140,12 +138,9 @@ const Chatting: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  const sendMessageHandler = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSendMessage(event.target.value);
-    },
-    [sendMessage]
-  );
+  const sendMessageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSendMessage(event.target.value);
+  };
 
   const enterKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {

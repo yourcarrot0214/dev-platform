@@ -67,7 +67,7 @@ const ImplementSection = () => {
         <h3 className="card-name">Implement API</h3>
         <div className="widgets-wrapper">
           <div className="widget">
-            <Link href="/board">
+            <Link href="/board" passHref>
               <div className="widget-logo">
                 📝
                 <a>
@@ -77,7 +77,7 @@ const ImplementSection = () => {
             </Link>
           </div>
           <div className="widget">
-            <Link href="/board">
+            <Link href="/board" passHref>
               <div className="widget-logo">
                 💬
                 <a>

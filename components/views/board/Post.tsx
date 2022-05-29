@@ -53,12 +53,9 @@ const Post: React.FC = () => {
   const post: PostType = useSelector((state) => state.board.detail!.post);
   const router = useRouter();
   const userId: string = useSelector((state) => state.user._id);
-  const [title, setTitle] = useState<string | null>(post.title);
-  const [content, setContent] = useState<string>(post.content);
-  const [hashtags, setHashtags] = useState<ChipData[]>(
-    onChangeHashtagsType(post.hashtags)
-  );
-  const [photos, setPhotos] = useState<string[]>(post.photos);
+  const [title] = useState<string | null>(post.title);
+  const [content] = useState<string>(post.content);
+  const [hashtags] = useState<ChipData[]>(onChangeHashtagsType(post.hashtags));
 
   const onDeletePosting = async (postId: string) => {
     const confirm = window.confirm("정말로 삭제합니까?");
@@ -75,7 +72,7 @@ const Post: React.FC = () => {
       document.title = "DEV-PLATFORM";
       return;
     };
-  }, []);
+  }, [title]);
 
   return (
     <Container>

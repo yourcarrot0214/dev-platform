@@ -1,4 +1,4 @@
-import App, { AppContext, AppProps } from "next/app";
+import { AppContext, AppProps } from "next/app";
 import wrapper from "../store";
 import Header from "../components/header/Header";
 import axios from "../lib/api";
@@ -29,7 +29,7 @@ const app = ({ Component, pageProps }: AppProps) => {
 };
 
 app.getInitialProps = wrapper.getInitialPageProps(
-  (store) => async ({ Component, ctx }: AppContext) => {
+  (store: Store) => async ({ Component, ctx }: AppContext) => {
     const { isLogged } = store.getState().user;
     const cookieObject = cookieStringToObject(ctx.req?.headers.cookie);
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import palette from "../../../styles/palette";
 import { useSelector } from "../../../store";

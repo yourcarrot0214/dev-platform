@@ -3,7 +3,6 @@
 */
 import React from "react";
 import styled from "styled-components";
-import palette from "../../../../../styles/palette";
 
 // * MUI
 import { TextField, Stack, Button } from "@mui/material";

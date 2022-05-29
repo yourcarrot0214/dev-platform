@@ -184,8 +184,8 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     }
   };
 
-  const emailInput = (email: string) => {
-    return (
+  const emailInput = useMemo(
+    () => (
       <Input
         placeholder="이메일 주소"
         type="email"
@@ -196,11 +196,12 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         isValid={!!email}
         errorMessage="이메일 주소가 필요합니다."
       />
-    );
-  };
+    ),
+    [email]
+  );
 
-  const usernameInput = (name: string) => {
-    return (
+  const usernameInput = useMemo(
+    () => (
       <Input
         placeholder="이름"
         icon={<PersonIcon />}
@@ -209,11 +210,12 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         isValid={!!name}
         errorMessage="이름을 입력하세요."
       />
-    );
-  };
+    ),
+    [name]
+  );
 
-  const passwordInput = () => {
-    return (
+  const passwordInput = useMemo(
+    () => (
       <Input
         placeholder="비밀번호 설정하기"
         type={hidePassword ? "password" : "text"}
@@ -234,12 +236,9 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         errorMessage="비밀번호를 입력하세요."
         onFocus={onFocusPassword}
       />
-    );
-  };
-
-  const EmailInput = useMemo(() => emailInput(email), [email]);
-  const UsernameInput = useMemo(() => usernameInput(name), [name]);
-  const PasswordInput = useMemo(() => passwordInput(), [password]);
+    ),
+    [password]
+  );
 
   useEffect(() => {
     return () => {
@@ -253,10 +252,10 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
 
       <h2 className="sign-up-modal-title">DEV - PLATFORM</h2>
 
-      <div className="input-wrapper">{EmailInput}</div>
-      <div className="input-wrapper">{UsernameInput}</div>
+      <div className="input-wrapper">{emailInput}</div>
+      <div className="input-wrapper">{usernameInput}</div>
       <div className="input-wrapper sign-up-password-input-wrapper">
-        {PasswordInput}
+        {passwordInput}
         {passwordFocused && (
           <>
             <PasswordWarning

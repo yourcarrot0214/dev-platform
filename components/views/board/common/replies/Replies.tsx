@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import palette from "../../../../../styles/palette";
 import { useSelector } from "../../../../../store";
 import { boardActions } from "../../../../../store/board";
 

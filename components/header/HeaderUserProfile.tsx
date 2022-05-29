@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import Image from "next/image";
 import palette from "../../styles/palette";
 import { useSelector } from "../../store";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
 import OutsideClickHandler from "react-outside-click-handler";
 import HamburgerIcon from "../../public/static/svg/header/hamburger.svg";
 import { userActions } from "../../store/user";
 import { logoutAPI } from "../../lib/api/auth";
-import { MongoSystemError } from "mongodb";
 
 const Container = styled.div`
   @media screen and (max-width: 500px) {
@@ -93,7 +92,6 @@ const HeaderUserProfile: React.FC = () => {
   const username = useSelector((state) => state.user.name);
   const userId = useSelector((state) => state.user._id);
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const logout = async () => {
     try {
@@ -129,15 +127,8 @@ const HeaderUserProfile: React.FC = () => {
         </button>
         {isUsermenuOpened && (
           <ul className="header-usermenu">
-            {/* <Link href="#">
-              <a>
-                <li onClick={() => setIsUsermenuOpened(false)}>
-                  준비중인 메뉴입니다.
-                </li>
-              </a>
-            </Link> */}
             {/* <div className="header-usermenu-divider" /> */}
-            <Link href="/setting ">
+            <Link href="/setting " passHref>
               <a>
                 <li onClick={() => setIsUsermenuOpened(false)}>설정</li>
               </a>
