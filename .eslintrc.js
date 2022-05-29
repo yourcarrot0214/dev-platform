@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: [],
+  extends: ["next"],
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
@@ -62,6 +62,7 @@ module.exports = {
     ],
     "no-console": "off",
     "react/require-default-props": "off",
+    "@next/next/no-page-custom-font": "off",
   },
   settings: {
     "import/resolver": {
