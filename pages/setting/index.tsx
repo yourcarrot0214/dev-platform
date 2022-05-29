@@ -1,21 +1,10 @@
 import React from "react";
 import { NextPage } from "next";
-import wrapper from "../../store";
-import { Store } from "redux";
-import { NextPageContext } from "next/types";
 import Index from "../../components/setting/Index";
 
 const index: NextPage = () => {
   return <Index />;
 };
-
-index.getInitialProps = wrapper.getInitialPageProps(
-  (store: Store) => async ({ query }: NextPageContext) => {
-    console.log(">> user page query ::", query);
-
-    return {};
-  }
-);
 
 export default index;
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import CloseXIcon from "../../public/static/svg/modal/modal_colose_x_icon.svg";
@@ -135,12 +135,17 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const { setValidateMode } = useValidateMode();
 
-  const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+  const onChangeEmail = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(event.target.value);
+    },
+    [setEmail]
+  );
 
-  const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setName(event.target.value);
+  const onChangeName = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value),
+    [setName]
+  );
 
   const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -230,7 +235,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
       />
     ),
     [
-      password,
       hidePassword,
       toggleHidePassword,
       isPasswordHasNameOrEmail,

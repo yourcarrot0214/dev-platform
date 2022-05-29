@@ -23,7 +23,7 @@ import SystemMessage from "./SystemMessage";
 import Info from "./Info";
 
 // * utils
-import useTimeStamp from "./timeStamp";
+import timeStamp from "./timeStamp";
 import { ChatRoom, ChatMember } from "../../../types/chat";
 
 import {
@@ -157,7 +157,7 @@ const Chatting: React.FC = () => {
   ) => {
     event.preventDefault();
     if (sendMessage) {
-      const { ampm, hours, minutes } = useTimeStamp(new Date(Date.now()));
+      const { ampm, hours, minutes } = timeStamp(new Date(Date.now()));
       const message = {
         username: name,
         message: sendMessage,
@@ -211,7 +211,7 @@ const Chatting: React.FC = () => {
           >
             {chatRoom?.messages &&
               chatRoom.messages.map((chat, index) => {
-                const { ampm, hours, minutes } = useTimeStamp(
+                const { ampm, hours, minutes } = timeStamp(
                   new Date(chat.createdAt)
                 );
                 return (

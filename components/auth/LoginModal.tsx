@@ -75,7 +75,10 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
   const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-  const togglePasswordHiding = () => setIsPasswordHided(!isPasswordHided);
+  const togglePasswordHiding = useMemo(
+    () => setIsPasswordHided(!isPasswordHided),
+    [isPasswordHided]
+  );
 
   const changeToSignUpModal = () => {
     dispatch(authActions.setAuthMode("signup"));

@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import styled from "styled-components";
 import wrapper from "../../store";
 import { Store } from "redux";
-import { NextPageContext } from "next/types";
 import Chatting from "../../components/views/chat/Chatting";
 import { getChatListAPI } from "../../lib/api/chat";
 import { chatActions } from "../../store/chat";
