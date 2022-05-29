@@ -1,9 +1,9 @@
 import React from "react";
 import { NextPage } from "next";
-import Index from "../../components/setting/Index";
+import Setting from "../../components/setting/Setting";
 
 const index: NextPage = () => {
-  return <Index />;
+  return <Setting />;
 };
 
 export default index;

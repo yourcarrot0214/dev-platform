@@ -11,7 +11,7 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const Index: React.FC = () => {
+const Setting: React.FC = () => {
   return (
     <Container>
       <UserProfile />
@@ -19,7 +19,7 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+export default Setting;
 
 /*
   TODO : 설정 페이지를 출력합니다.

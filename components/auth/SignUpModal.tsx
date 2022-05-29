@@ -151,9 +151,9 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     setPassword(event.target.value);
   };
 
-  const toggleHidePassword = () => {
+  const toggleHidePassword = useCallback(() => {
     setHidePassword(!hidePassword);
-  };
+  }, [hidePassword]);
 
   const ChangeToLoginModal = () => {
     dispatch(authActions.setAuthMode("login"));
