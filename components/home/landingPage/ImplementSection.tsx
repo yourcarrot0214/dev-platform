@@ -77,7 +77,7 @@ const ImplementSection = () => {
             </Link>
           </div>
           <div className="widget">
-            <Link href="/board" passHref>
+            <Link href="/chat" passHref>
               <div className="widget-logo">
                 💬
                 <a>
