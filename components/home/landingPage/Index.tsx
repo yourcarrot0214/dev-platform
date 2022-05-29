@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import palette from "../../styles/palette";
+import palette from "../../../styles/palette";
 import Link from "next/link";
 
 import {
   frontendBadges,
   backendBadges,
   utilsBadges,
-} from "../../lib/data/skillBadges";
+} from "../../../lib/data/skillBadges";
 
 const Container = styled.div`
   width: 100%;
@@ -314,7 +314,7 @@ const LandingPage = () => {
               <h3 className="card-name">Front-End</h3>
               <div className="card-list front-end">
                 {frontendBadges.map((skill) => (
-                  <img src={skill.src} alt={skill.alt} />
+                  <img src={skill.src} alt={skill.alt} key={skill.id} />
                 ))}
               </div>
             </div>
@@ -322,7 +322,7 @@ const LandingPage = () => {
               <h3 className="card-name">Server & DB</h3>
               <div className="card-list">
                 {backendBadges.map((skill) => (
-                  <img src={skill.src} alt={skill.alt} />
+                  <img src={skill.src} alt={skill.alt} key={skill.id} />
                 ))}
               </div>
             </div>
@@ -330,7 +330,7 @@ const LandingPage = () => {
               <h3 className="card-name">Utils</h3>
               <div className="card-list">
                 {utilsBadges.map((skill) => (
-                  <img src={skill.src} alt={skill.alt} />
+                  <img src={skill.src} alt={skill.alt} key={skill.id} />
                 ))}
               </div>
             </div>

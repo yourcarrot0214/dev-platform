@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import LandingPage from "./LandingPage";
+import LandingPage from "./landingPage/Index";
 
 const Container = styled.div`
   padding: 96px 1rem 1rem;
