@@ -28,7 +28,7 @@ const app = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-app.getInitialProps = wrapper.getInitialPageProps(
+app.getInitialProps = wrapper.getInitialAppProps(
   (store: Store) => async ({ Component, ctx }: AppContext) => {
     const { isLogged } = store.getState().user;
     const cookieObject = cookieStringToObject(ctx.req?.headers.cookie);
