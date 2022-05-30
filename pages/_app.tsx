@@ -28,7 +28,7 @@ const app = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-app.getInitialProps = wrapper.getInitialAppProps(
+app.getInitialProps = wrapper.getInitialPageProps(
   (store: Store) => async ({ Component, ctx }: AppContext) => {
     const { isLogged } = store.getState().user;
     const cookieObject = cookieStringToObject(ctx.req?.headers.cookie);
@@ -49,7 +49,10 @@ app.getInitialProps = wrapper.getInitialAppProps(
         ...(Component.getInitialProps
           ? await Component.getInitialProps(ctx)
           : {}),
-        AppProps: ctx.pathname,
+        AppProps: {
+          isLogged: isLogged,
+          cookieObject: cookieObject,
+        },
       },
     };
   }
@@ -65,7 +68,4 @@ export default wrapper.withRedux(app);
       * 동작 한다면 store 업데이트가 안되는지 확인
     ? vercel project에서 환경변수설정 부분에서 발생하는 문제이지 않을까 추측
       * _app.tsx의 getInitialProps logic이 환경변수에 의존하지는 않음.
-
-  ! meAPI() error 발생
-    ? name: JsonWebTokenError, message: invalid token
 */
