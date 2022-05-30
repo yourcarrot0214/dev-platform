@@ -37,9 +37,7 @@ app.getInitialProps = wrapper.getInitialPageProps(
       if (!isLogged && cookieObject.access_token) {
         axios.defaults.headers.common["cookie"] = cookieObject.access_token;
         const { data } = await authAPI();
-        const userdataWithoutPassword = data;
-
-        store.dispatch(userActions.setLoggedUser(userdataWithoutPassword));
+        store.dispatch(userActions.setLoggedUser(data));
       }
     } catch (error) {
       const err = error as SystemError;
@@ -58,3 +56,16 @@ app.getInitialProps = wrapper.getInitialPageProps(
 );
 
 export default wrapper.withRedux(app);
+
+/*
+  TODO 1. 새로고침시 리덕스 스토어 유저 정보 초기화
+    ? cookie에 token값은 유지되는데, 스토어에 정보가 업데이트 되지 않음.
+    ? development 상태에서는 동작, product 상태에서는 동작하지 않음.
+      * app.getInitialProps가 동작하는지를 검증
+      * 동작 한다면 store 업데이트가 안되는지 확인
+    ? vercel project에서 환경변수설정 부분에서 발생하는 문제이지 않을까 추측
+      * _app.tsx의 getInitialProps logic이 환경변수에 의존하지는 않음.
+
+  ! meAPI() error 발생
+    ? name: JsonWebTokenError, message: invalid token
+*/

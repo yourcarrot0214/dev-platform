@@ -243,12 +243,6 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
     ]
   );
 
-  useEffect(() => {
-    return () => {
-      setValidateMode(false);
-    };
-  }, [setValidateMode]);
-
   return (
     <Container onSubmit={onSubmitSignUp}>
       <CloseXIcon className="modal-close-x-icon" onClick={closeModal} />

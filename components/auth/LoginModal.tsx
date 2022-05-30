@@ -160,12 +160,6 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
     [loading]
   );
 
-  useEffect(() => {
-    return () => {
-      setValidateMode(false);
-    };
-  }, [setValidateMode]);
-
   return (
     <Container onSubmit={onSubmitLogin}>
       <CloseXIcon className="modal-close-x-icon" onClick={closeModal} />
