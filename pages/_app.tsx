@@ -36,7 +36,7 @@ app.getInitialProps = wrapper.getInitialPageProps(
 
     try {
       if (!isLogged && cookieObject.access_token) {
-        axios.defaults.headers.common.cookie = cookieObject.access_token;
+        axios.defaults.headers.cookie = cookieObject.access_token;
         const { data } = await authAPI();
         authData = data;
         store.dispatch(userActions.setLoggedUser(data));
