@@ -33,9 +33,12 @@ app.getInitialProps = wrapper.getInitialPageProps(
     const { isLogged } = store.getState().user;
     const cookieObject = cookieStringToObject(ctx.req?.headers.cookie);
     let authData = {};
+    let isTry = false;
+    console.log("✅", axios.defaults.headers.cookie);
 
     try {
       if (!isLogged && cookieObject.access_token) {
+        isTry = true;
         axios.defaults.headers.cookie = cookieObject.access_token;
         const { data } = await authAPI();
         authData = data;
@@ -55,6 +58,7 @@ app.getInitialProps = wrapper.getInitialPageProps(
           isLogged: isLogged,
           cookieObject: cookieObject,
           authData: authData,
+          isTry: isTry,
         },
       },
     };
