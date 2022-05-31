@@ -1,4 +1,4 @@
-import { AppContext, AppProps } from "next/app";
+import App, { AppContext, AppProps } from "next/app";
 import wrapper from "../store";
 import Header from "../components/header/Header";
 import axios from "../lib/api";
@@ -28,10 +28,10 @@ const app = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-app.getInitialProps = wrapper.getInitialPageProps(
-  (store: Store) => async ({ Component, ctx }: AppContext) => {
+app.getInitialProps = wrapper.getInitialAppProps(
+  (store: Store) => async (context) => {
     const { isLogged } = store.getState().user;
-    const cookieObject = cookieStringToObject(ctx.req?.headers.cookie);
+    const cookieObject = cookieStringToObject(context.ctx.req?.headers.cookie);
     let authData = {};
     let isTry = false;
     console.log("✅", axios.defaults.headers.cookie);
@@ -51,9 +51,7 @@ app.getInitialProps = wrapper.getInitialPageProps(
 
     return {
       pageProps: {
-        ...(Component.getInitialProps
-          ? await Component.getInitialProps(ctx)
-          : {}),
+        ...(await App.getInitialProps(context)).pageProps,
         AppProps: {
           isLogged: isLogged,
           cookieObject: cookieObject,
@@ -75,4 +73,7 @@ export default wrapper.withRedux(app);
       * 동작 한다면 store 업데이트가 안되는지 확인
     ? vercel project에서 환경변수설정 부분에서 발생하는 문제이지 않을까 추측
       * _app.tsx의 getInitialProps logic이 환경변수에 의존하지는 않음.
+
+  try block가 실행이 됨 -> isTry: true
+  store.dispatch가 실행되지 않음 -> redux-devtools에서 검증(action이 없음)
 */
