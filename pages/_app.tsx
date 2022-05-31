@@ -34,14 +34,15 @@ app.getInitialProps = wrapper.getInitialAppProps(
     const cookieObject = cookieStringToObject(context.ctx.req?.headers.cookie);
     let authData = {};
     let isTry = false;
-    console.log("✅", axios.defaults.headers.cookie);
 
     try {
       if (!isLogged && cookieObject.access_token) {
         isTry = true;
         axios.defaults.headers.cookie = cookieObject.access_token;
         const { data } = await authAPI();
-        authData = data;
+        authData = {
+          type: "dummy",
+        };
         store.dispatch(userActions.setLoggedUser(data));
       }
     } catch (error) {
@@ -76,4 +77,5 @@ export default wrapper.withRedux(app);
 
   try block가 실행이 됨 -> isTry: true
   store.dispatch가 실행되지 않음 -> redux-devtools에서 검증(action이 없음)
+  authAPI()가 호출되는지 확인할 수 있는 방법이 필요함..
 */
