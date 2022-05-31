@@ -32,6 +32,8 @@ app.getInitialProps = wrapper.getInitialAppProps(
   (store: Store) => async (context) => {
     const { isLogged } = store.getState().user;
     const cookieObject = cookieStringToObject(context.ctx.req?.headers.cookie);
+    axios.defaults.headers.cookie = "";
+
     let authData = {};
     let isTry = false;
 
@@ -40,9 +42,7 @@ app.getInitialProps = wrapper.getInitialAppProps(
         isTry = true;
         axios.defaults.headers.cookie = cookieObject.access_token;
         const { data } = await authAPI();
-        authData = {
-          type: "dummy",
-        };
+        authData = data;
         store.dispatch(userActions.setLoggedUser(data));
       }
     } catch (error) {
