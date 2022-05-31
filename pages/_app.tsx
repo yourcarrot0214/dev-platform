@@ -39,11 +39,11 @@ app.getInitialProps = wrapper.getInitialAppProps(
 
     try {
       if (!isLogged && cookieObject.access_token) {
-        isTry = true;
         axios.defaults.headers.cookie = cookieObject.access_token;
         const { data } = await authAPI();
-        authData = data;
         store.dispatch(userActions.setLoggedUser(data));
+        authData = data;
+        isTry = true;
       }
     } catch (error) {
       const err = error as SystemError;
