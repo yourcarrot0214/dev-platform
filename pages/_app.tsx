@@ -32,14 +32,14 @@ app.getInitialProps = wrapper.getInitialAppProps(
   (store: Store) => async (context) => {
     const { isLogged } = store.getState().user;
     const cookieObject = cookieStringToObject(context.ctx.req?.headers.cookie);
-    axios.defaults.headers.cookie = "";
 
     let authData = {};
     let isTry = false;
 
     try {
       if (!isLogged && cookieObject.access_token) {
-        axios.defaults.headers.cookie = cookieObject.access_token;
+        axios.defaults.headers.Cookie = "";
+        axios.defaults.headers.Cookie = cookieObject.access_token;
         const { data } = await authAPI();
         store.dispatch(userActions.setLoggedUser(data));
         authData = data;
