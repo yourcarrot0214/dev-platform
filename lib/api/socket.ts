@@ -13,7 +13,12 @@ export type InitiateSocketProps = {
 
 // ! Client API check
 export const initiateSocket = ({ room, user }: InitiateSocketProps) => {
-  socket = io({ path: "/api/chats/socketio/" });
+  const URI =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://dev-platform.vercel.app";
+
+  socket = io(URI, { path: "/api/chats/socketio/" });
   console.log("🌏 Socket Connected ...", socket);
   if (socket && room) socket.emit(EVENTS.CLIENT.JOIN_ROOM, { room, user });
 };
