@@ -31,6 +31,9 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       path: "/api/chats/socketio/",
       cors: {
         origin: ["http://localhost:3000", "https://dev-platform.vercel.app"],
+        methods: ["GET", "POST"],
+        allowedHeaders: ["*"],
+        credentials: true,
       },
     });
 
