@@ -29,6 +29,9 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const httpServer: NetServer = res.socket.server as any;
     const io = new ServerIO(httpServer, {
       path: "/api/chats/socketio/",
+      cors: {
+        origin: ["http://localhost:3000", "https://dev-platform.vercel.app"],
+      },
     });
 
     io.on(EVENTS.connection, async (socket) => {
