@@ -1,7 +1,7 @@
 import { NextApiRequest } from "next";
 import { NextApiResponseServerIO, EmitMessage } from "../../../types/chat";
 import { Server as ServerIO } from "socket.io";
-import { Server as NetServer } from "http";
+import { Server as NetServer, createServer } from "http";
 import useTimeStamp from "../../../components/views/chat/timeStamp";
 import EVENTS from "../../../utils/socket/events";
 import { InitiateSocketProps } from "../../../lib/api/socket";
@@ -25,9 +25,10 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   if (!res.socket.server.io) {
     console.log("New Socket.io server...✅");
 
+    // ! Server API check
     const httpServer: NetServer = res.socket.server as any;
     const io = new ServerIO(httpServer, {
-      path: "/api/chats/socketio",
+      path: "/api/chats/socketio/",
     });
 
     io.on(EVENTS.connection, async (socket) => {
@@ -85,6 +86,13 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 };
 
 /*
-  TODO : join message
-    ? user가 접속하면 message 전달
+  TODO 1. emit event not working
+    ? 로컬에서는 문제 없는데 배포환경에서 문제 발생
+    ! CLIENT.JOIN_ROOM
+      ? 채팅방 입장시 system 메시지가 출력되지 않음.
+    ! CLIENT.SEND_ROOM_MESSAGE
+      ? 채팅방에서 메시지 발송시 메시지가 출력되지 않음.
+
+  TODO 2. function
+    ? exitChatRoomAPI 호출 결과가 화면 렌더링에 반영되지 않음.
 */

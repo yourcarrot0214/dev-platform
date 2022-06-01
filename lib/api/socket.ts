@@ -11,8 +11,9 @@ export type InitiateSocketProps = {
   };
 };
 
+// ! Client API check
 export const initiateSocket = ({ room, user }: InitiateSocketProps) => {
-  socket = io({ path: "/api/chats/socketio" });
+  socket = io({ path: "/api/chats/socketio/" });
   console.log("🌏 Socket Connected ...", socket);
   if (socket && room) socket.emit(EVENTS.CLIENT.JOIN_ROOM, { room, user });
 };
