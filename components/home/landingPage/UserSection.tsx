@@ -9,12 +9,9 @@ const Container = styled.div`
       margin: 0 auto;
       display: flex;
       align-items: center;
-      padding: 1rem;
-      margin-bottom: 1rem;
       img {
         width: 50%;
         margin: 0 auto;
-        border-radius: 50%;
       }
     }
 
@@ -56,7 +53,7 @@ const UserSection = () => {
     <Container>
       <div className="user-section-wrapper">
         <div className="user-profile-image-wrapper">
-          <img src="/static/svg/avatar32.png" alt="profile" />
+          <img src="/static/svg/carrot.png" alt="profile" />
         </div>
         <div className="user-description-wrapper">
           <h3 className="user-name">Carrot🥕</h3>
