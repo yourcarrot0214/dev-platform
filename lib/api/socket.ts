@@ -11,10 +11,9 @@ export type InitiateSocketProps = {
   };
 };
 
-// ! Client API check
 export const initiateSocket = ({ room, user }: InitiateSocketProps) => {
   socket = io({
-    path: "/api/chats/socketio/",
+    path: "/api/chats/socketio",
     secure: true,
     reconnection: true,
     rejectUnauthorized: false,
