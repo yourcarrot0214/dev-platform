@@ -59,5 +59,5 @@
     "gh-pages": "^3.2.3",
     "typescript": "^4.5.4"
   },
-  "homepage": "https://yourcarrot0214.github.io/dev-platform"
+  "homepage": "https://dev-platform.vercel.app/"
 }

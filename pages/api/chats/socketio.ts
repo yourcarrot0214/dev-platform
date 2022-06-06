@@ -23,7 +23,6 @@ const socketHandler = async (
     console.log("New Socket.io server...✅");
 
     const httpServer: NetServer = res.socket.server as any;
-    console.log("🌏 httpServer : ", httpServer);
     const io = new ServerIO(httpServer, {
       path: "/api/chats/socketio",
       cors: {
