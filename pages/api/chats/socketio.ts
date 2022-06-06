@@ -6,12 +6,6 @@ import useTimeStamp from "../../../components/views/chat/timeStamp";
 import EVENTS from "../../../utils/socket/events";
 import { InitiateSocketProps } from "../../../lib/api/socket";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 interface UseStringTimeStamp {
   (date: Date): string;
 }
@@ -21,7 +15,10 @@ const useStringTimeStamp: UseStringTimeStamp = (date: Date) => {
   return `${ampm} ${hours}:${minutes}`;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
+const socketHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponseServerIO
+) => {
   if (!res.socket.server.io) {
     console.log("New Socket.io server...✅");
 
@@ -89,6 +86,14 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
   res.end();
 };
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+export default socketHandler;
 
 /*
   TODO 1. emit event not working

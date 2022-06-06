@@ -85,43 +85,47 @@ const Chatting: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect((): any => {
-    if (roomId)
-      initiateSocket({ room: roomId, user: { _id, name, profileImage } });
+    fetch("/api/chats/socketio").finally(() => {
+      if (roomId)
+        initiateSocket({ room: roomId, user: { _id, name, profileImage } });
 
-    subscribeToChat((err: Error, message: Message) => {
-      if (err) return;
+      subscribeToChat((err: Error, message: Message) => {
+        if (err) return;
 
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
 
-    subscribeToChatMember((err: Error, user: User) => {
-      if (err) return;
+      subscribeToChatMember((err: Error, user: User) => {
+        if (err) return;
 
-      let updateChatMembers = members?.find((member) => member._id === user._id)
-        ? members
-        : members?.concat(user);
+        let updateChatMembers = members?.find(
+          (member) => member._id === user._id
+        )
+          ? members
+          : members?.concat(user);
 
-      dispatch(
-        chatActions.updateChatMembers({
-          _id: roomId as string,
-          members: updateChatMembers as ChatMember[],
-        })
-      );
-    });
+        dispatch(
+          chatActions.updateChatMembers({
+            _id: roomId as string,
+            members: updateChatMembers as ChatMember[],
+          })
+        );
+      });
 
-    subscribeToExitMember((err: Error, userId: string) => {
-      if (err) return;
-      let updateChatMembers = members?.filter(
-        (member) => member._id !== userId
-      );
-      if (updateChatMembers === members) return;
-      dispatch(
-        chatActions.updateChatMembers({
-          _id: roomId as string,
-          members: updateChatMembers as ChatMember[],
-        })
-      );
-      if (userId === _id) dispatch(chatActions.setInitChatRoom());
+      subscribeToExitMember((err: Error, userId: string) => {
+        if (err) return;
+        let updateChatMembers = members?.filter(
+          (member) => member._id !== userId
+        );
+        if (updateChatMembers === members) return;
+        dispatch(
+          chatActions.updateChatMembers({
+            _id: roomId as string,
+            members: updateChatMembers as ChatMember[],
+          })
+        );
+        if (userId === _id) dispatch(chatActions.setInitChatRoom());
+      });
     });
 
     return () => {
