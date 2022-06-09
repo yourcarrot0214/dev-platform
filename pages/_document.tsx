@@ -55,6 +55,7 @@ export default class MyDocument extends Document {
           />
           {/* React devtools */}
           {/* <script src="http://localhost:8097"></script> */}
+          <link rel="shortcut icon" href="/static/image/favicon/favicon.ico" />
           <title>DEV Platform 🥕</title>
         </Head>
         <body>
