@@ -55,6 +55,7 @@ export default class MyDocument extends Document {
           />
           {/* React devtools */}
           {/* <script src="http://localhost:8097"></script> */}
+          <title>DEV Platform 🥕</title>
         </Head>
         <body>
           <Main />
