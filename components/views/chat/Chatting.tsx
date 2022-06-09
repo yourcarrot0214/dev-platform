@@ -58,7 +58,7 @@ interface Message {
   message: string;
   timestamp: string;
   roomId: string;
-  profileImage: string;
+  profileImage?: string;
 }
 
 interface User {
@@ -209,6 +209,16 @@ const Chatting: React.FC = () => {
         )}
         {/* 채팅 메시지 출력 영역 */}
         <Stack spacing={2} direction="column" sx={{ height: "500px" }}>
+          {process.env.NODE_ENV === "production" && (
+            <Alert severity="warning" variant="filled">
+              vercel 배포 서버리스 환경에서 socket.io 인스턴스 서버의 연결이
+              되지 않아 부득이하게 시연 영상 링크를 덧붙입니다.
+              <a href="https://youtu.be/e8mNc6AXncY" target="_blank">
+                {" "}
+                🔗 보러가기
+              </a>
+            </Alert>
+          )}
           <Paper
             variant="outlined"
             sx={{ overflow: "auto", height: "500px", padding: "1rem" }}
