@@ -213,7 +213,11 @@ const Chatting: React.FC = () => {
             <Alert severity="warning" variant="filled">
               vercel 배포 서버리스 환경에서 socket.io 인스턴스 서버의 연결이
               되지 않아 부득이하게 시연 영상 링크를 덧붙입니다.
-              <a href="https://youtu.be/e8mNc6AXncY" target="_blank">
+              <a
+                rel="noreferrer"
+                href="https://youtu.be/e8mNc6AXncY"
+                target="_blank"
+              >
                 {" "}
                 🔗 보러가기
               </a>
