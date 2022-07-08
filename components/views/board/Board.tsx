@@ -8,11 +8,13 @@ import { CommentType, RepliesType } from "../../../types/post";
 
 const Container = Styled.div`
   width: 100%;
-  max-width: 1024px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem 0;
 
   display: flex;
+
+  border: 1px dashed gray;
 
   .post-list-wrapper {
     flex: 1 1 0%;
