@@ -14,8 +14,6 @@ const Container = Styled.div`
 
   display: flex;
 
-  border: 1px dashed gray;
-
   .post-list-wrapper {
     flex: 1 1 0%;
 
