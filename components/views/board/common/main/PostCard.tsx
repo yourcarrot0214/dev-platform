@@ -90,7 +90,12 @@ const PostCard = ({ post, commentlist, replieslist }) => {
         <p>{post.content.slice(0, 85)} ...</p>
         <div className="tags-wrapper">
           {post.hashtags.map((tag, index) => {
-            if (index < 3) return <span className="tag"># {tag}</span>;
+            if (index < 3)
+              return (
+                <span className="tag" key={index}>
+                  # {tag}
+                </span>
+              );
           })}
         </div>
         <div className="footer">

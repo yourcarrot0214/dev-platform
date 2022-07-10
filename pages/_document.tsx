@@ -132,7 +132,6 @@ export default class MyDocument extends Document {
             content="/static/image/favicon/ms-icon-144x144.png"
           />
           <meta name="theme-color" content="#ffffff" />
-          <title>DEV Platform 🥕</title>
         </Head>
         <body>
           <Main />

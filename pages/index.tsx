@@ -1,7 +1,9 @@
-import React from "react";
+import { useEffect } from "react";
 import Home from "../components/home/Home";
 
 export default function home(props) {
-  console.log(props.AppProps);
+  useEffect(() => {
+    document.title = "DEV Platform 🥕";
+  }, []);
   return <Home />;
 }
