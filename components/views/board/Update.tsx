@@ -198,7 +198,7 @@ const Update: React.FC = () => {
           endIcon={<SendIcon />}
           onClick={onUpdatePosting}
         >
-          {loading ? 업데이트중 : 업데이트}
+          {loading ? "업데이트중" : "업데이트"}
         </Button>
       </Stack>
     </Container>
