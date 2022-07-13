@@ -1,4 +1,4 @@
-import App, { AppContext, AppProps } from "next/app";
+import App, { AppProps } from "next/app";
 import wrapper from "../store";
 import Header from "../components/header/Header";
 import axios from "../lib/api";

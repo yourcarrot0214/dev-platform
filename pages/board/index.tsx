@@ -14,9 +14,9 @@ const index: NextPage = () => {
   return <Board />;
 };
 
-index.getInitialProps = wrapper.getInitialPageProps(
+export const getStaticProps = wrapper.getStaticProps(
   (store: Store) => async () => {
-    console.log("getInitialProps ✅");
+    console.log("getStaticProps ✅");
     const boardList = await getBoardListAPI();
     const commentList = await getCommentListAPI();
     const repliesList = await getRepliesListAPI();
@@ -24,7 +24,8 @@ index.getInitialProps = wrapper.getInitialPageProps(
     store.dispatch(boardActions.setPostlist(boardList.data));
     store.dispatch(boardActions.setCommentlist(commentList.data));
     store.dispatch(boardActions.setReplieslist(repliesList.data));
-    return {};
+
+    return { props: {} };
   }
 );
 

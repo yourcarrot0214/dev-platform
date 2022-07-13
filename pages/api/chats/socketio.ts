@@ -1,7 +1,7 @@
 import { NextApiRequest } from "next";
 import { NextApiResponseServerIO, EmitMessage } from "../../../types/chat";
 import { Server as ServerIO } from "socket.io";
-import { Server as NetServer, createServer } from "http";
+import { Server as NetServer } from "http";
 import useTimeStamp from "../../../components/views/chat/timeStamp";
 import EVENTS from "../../../utils/socket/events";
 import { InitiateSocketProps } from "../../../lib/api/socket";
