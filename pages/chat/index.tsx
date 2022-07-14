@@ -1,4 +1,4 @@
-import React from "react";
+import Head from "next/head";
 import { NextPage } from "next";
 import styled from "styled-components";
 import wrapper from "../../store";
@@ -19,10 +19,15 @@ const Container = styled.div`
 
 const index: NextPage = () => {
   return (
-    <Container>
-      <Rooms />
-      <Chatting />
-    </Container>
+    <>
+      <Head>
+        <title>DEV-Platform :: Chat</title>
+      </Head>
+      <Container>
+        <Rooms />
+        <Chatting />
+      </Container>
+    </>
   );
 };
 

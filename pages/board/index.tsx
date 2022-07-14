@@ -1,4 +1,4 @@
-import React from "react";
+import Head from "next/head";
 import { NextPage } from "next";
 import Board from "../../components/views/board/Board";
 import wrapper from "../../store";
@@ -11,7 +11,14 @@ import {
 } from "../../lib/api/board";
 
 const index: NextPage = () => {
-  return <Board />;
+  return (
+    <>
+      <Head>
+        <title>DEV-Platform :: Board</title>
+      </Head>
+      <Board />
+    </>
+  );
 };
 
 export const getStaticProps = wrapper.getStaticProps(

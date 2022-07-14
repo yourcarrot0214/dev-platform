@@ -1,9 +1,18 @@
-import React from "react";
+import Head from "next/head";
 import { NextPage } from "next";
 import Setting from "../../components/setting/Setting";
+import { useSelector } from "../../store";
 
 const index: NextPage = () => {
-  return <Setting />;
+  const username = useSelector((state) => state.user.name);
+  return (
+    <>
+      <Head>
+        <title>DEV-Platform :: {username} 🪪</title>
+      </Head>
+      <Setting />
+    </>
+  );
 };
 
 export default index;
