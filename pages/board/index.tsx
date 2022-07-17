@@ -21,9 +21,8 @@ const index: NextPage = () => {
   );
 };
 
-index.getInitialProps = wrapper.getInitialPageProps(
+export const getServerSideProps = wrapper.getServerSideProps(
   (store: Store) => async () => {
-    console.log("getStaticProps ✅");
     const boardList = await getBoardListAPI();
     const commentList = await getCommentListAPI();
     const repliesList = await getRepliesListAPI();

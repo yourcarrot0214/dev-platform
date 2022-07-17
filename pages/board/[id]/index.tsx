@@ -15,9 +15,8 @@ const postDetail: NextPage = () => {
   return <Post />;
 };
 
-postDetail.getInitialProps = wrapper.getInitialPageProps(
+export const getServerSideProps = wrapper.getServerSideProps(
   (store: Store) => async (context) => {
-    console.log("✅ context : ", context);
     const id = context.query.id;
 
     try {
@@ -26,9 +25,8 @@ postDetail.getInitialProps = wrapper.getInitialPageProps(
     } catch (error) {
       console.log(error);
     }
-    return {
-      props: {},
-    };
+
+    return { props: {} };
   }
 );
 
