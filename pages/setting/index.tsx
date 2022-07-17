@@ -1,14 +1,12 @@
 import Head from "next/head";
 import { NextPage } from "next";
 import Setting from "../../components/setting/Setting";
-import { useSelector } from "../../store";
 
 const index: NextPage = () => {
-  const username = useSelector((state) => state.user.name);
   return (
     <>
       <Head>
-        <title>DEV-Platform :: {username} 🪪</title>
+        <title>DEV-Platform :: Setting</title>
       </Head>
       <Setting />
     </>

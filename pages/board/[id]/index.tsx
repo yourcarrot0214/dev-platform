@@ -9,29 +9,16 @@ import { getPostAPI, getBoardListAPI } from "../../../lib/api/board";
 import { boardActions } from "../../../store/board";
 import wrapper from "../../../store";
 import { Store } from "redux";
-import { GetStaticPropsContext } from "next/types";
 import Post from "../../../components/views/board/Post";
 
 const postDetail: NextPage = () => {
   return <Post />;
 };
 
-export const getStaticPaths = async () => {
-  const boardlist = await getBoardListAPI();
-  return {
-    fallback: false,
-    paths: boardlist.data.map((post) => ({
-      params: {
-        id: post._id,
-      },
-    })),
-  };
-};
-
-export const getStaticProps = wrapper.getStaticProps(
-  (store: Store) => async (context: GetStaticPropsContext) => {
+postDetail.getInitialProps = wrapper.getInitialPageProps(
+  (store: Store) => async (context) => {
     console.log("✅ context : ", context);
-    const id = context.params!.id;
+    const id = context.query.id;
 
     try {
       const { data } = await getPostAPI(id as string);
