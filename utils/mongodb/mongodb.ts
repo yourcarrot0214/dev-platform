@@ -5,6 +5,8 @@ import commentSchema from "./models/commentSchema";
 import repliesSchema from "./models/repliesSchema";
 import chatSchema from "./models/chatSchema";
 import messageSchema from "./models/messageSchema";
+import foodSchema from "./models/foodSchema";
+import orderSchema from "./models/orderSchema";
 
 export const connect = async () => {
   const connectDB = await mongoose
@@ -21,6 +23,18 @@ export const connect = async () => {
   const Chat = mongoose.models.Chat || mongoose.model("Chat", chatSchema);
   const Message =
     mongoose.models.Message || mongoose.model("Message", messageSchema);
+  const Food = mongoose.models.Food || mongoose.model("Food", foodSchema);
+  const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
 
-  return { connectDB, User, Board, Comment, Replies, Chat, Message };
+  return {
+    connectDB,
+    User,
+    Board,
+    Comment,
+    Replies,
+    Chat,
+    Message,
+    Food,
+    Order,
+  };
 };
