@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     await Comment.create(commentData).catch(catcher);
 
-    res.statusCode = 200;
+    res.statusCode = 201;
     return res.send(
       await Comment.find({ postId })
         .populate("author", "_id name profileImage")

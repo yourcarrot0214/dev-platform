@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       { new: true }
     ).catch(catcher);
 
-    res.statusCode = 201;
+    res.statusCode = 204;
     return res.end();
   }
 

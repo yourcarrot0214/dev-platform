@@ -13,6 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await Replies.deleteMany({ author: id }).catch(catcher);
 
     res.setHeader("Set-cookie", "access_token=; path=/; expires=; httponly");
-    return res.end();
+    return res.status(204).end();
   }
 };

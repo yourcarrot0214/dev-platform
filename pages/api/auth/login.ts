@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // * 4. user password check
       if (user && !comparePassword(password)) {
-        res.statusCode = 403;
+        res.statusCode = 401;
         return res.send("비밀번호가 일치하지 않습니다.");
       }
 

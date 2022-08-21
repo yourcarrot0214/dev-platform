@@ -36,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     await Replies.create(repliesData).catch(catcher);
 
-    res.statusCode = 200;
+    res.statusCode = 201;
     return res.send(
       await Replies.find({ postId })
         .populate("author", "_id name profileImage")
@@ -47,9 +47,3 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(405);
   return res.end();
 };
-
-/*
-  ! GET
-  ? responseTo === postId 일치하는 목록을 찾아서 리턴
-  
-*/

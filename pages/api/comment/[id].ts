@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       await comment.remove();
       await Replies.deleteMany({ responseTo: id }).catch(catcher);
 
-      return res.status(200).end();
+      return res.status(204).end();
     } catch (error) {
       console.log(">> comment delete error :: ", error);
     }

@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       .populate("members", "_id name profileImage")
       .catch(catcher);
 
-    return res.status(201).send(
+    return res.status(200).send(
       chatlist.map((chat: ChatDB) => {
         return { _id: chat._id, members: chat.members, title: chat.title };
       })

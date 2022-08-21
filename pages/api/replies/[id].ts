@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       await Replies.findByIdAndDelete(id).catch(catcher);
 
-      return res.status(200).end();
+      return res.status(204).end();
     } catch (error) {
       console.log(">> replies delete error :: ", error);
     }

@@ -54,8 +54,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     userDataWithoutPassword.password = "";
     delete userDataWithoutPassword.password;
 
-    // ! password 정보가 삭제되지 않음.
-
     res.statusCode = 200;
     return res.send(userDataWithoutPassword);
   }

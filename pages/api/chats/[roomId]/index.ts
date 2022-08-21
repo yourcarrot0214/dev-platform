@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       })
       .catch(catcher);
 
-    return res.status(201).send(chatRoom);
+    return res.status(200).send(chatRoom);
   }
 
   // * joinChatRoomAPI ✅
@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       throw new Error(error);
     }
 
-    return res.status(201).end();
+    return res.status(204).end();
   }
 
   // * exitChatRoomAPI ✅
@@ -46,8 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     );
     chatRoom.save();
 
-    // ! chatRoom.save() method 검증
-    return res.status(201).end();
+    return res.status(204).end();
   }
 
   res.status(400).end();

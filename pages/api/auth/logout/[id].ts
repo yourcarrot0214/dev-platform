@@ -8,9 +8,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       await User.findByIdAndUpdate(req.query.id, { token: "" }).exec();
 
       res.setHeader("Set-cookie", "access_token=; path=/; expires=; httponly");
-      return res.status(200).end();
+      return res.status(204).end();
     } catch (error) {
       console.log(">> user logout error :: ", error);
     }
   }
+
+  return res.status(405).end();
 };
